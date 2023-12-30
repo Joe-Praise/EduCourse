@@ -1,0 +1,6 @@
+[*] get router working
+[] style header for desktop and mobile
+[] style footer for desktop and mobile
+[] develop home page in 2 hours
+
+

@@ -1,0 +1,15 @@
+import { FC } from 'react';
+import { Link } from 'react-router-dom';
+const Logo: FC = () => {
+	return (
+		<Link to={'/'} className='block cursor-pointer'>
+			<img src='' alt='' />
+			<span className=''>
+				<span className=' leading-[.2] text-secondary-dark text-xl'>Edu</span>
+				<span className='text-secondary-light text-xl'>Course</span>
+			</span>
+		</Link>
+	);
+};
+
+export default Logo;

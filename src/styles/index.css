@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+	p {
+		@apply text-[0.9rem] font-jost font-[400];
+	}
+	a {
+		@apply text-[0.9rem] font-exo font-[600] text-secondary-light;
+	}
+	h1 {
+		@apply font-exo font-[600];
+	}
+	h2 {
+		@apply font-exo font-[400];
+	}
+	h3 {
+		@apply font-exo font-[300];
+	}
+}
+
+body {
+	/* font-family: Exo, 'Helvetica Neue', Helvetica, sans-serif; */
+	/* background-color: #deefe7; */
+	background-color: #d5e2f2;
+}
+
+/* .test {
+	background-color: red;
+	font-family: 'Exo';
+} */
