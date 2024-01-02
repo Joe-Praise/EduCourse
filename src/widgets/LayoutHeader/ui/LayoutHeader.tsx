@@ -281,7 +281,10 @@ const LayoutHeader: FC = () => {
 									{toggleDropdown && (
 										<ul className='absolute border w-[12rem] -right-4 top-[3.5rem] bg-white rounded-lg'>
 											{dropdown.map((el) => (
-												<li className='px-3 hover:bg-secondary-dark  rounded-md'>
+												<li
+													className='px-3 hover:bg-secondary-dark  rounded-md'
+													key={el.id}
+												>
 													<Link
 														to={el.path}
 														className='block p-2 hover:text-white'
