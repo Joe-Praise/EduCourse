@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import { Outlet } from 'react-router-dom';
 import LayoutHeader from '../../widgets/LayoutHeader/ui/LayoutHeader';
+import LayoutFooter from '../../widgets/LayoutFooter/ui/LayoutFooter';
 
 const Layout: FC = () => {
 	return (
@@ -9,6 +10,9 @@ const Layout: FC = () => {
 			<main>
 				<Outlet />
 			</main>
+			<footer>
+				<LayoutFooter />
+			</footer>
 		</div>
 	);
 };
