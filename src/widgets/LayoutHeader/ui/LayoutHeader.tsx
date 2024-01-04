@@ -194,7 +194,7 @@ const LayoutHeader: FC = () => {
 	};
 
 	return (
-		<header className=' h-[80px] p-2'>
+		<header className=' h-[80px]'>
 			<nav className='w-100 max-w-[95rem] mx-auto h-full bg-white px-4 rounded-lg'>
 				<div className='flex items-center h-full gap-3 relative'>
 					<div className=''>
@@ -279,7 +279,7 @@ const LayoutHeader: FC = () => {
 									</Link>
 
 									{toggleDropdown && (
-										<ul className='absolute border w-[12rem] -right-4 top-[3.5rem] bg-white rounded-lg'>
+										<ul className='absolute z-20 border w-[12rem] -right-4 top-[3.5rem] bg-white rounded-lg'>
 											{dropdown.map((el) => (
 												<li
 													className='px-3 hover:bg-secondary-dark  rounded-md'

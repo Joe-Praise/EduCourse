@@ -8,7 +8,7 @@ interface childrenProp {
 const WhiteBackground: FC<childrenProp> = ({ children, className }) => {
 	return (
 		<section
-			className={`w-100 max-w-[95rem] mx-auto h-full bg-white px-4 rounded-lg ${className}`}
+			className={`w-100 max-w-[95rem] mx-auto h-full bg-white rounded-lg ${className}`}
 		>
 			{children}
 		</section>

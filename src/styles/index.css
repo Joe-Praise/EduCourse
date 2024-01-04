@@ -10,7 +10,7 @@
 		@apply text-[0.9rem] font-exo font-[600] text-secondary-light;
 	}
 	h1 {
-		@apply font-exo font-[600];
+		@apply font-exo font-[600] text-2xl;
 	}
 	h2 {
 		@apply font-exo font-[400];
@@ -20,11 +20,11 @@
 	}
 }
 
-body {
-	/* font-family: Exo, 'Helvetica Neue', Helvetica, sans-serif; */
-	/* background-color: #deefe7; */
-	background-color: #d5e2f2;
-}
+/* body { */
+/* font-family: Exo, 'Helvetica Neue', Helvetica, sans-serif; */
+/* background-color: #deefe7; */
+/* background-color: #d5e2f2; */
+/* } */
 
 /* .test {
 	background-color: red;
