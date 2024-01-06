@@ -1,27 +1,103 @@
 import { FC } from 'react';
 import CourseCard from './CourseCard';
-import LinkBtn from '../LinkBtn';
+import img from '../../assets/image/card3.jpg';
+// import LinkBtn from '../LinkBtn';
+import CardsPlaceholder from './CardsPlaceholder';
 
 const Courses: FC = () => {
+	interface cardProps {
+		img: string;
+		instructor: string;
+		coureTitle: string;
+		createdAt: string;
+		noOfStudents: string;
+		price: string;
+	}
+
+	const courses: cardProps[] = [
+		{
+			img,
+			instructor: 'Joe Praise',
+			coureTitle: 'React and Redux master class',
+			createdAt: '1-01-2024',
+			noOfStudents: '1',
+			price: '45',
+		},
+		{
+			img,
+			instructor: 'Joe Praise',
+			coureTitle: 'React and Redux master class',
+			createdAt: '12-01-2024',
+			noOfStudents: '50',
+			price: '45',
+		},
+		{
+			img,
+			instructor: 'Joe Praise',
+			coureTitle: 'React and Redux master class',
+			createdAt: '12-01-2024',
+			noOfStudents: '50',
+			price: '45',
+		},
+		{
+			img,
+			instructor: 'Joe Praise',
+			coureTitle: 'React and Redux master class',
+			createdAt: '12-01-2024',
+			noOfStudents: '50',
+			price: '45',
+		},
+		{
+			img,
+			instructor: 'Joe Praise',
+			coureTitle: 'React and Redux master class',
+			createdAt: '12-01-2024',
+			noOfStudents: '50',
+			price: '45',
+		},
+		{
+			img,
+			instructor: 'Joe Praise',
+			coureTitle: 'React and Redux master class',
+			createdAt: '12-01-2024',
+			noOfStudents: '50',
+			price: '45',
+		},
+		{
+			img,
+			instructor: 'Joe Praise',
+			coureTitle: 'React and Redux master class',
+			createdAt: '12-01-2024',
+			noOfStudents: '50',
+			price: '45',
+		},
+	];
 	return (
-		<div>
-			<div className='flex justify-between items-center'>
-				<div>
-					<h1>Courses</h1>
-					<p>Explore our Popular Courses</p>
-				</div>
-				<LinkBtn
-					className='block py-1 hover:text-effect-hover hover:border-effect-hover'
-					value='All Courses'
-					path='/Courses'
-				/>
-			</div>
-			<div className='sm:grid grid-cols-3 sm:gap-4 my-3'>
-				<CourseCard />
-				<CourseCard />
-				<CourseCard />
-			</div>
-		</div>
+		<CardsPlaceholder
+			title='Courses'
+			description='Explore our Popular Courses'
+			path='/courses'
+			btnValue='All Courses'
+			className='grid-cols-1 sm:grid-cols-3 sm:gap-4 gap-y-8'
+		>
+			<>
+				{courses.map((el, id) => {
+					if (id <= 5) {
+						return (
+							<CourseCard
+								key={id}
+								img={el.img}
+								instructor={el.instructor}
+								coureTitle={el.coureTitle}
+								createdAt={el.createdAt}
+								noOfStudents={el.noOfStudents}
+								price={el.price}
+							/>
+						);
+					}
+				})}
+			</>
+		</CardsPlaceholder>
 	);
 };
 

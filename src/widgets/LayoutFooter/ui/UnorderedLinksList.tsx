@@ -7,7 +7,10 @@ const LinksList: FC<{ link: linkType[] }> = (props) => {
 		<ul>
 			{props?.link?.map((el) => (
 				<li key={el.id}>
-					<Link to={el.path} className='py-1 block hover:text-secondary-dark'>
+					<Link
+						to={el.path}
+						className='py-1 block hover:text-secondary-dark text-white'
+					>
 						{el.name}
 					</Link>
 				</li>

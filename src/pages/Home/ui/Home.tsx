@@ -4,6 +4,9 @@ import img from '../../../assets/image/brain and ideas.jpg';
 import CentralizedHeaderText from '../../../components/CentralizedHeaderText';
 import { bannerTextType } from '../model/homePageType';
 import Courses from '../../../components/Home/Courses';
+import Articles from '../../../components/Home/Articles';
+import TopCategories from '../../../components/Home/TopCategories';
+import Details from '../../../components/Home/Details';
 
 const bannerTextDetails: bannerTextType[] = [
 	{
@@ -21,8 +24,11 @@ const Home: FC = () => {
 					body={bannerTextDetails[0].body}
 				/>
 			</BigBanner>
-			<div className='w-11/12 sm:w-10/12 lg:w-8/12 mx-auto'>
+			<div className='w-[83%] sm:w-10/12 lg:w-7/12 mx-auto'>
+				<TopCategories />
 				<Courses />
+				<Details />
+				<Articles />
 			</div>
 		</>
 	);

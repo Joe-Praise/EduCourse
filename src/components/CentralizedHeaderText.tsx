@@ -13,7 +13,11 @@ const CentralizedHeaderText: FC<bannerTextType> = ({ title, body }) => {
 					</h1>
 					<p className='text-left text-secondary-dark py-8'>{body}</p>
 
-					<LinkBtn className='' value='Explore Courses' path='/courses' />
+					<LinkBtn
+						className='hover:text-effect-hover hover:border-effect-hover'
+						value='Explore Courses'
+						path='/courses'
+					/>
 				</div>
 			</WhiteBackground>
 		</div>

@@ -17,7 +17,7 @@ const LayoutHeader: FC = () => {
 	const { modal: HamburgerState, handleModal: handleToggleHamburger } =
 		useHandleModal();
 
-	const [user] = useState(true);
+	const [user] = useState(false);
 	const leftLnks: linkType[] = [
 		{
 			id: 1,
