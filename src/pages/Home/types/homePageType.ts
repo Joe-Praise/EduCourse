@@ -12,6 +12,9 @@ export type courseCardType = {
 	createdAt: string;
 	noOfStudents: string;
 	price: string;
+	category: string;
+	// activeLayout is used to witch the layout ou=f the card and is added in the front end
+	activeLayout: string;
 };
 
 export type articleCardType = {

@@ -1,23 +1,31 @@
-import { FC } from 'react';
-import CourseCard from './CourseCard';
-import img from '../../assets/image/card3.jpg';
-// import LinkBtn from '../LinkBtn';
-import CardsPlaceholder from './CardsPlaceholder';
-import { courseCardType } from '../../pages/Home/types/homePageType';
+import { ChangeEvent, FC, useEffect, useState } from 'react';
+import FilterPageHeader from './FilterPageHeader';
+import CourseCard from './Home/CourseCard';
+import img from '../assets/image/card5.jpg';
 
-const Courses: FC = () => {
-	// interface cardProps {
-	// 	img: string;
-	// 	instructor: string;
-	// 	coureTitle: string;
-	// 	createdAt: string;
-	// 	noOfStudents: string;
-	// 	price: string;
-	// 	category: string;
-	// 	activeLayout:string
-	// }
+const FilterPagePlaceholder: FC = () => {
+	const [activeLayout, setActiveLayout] = useState('grid');
 
-	const courses: courseCardType[] = [
+	const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
+		console.log(e.target.value);
+	};
+
+	const handleLayoutChange = (value: string) => {
+		setActiveLayout(value);
+	};
+
+	interface cardProps {
+		img: string;
+		instructor: string;
+		coureTitle: string;
+		createdAt: string;
+		noOfStudents: string;
+		price: string;
+		category: string;
+		activeLayout: string;
+	}
+
+	const courses: cardProps[] = [
 		{
 			img,
 			instructor: 'Joe Praise',
@@ -26,7 +34,7 @@ const Courses: FC = () => {
 			noOfStudents: '1',
 			price: '45',
 			category: 'Programming',
-			activeLayout: 'grid',
+			activeLayout,
 		},
 		{
 			img,
@@ -36,7 +44,7 @@ const Courses: FC = () => {
 			noOfStudents: '50',
 			price: '45',
 			category: 'Programming',
-			activeLayout: 'grid',
+			activeLayout,
 		},
 		{
 			img,
@@ -46,7 +54,7 @@ const Courses: FC = () => {
 			noOfStudents: '50',
 			price: '45',
 			category: 'Programming',
-			activeLayout: 'grid',
+			activeLayout,
 		},
 		{
 			img,
@@ -56,7 +64,7 @@ const Courses: FC = () => {
 			noOfStudents: '50',
 			price: '45',
 			category: 'Programming',
-			activeLayout: 'grid',
+			activeLayout,
 		},
 		{
 			img,
@@ -66,7 +74,7 @@ const Courses: FC = () => {
 			noOfStudents: '50',
 			price: '45',
 			category: 'Programming',
-			activeLayout: 'grid',
+			activeLayout,
 		},
 		{
 			img,
@@ -76,7 +84,7 @@ const Courses: FC = () => {
 			noOfStudents: '50',
 			price: '45',
 			category: 'Programming',
-			activeLayout: 'grid',
+			activeLayout,
 		},
 		{
 			img,
@@ -86,23 +94,31 @@ const Courses: FC = () => {
 			noOfStudents: '50',
 			price: '45',
 			category: 'Programming',
-			activeLayout: 'grid',
+			activeLayout,
 		},
 	];
+
+	useEffect(() => {}, [activeLayout, setActiveLayout]);
 	return (
-		<CardsPlaceholder
-			title='Courses'
-			description='Explore our Popular Courses'
-			path='/courses'
-			btnValue='All Courses'
-			className='grid-cols-1 sm:grid-cols-3 sm:gap-4 gap-y-8'
-		>
-			<>
-				{courses.map((el, id) => {
-					if (id <= 5) {
+		<section className='grid grid-cols-6 gap-3 w-10/12 sm:w-9/12 mx-auto my-6 relative'>
+			<div className='col-start-1 col-span-6 sm:col-span-4 '>
+				<FilterPageHeader
+					title='All Courses'
+					searchFunc={handleSearch}
+					layoutFunc={handleLayoutChange}
+				/>
+
+				<div
+					className={`${
+						activeLayout === 'grid'
+							? 'grid grid-cols-1 sm:grid-cols-2 gap-4'
+							: 'gap-4'
+					} my-2 p-2`}
+				>
+					{courses.map((el, i) => {
 						return (
 							<CourseCard
-								key={id}
+								key={i}
 								img={el.img}
 								instructor={el.instructor}
 								coureTitle={el.coureTitle}
@@ -113,11 +129,14 @@ const Courses: FC = () => {
 								activeLayout={el.activeLayout}
 							/>
 						);
-					}
-				})}
-			</>
-		</CardsPlaceholder>
+					})}
+				</div>
+			</div>
+			<div className='col-span-2 absolute -translate-x-52 sm:static'>
+				span 0
+			</div>
+		</section>
 	);
 };
 
-export default Courses;
+export default FilterPagePlaceholder;

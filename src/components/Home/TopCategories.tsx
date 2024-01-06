@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import CardsPlaceholder from './CardsPlaceholder';
-import { topCategoryCardType } from '../../pages/Home/model/homePageType';
+import { topCategoryCardType } from '../../pages/Home/types/homePageType';
 import TopCategoryCard from './TopCategoryCard';
 
 const TopCategories: FC = () => {

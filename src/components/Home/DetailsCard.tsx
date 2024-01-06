@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import WhiteBackground from '../WhiteBackground';
-import { detailCardType } from '../../pages/Home/model/homePageType';
+import { detailCardType } from '../../pages/Home/types/homePageType';
 
 const DetailsCard: FC<detailCardType> = (props) => {
 	const extension = (role: string, total: string): string => {
@@ -28,7 +28,7 @@ const DetailsCard: FC<detailCardType> = (props) => {
 				<p className='text-3xl text-[#EF6024]'>
 					{extension(props.role, props.total)}
 				</p>
-				<p className='text-sm my-1'>{props.title}</p>
+				<p className='text-sm my-1 font-bold'>{props.title}</p>
 			</div>
 		</WhiteBackground>
 	);

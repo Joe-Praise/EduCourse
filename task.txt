@@ -5,6 +5,8 @@
 [*] develop course section
 [*] develop details card section
 [] develop review section
+[] make filter section hide on mobile device
+
 
 
 

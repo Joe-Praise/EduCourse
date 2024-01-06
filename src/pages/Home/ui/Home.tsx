@@ -2,7 +2,7 @@ import { FC } from 'react';
 import BigBanner from '../../../components/BigBanner';
 import img from '../../../assets/image/brain and ideas.jpg';
 import CentralizedHeaderText from '../../../components/CentralizedHeaderText';
-import { bannerTextType } from '../model/homePageType';
+import { bannerTextType } from '../types/homePageType';
 import Courses from '../../../components/Home/Courses';
 import Articles from '../../../components/Home/Articles';
 import TopCategories from '../../../components/Home/TopCategories';

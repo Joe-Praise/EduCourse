@@ -2,7 +2,7 @@ import { FC } from 'react';
 import WhiteBackground from '../WhiteBackground';
 import { FaRegCalendarAlt } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
-import { articleCardType } from '../../pages/Home/model/homePageType';
+import { articleCardType } from '../../pages/Home/types/homePageType';
 
 const ArticleCard: FC<articleCardType> = (props) => {
 	const summary = (summary: string) => {
