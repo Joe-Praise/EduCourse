@@ -10,7 +10,7 @@
 		@apply text-[0.9rem] font-exo font-[600] text-secondary-light;
 	}
 	h1 {
-		@apply font-exo font-[600];
+		@apply font-exo font-[600]  text-2xl;
 	}
 	h2 {
 		@apply font-exo font-[400];
@@ -20,11 +20,18 @@
 	}
 }
 
-body {
-	/* font-family: Exo, 'Helvetica Neue', Helvetica, sans-serif; */
-	/* background-color: #deefe7; */
-	background-color: #d5e2f2;
+.badge {
+	@apply rounded-full border-none p-2 text-white absolute top-2 left-2 bg-black;
 }
+
+.searchInput {
+	@apply border-t-0 border-r-0 border-l-0 border-2 outline-none px-2 border-black;
+}
+/* body { */
+/* font-family: Exo, 'Helvetica Neue', Helvetica, sans-serif; */
+/* background-color: #deefe7; */
+/* background-color: #d5e2f2; */
+/* } */
 
 /* .test {
 	background-color: red;

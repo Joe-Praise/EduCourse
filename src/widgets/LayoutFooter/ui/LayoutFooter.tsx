@@ -2,14 +2,12 @@ import { FC } from 'react';
 import LinksList from './UnorderedLinksList';
 import { linkType } from '../../LayoutHeader/model/navigationType';
 import Logo from '../../../components/Logo';
-import { contactUs, socialMedia } from '../models/LayoutModels';
-import { Link } from 'react-router-dom';
+import { contactUs, socialMediaLinksIcons } from '../models/LayoutFooterModels';
 import { FaFacebookF, FaYoutube } from 'react-icons/fa';
 import { FaXTwitter } from 'react-icons/fa6';
 import { FaPinterestP } from 'react-icons/fa';
 import { AiFillInstagram } from 'react-icons/ai';
 import SocialMedia from './SocialMedia';
-import WhiteBackground from '../../../components/WhiteBackground';
 
 const link1: linkType[] = [
 	{
@@ -52,7 +50,7 @@ const link2: linkType[] = [
 	},
 ];
 
-const socials: socialMedia[] = [
+const socials: socialMediaLinksIcons[] = [
 	{
 		id: 1,
 		path: '/facebook',
@@ -105,9 +103,9 @@ const contacUsDetails: contactUs[] = [
 
 const LayoutFooter: FC = () => {
 	return (
-		<WhiteBackground className='py-4'>
-			<div className='sm:flex sm:justify-between sm:w-10/12 sm:mx-auto pb-4'>
-				<div className='basis-[30%] mt-3'>
+		<div className='px-3 sm:px-0 py-4 bg-effect-active text-white'>
+			<div className='flex sm:justify-between flex-wrap sm:w-11/12 sm:mx-auto pb-4'>
+				<div className='basis-full sm:basis-[30%] mt-3'>
 					<Logo />
 					<p>
 						Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum
@@ -116,33 +114,31 @@ const LayoutFooter: FC = () => {
 						temporibus ipsam. Non, rerum! Natus!
 					</p>
 				</div>
-				<div className='mt-3'>
+				<div className='mt-3 basis-[20%]'>
 					<LinksList link={link1} />
 				</div>
-				<div className='mt-3'>
+				<div className='mt-3 basis-[20%]'>
 					<LinksList link={link2} />
 				</div>
-				<div className='mt-3'>
+				<div className='mt-3 basis-full sm:basis-[20%]'>
 					<ul>
 						{contacUsDetails?.map((el) => (
 							<li
 								key={el.id}
-								className='text-[0.9rem] font-exo font-[600] text-secondary-light'
+								className='text-[0.9rem] font-exo font-[600] text-secondary-light text-white'
 							>
 								{el.title}: {el.description}
 							</li>
 						))}
 						<li className='flex gap-2 py-1'>
 							{socials?.map((el) => (
-								<Link to={el.path} key={el.id} className='p-1'>
-									<SocialMedia Icon={el.Icon} path={el.path} />
-								</Link>
+								<SocialMedia Icon={el.Icon} path={el.path} key={el.id} />
 							))}
 						</li>
 					</ul>
 				</div>
 			</div>
-		</WhiteBackground>
+		</div>
 	);
 };
 

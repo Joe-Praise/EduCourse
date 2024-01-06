@@ -1,6 +1,13 @@
 [*] get router working
-[] style header for desktop and mobile
-[] style footer for desktop and mobile
-[] develop home page in 2 hours
+[*] style header for desktop and mobile
+[*] style footer for desktop and mobile
+[*] develop article section
+[*] develop course section
+[*] develop details card section
+[] develop review section
+[] make filter section hide on mobile device
+
+
+
 
 

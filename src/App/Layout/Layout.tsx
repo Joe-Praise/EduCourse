@@ -10,7 +10,7 @@ const Layout: FC = () => {
 			<main>
 				<Outlet />
 			</main>
-			<footer>
+			<footer className='mt-[3rem]'>
 				<LayoutFooter />
 			</footer>
 		</div>

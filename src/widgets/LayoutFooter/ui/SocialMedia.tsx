@@ -1,20 +1,14 @@
 import { FC } from 'react';
-import { IconType } from 'react-icons';
-// import { IconType } from 'react-icons';
 import { Link } from 'react-router-dom';
-type props = {
-	path: string;
-	Icon: IconType;
-};
+import { socialMediaProp } from '../models/LayoutFooterModels';
 
-const SocialMedia: FC<props> = ({ path, Icon }) => {
+const SocialMedia: FC<socialMediaProp> = ({ path, Icon }) => {
 	return (
-		<li>
-			<Link to={path}>
-				{/* <img src={el.img} alt='social media img' /> */}
-				<Icon className='djsld' />
+		<>
+			<Link to={path} className='p-1 block'>
+				<Icon className='hover:text-secondary-dark w-4 h-4 text-white' />
 			</Link>
-		</li>
+		</>
 	);
 };
 

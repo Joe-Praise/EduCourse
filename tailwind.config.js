@@ -10,7 +10,11 @@ export default {
 				},
 				'primary-color': '#deefe7',
 				'tertiary-color': '#d5e2f2',
-				// 'tertiary-color2': '#b4bec9',
+				effect: {
+					hover: '#716C69',
+					active: '#45A5CD',
+					focus: '#335664',
+				},
 			},
 		},
 		fontFamily: {
