@@ -132,7 +132,11 @@ const FilterPagePlaceholder: FC = () => {
 					})}
 				</div>
 			</div>
-			<div className='col-span-2 absolute -translate-x-52 sm:static'>
+			<div
+				className='col-span-2 hidden absolute 
+			-translate-x-52 sm:static
+			'
+			>
 				span 0
 			</div>
 		</section>

@@ -15,12 +15,12 @@ const CourseCard: FC<courseCardType> = (props) => {
 			<Link
 				to='/courses/'
 				className={` hover:text-effect-active relative ${
-					props.activeLayout === 'grid' ? 'block' : 'flex'
+					props.activeLayout === 'grid' ? 'block' : 'flex h-[11rem]'
 				}`}
 			>
 				<figure
 					className={` ${
-						props.activeLayout === 'grid' ? 'h-[12rem]' : 'basis-full'
+						props.activeLayout === 'grid' ? 'h-[12rem]' : 'basis-[50%]'
 					}`}
 				>
 					<img

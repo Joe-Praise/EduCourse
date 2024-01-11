@@ -9,7 +9,7 @@ interface headerType {
 
 const FilterPageHeader: FC<headerType> = (props) => {
 	return (
-		<div className='flex justify-between flex-wrap items-end'>
+		<div className='flex justify-between flex-wrap items-end sticky top-0 z-20 bg-white p-3 shadow-lg'>
 			<h1 className='basis-full sm:basis-auto'>{props.title}</h1>
 			<SearchAndLayout
 				handleSearch={props.searchFunc}
