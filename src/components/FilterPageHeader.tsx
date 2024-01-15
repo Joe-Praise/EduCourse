@@ -5,6 +5,7 @@ interface headerType {
 	title: string;
 	searchFunc: (e: ChangeEvent<HTMLInputElement>) => void;
 	layoutFunc: (value: string) => void;
+	activeLayout: string;
 }
 
 const FilterPageHeader: FC<headerType> = (props) => {
@@ -14,6 +15,7 @@ const FilterPageHeader: FC<headerType> = (props) => {
 			<SearchAndLayout
 				handleSearch={props.searchFunc}
 				handleLayout={props.layoutFunc}
+				activeLayout={props.activeLayout}
 			/>
 		</div>
 	);

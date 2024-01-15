@@ -1,7 +1,9 @@
 import { ChangeEvent, FC, useEffect, useState } from 'react';
 import FilterPageHeader from './FilterPageHeader';
-import CourseCard from './Home/CourseCard';
+import CourseCard from './Course/CourseCard';
 import img from '../assets/image/card5.jpg';
+import FilterActionMenu from './FilterActionMenu';
+// import FilterActionBtn from './FilterActionBtn';
 
 const FilterPagePlaceholder: FC = () => {
 	const [activeLayout, setActiveLayout] = useState('grid');
@@ -99,13 +101,17 @@ const FilterPagePlaceholder: FC = () => {
 	];
 
 	useEffect(() => {}, [activeLayout, setActiveLayout]);
+
+	const arr = Array.from(Array(4), () => 0);
+	const arr2 = Array.from(Array(5), () => 0);
 	return (
-		<section className='grid grid-cols-6 gap-3 w-10/12 sm:w-9/12 mx-auto my-6 relative'>
+		<section className='grid grid-cols-6 gap-3 xl:gap-12 w-11/12 sm:w-9/12 md:w-11/12 xl:w-9/12 mx-auto mt-2 relative'>
 			<div className='col-start-1 col-span-6 sm:col-span-4 '>
 				<FilterPageHeader
 					title='All Courses'
 					searchFunc={handleSearch}
 					layoutFunc={handleLayoutChange}
+					activeLayout={activeLayout}
 				/>
 
 				<div
@@ -131,13 +137,31 @@ const FilterPagePlaceholder: FC = () => {
 						);
 					})}
 				</div>
+				<ul className='flex gap-2 justify-center'>
+					{arr.map((_, i) => {
+						return (
+							<li
+								key={i}
+								className='w-9 h-9 border rounded-full flex justify-center items-center cursor-pointer  duration-150 hover:bg-black hover:text-white'
+							>
+								{i + 1}
+							</li>
+						);
+					})}
+				</ul>
 			</div>
 			<div
-				className='col-span-2 hidden absolute 
-			-translate-x-52 sm:static
+				className='col-span-2 absolute 
+			-translate-x-52 sm:translate-x-0 sm:sticky top-0 w-10/12 mx-auto max-h-[85vh] overflow-y-auto
 			'
 			>
-				span 0
+				{arr2.map((_, i) => {
+					return (
+						<FilterActionMenu header={'Courses Category'} key={i}>
+							{/* <FilterActionBtn /> */}
+						</FilterActionMenu>
+					);
+				})}
 			</div>
 		</section>
 	);

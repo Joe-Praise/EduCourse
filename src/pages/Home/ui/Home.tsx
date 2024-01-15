@@ -3,7 +3,7 @@ import BigBanner from '../../../components/BigBanner';
 import img from '../../../assets/image/brain and ideas.jpg';
 import CentralizedHeaderText from '../../../components/CentralizedHeaderText';
 import { bannerTextType } from '../types/homePageType';
-import Courses from '../../../components/Home/Courses';
+import Courses from '../../../components/Course/Courses';
 import Articles from '../../../components/Home/Articles';
 import TopCategories from '../../../components/Home/TopCategories';
 import Details from '../../../components/Home/Details';
