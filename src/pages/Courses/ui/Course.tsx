@@ -1,12 +1,18 @@
 import { ChangeEvent, FC, useEffect, useState } from 'react';
 import img from '../../../assets/image/card5.jpg';
-// import FilterActionMenu from './FilterActionMenu';
-// import FilterPagePlaceholder from '../../../components/FilterPagePlaceholder';
 import FilterStructure from '../../../components/FilterStructure';
 import FilterActionMenu from '../../../components/FilterActionMenu';
 import CourseCard from '../../../components/Course/CourseCard';
+import { FaFilter } from 'react-icons/fa';
+import { useDispatch, useSelector } from 'react-redux';
+import { setFilter } from '../../../store/course/courseSlice';
+import { RootState } from '../../../store/store';
 
 const Course: FC = () => {
+	const dispatch = useDispatch();
+	const displayFilter = useSelector(
+		(state: RootState) => state.course.filterState
+	);
 	const [activeLayout, setActiveLayout] = useState('grid');
 
 	const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
@@ -15,6 +21,10 @@ const Course: FC = () => {
 
 	const handleLayoutChange = (value: string) => {
 		setActiveLayout(value);
+	};
+
+	const handleCloseFilterOnMobile = () => {
+		dispatch(setFilter());
 	};
 
 	interface cardProps {
@@ -129,12 +139,16 @@ const Course: FC = () => {
 			children2={
 				<>
 					{arr2.map((_, i) => {
-						return (
-							<FilterActionMenu header={'Courses Category'} key={i}>
-								{/* <FilterActionBtn /> */}
-							</FilterActionMenu>
-						);
+						return <FilterActionMenu header={'Courses Category'} key={i} />;
 					})}
+
+					<div
+						className='flex absolute top-0 right-0 sm:hidden'
+						onClick={handleCloseFilterOnMobile}
+					>
+						<p className='font-bold'>Filter</p>
+						<FaFilter className={displayFilter ? 'fill-effect-active' : ''} />
+					</div>
 				</>
 			}
 			activeLayout={activeLayout}

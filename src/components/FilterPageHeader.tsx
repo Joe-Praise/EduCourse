@@ -1,5 +1,6 @@
 import { ChangeEvent, FC } from 'react';
 import SearchAndLayout from './SearchAndLayout';
+// import { stateBoolean } from '../pages/Courses/types/courseType';
 
 interface headerType {
 	title: string;

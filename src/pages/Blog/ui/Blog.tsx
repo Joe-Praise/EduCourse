@@ -2,9 +2,18 @@ import { ChangeEvent, FC, useEffect, useState } from 'react';
 import img from '../../../assets/image/card5.jpg';
 import FilterStructure from '../../../components/FilterStructure';
 import FilterActionMenu from '../../../components/FilterActionMenu';
-import CourseCard from '../../../components/Course/CourseCard';
+import BlogCard from '../../../components/Blog/BlogCard';
+import { useDispatch, useSelector } from 'react-redux';
+import { setFilter } from '../../../store/course/courseSlice';
+import { RootState } from '../../../store/store';
+import { FaFilter } from 'react-icons/fa';
 
 const Blog: FC = () => {
+	const dispatch = useDispatch();
+	const displayFilter = useSelector(
+		(state: RootState) => state.course.filterState
+	);
+
 	const [activeLayout, setActiveLayout] = useState('grid');
 
 	const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
@@ -15,109 +24,103 @@ const Blog: FC = () => {
 		setActiveLayout(value);
 	};
 
+	const handleCloseFilterOnMobile = () => {
+		dispatch(setFilter());
+	};
+
 	interface cardProps {
 		img: string;
 		instructor: string;
-		coureTitle: string;
+		articleTitle: string;
 		createdAt: string;
-		noOfStudents: string;
-		price: string;
-		category: string;
+		summary: string;
 		activeLayout: string;
 	}
 
-	const courses: cardProps[] = [
+	const articles: cardProps[] = [
 		{
 			img,
 			instructor: 'Joe Praise',
-			coureTitle: 'React and Redux master class',
+			articleTitle: 'React and Redux master class',
 			createdAt: '1-01-2024',
-			noOfStudents: '1',
-			price: '45',
-			category: 'Programming',
+			summary:
+				'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum, ipsa! Aperiam distinctio sit consectetur dolorem, id odit aspernatur facere architecto delectus, eligendi assumenda nihil non unde. Nobis magni suscipit non eligendi natus ea, accusantium earum, delectus incidunt reiciendis asperiores qui.',
 			activeLayout,
 		},
 		{
 			img,
 			instructor: 'Joe Praise',
-			coureTitle: 'React and Redux master class',
-			createdAt: '12-01-2024',
-			noOfStudents: '50',
-			price: '45',
-			category: 'Programming',
+			articleTitle: 'React and Redux master class',
+			createdAt: '1-01-2024',
+			summary:
+				'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum, ipsa! Aperiam distinctio sit consectetur dolorem, id odit aspernatur facere architecto delectus, eligendi assumenda nihil non unde. Nobis magni suscipit non eligendi natus ea, accusantium earum, delectus incidunt reiciendis asperiores qui.',
 			activeLayout,
 		},
 		{
 			img,
 			instructor: 'Joe Praise',
-			coureTitle: 'React and Redux master class',
-			createdAt: '12-01-2024',
-			noOfStudents: '50',
-			price: '45',
-			category: 'Programming',
+			articleTitle: 'React and Redux master class',
+			createdAt: '1-01-2024',
+			summary:
+				'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum, ipsa! Aperiam distinctio sit consectetur dolorem, id odit aspernatur facere architecto delectus, eligendi assumenda nihil non unde. Nobis magni suscipit non eligendi natus ea, accusantium earum, delectus incidunt reiciendis asperiores qui.',
 			activeLayout,
 		},
 		{
 			img,
 			instructor: 'Joe Praise',
-			coureTitle: 'React and Redux master class',
-			createdAt: '12-01-2024',
-			noOfStudents: '50',
-			price: '45',
-			category: 'Programming',
+			articleTitle: 'React and Redux master class',
+			createdAt: '1-01-2024',
+			summary:
+				'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum, ipsa! Aperiam distinctio sit consectetur dolorem, id odit aspernatur facere architecto delectus, eligendi assumenda nihil non unde. Nobis magni suscipit non eligendi natus ea, accusantium earum, delectus incidunt reiciendis asperiores qui.',
 			activeLayout,
 		},
 		{
 			img,
 			instructor: 'Joe Praise',
-			coureTitle: 'React and Redux master class',
-			createdAt: '12-01-2024',
-			noOfStudents: '50',
-			price: '45',
-			category: 'Programming',
+			articleTitle: 'React and Redux master class',
+			createdAt: '1-01-2024',
+			summary:
+				'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum, ipsa! Aperiam distinctio sit consectetur dolorem, id odit aspernatur facere architecto delectus, eligendi assumenda nihil non unde. Nobis magni suscipit non eligendi natus ea, accusantium earum, delectus incidunt reiciendis asperiores qui.',
 			activeLayout,
 		},
 		{
 			img,
 			instructor: 'Joe Praise',
-			coureTitle: 'React and Redux master class',
-			createdAt: '12-01-2024',
-			noOfStudents: '50',
-			price: '45',
-			category: 'Programming',
+			articleTitle: 'React and Redux master class',
+			createdAt: '1-01-2024',
+			summary:
+				'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum, ipsa! Aperiam distinctio sit consectetur dolorem, id odit aspernatur facere architecto delectus, eligendi assumenda nihil non unde. Nobis magni suscipit non eligendi natus ea, accusantium earum, delectus incidunt reiciendis asperiores qui.',
 			activeLayout,
 		},
 		{
 			img,
 			instructor: 'Joe Praise',
-			coureTitle: 'React and Redux master class',
-			createdAt: '12-01-2024',
-			noOfStudents: '50',
-			price: '45',
-			category: 'Programming',
+			articleTitle: 'React and Redux master class',
+			createdAt: '1-01-2024',
+			summary:
+				'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum, ipsa! Aperiam distinctio sit consectetur dolorem, id odit aspernatur facere architecto delectus, eligendi assumenda nihil non unde. Nobis magni suscipit non eligendi natus ea, accusantium earum, delectus incidunt reiciendis asperiores qui.',
 			activeLayout,
 		},
 	];
+
 	const arr2 = Array.from(Array(5), () => 0);
 	useEffect(() => {}, [activeLayout, setActiveLayout]);
 	return (
 		<FilterStructure
-			title={'All Courses'}
+			title={'All Blogs'}
 			searchFunc={handleSearch}
 			layoutFunc={handleLayoutChange}
 			children1={
 				<>
-					{courses.map((el, i) => {
+					{articles.map((el, i) => {
 						return (
-							<CourseCard
+							<BlogCard
 								key={i}
 								img={el.img}
-								instructor={el.instructor}
-								coureTitle={el.coureTitle}
+								articleTitle={el.articleTitle}
 								createdAt={el.createdAt}
-								noOfStudents={el.noOfStudents}
-								price={el.price}
-								category={el.category}
+								summary={el.summary}
+								instructor={el.instructor}
 								activeLayout={el.activeLayout}
 							/>
 						);
@@ -127,12 +130,16 @@ const Blog: FC = () => {
 			children2={
 				<>
 					{arr2.map((_, i) => {
-						return (
-							<FilterActionMenu header={'Courses Category'} key={i}>
-								{/* <FilterActionBtn /> */}
-							</FilterActionMenu>
-						);
+						return <FilterActionMenu header={'Courses Category'} key={i} />;
 					})}
+
+					<div
+						className='flex absolute top-0 right-0 sm:hidden'
+						onClick={handleCloseFilterOnMobile}
+					>
+						<p className='font-bold'>Filter</p>
+						<FaFilter className={displayFilter ? 'fill-effect-active' : ''} />
+					</div>
 				</>
 			}
 			activeLayout={activeLayout}

@@ -28,4 +28,3 @@ const FilterActionBtn: FC = () => {
 };
 
 export default FilterActionBtn;
-// fill-white bg-white border-2 border-secondary-light

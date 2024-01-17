@@ -1,9 +1,8 @@
 import { ChangeEvent, FC } from 'react';
 import FilterPageHeader from './FilterPageHeader';
-// import CourseCard from './Course/CourseCard';
-// import img from '../assets/image/card5.jpg';
-// import FilterActionMenu from './FilterActionMenu';
-// import FilterActionBtn from './FilterActionBtn';
+import { useSelector } from 'react-redux';
+import { RootState } from '../store/store';
+
 type event = ChangeEvent<HTMLInputElement>;
 
 const FilterStructure: FC<{
@@ -21,6 +20,9 @@ const FilterStructure: FC<{
 	children2,
 	activeLayout,
 }) => {
+	const displayFilter = useSelector(
+		(state: RootState) => state.course.filterState
+	);
 	const arr = Array.from(Array(4), () => 0);
 
 	return (
@@ -31,6 +33,7 @@ const FilterStructure: FC<{
 					searchFunc={searchFunc}
 					layoutFunc={layoutFunc}
 					activeLayout={activeLayout}
+					// setDisplayFilter={setDisplayFilter}
 				/>
 
 				<div
@@ -42,12 +45,12 @@ const FilterStructure: FC<{
 				>
 					{children1}
 				</div>
-				<ul className='flex gap-2 justify-center'>
+				<ul className='flex gap-2 justify-center mt-5'>
 					{arr.map((_, i) => {
 						return (
 							<li
 								key={i}
-								className='w-9 h-9 border rounded-full flex justify-center items-center cursor-pointer  duration-150 hover:bg-black hover:text-white'
+								className='w-9 h-9 border rounded-full flex justify-center items-center cursor-pointer duration-150 hover:bg-black hover:text-white'
 							>
 								{i + 1}
 							</li>
@@ -56,9 +59,13 @@ const FilterStructure: FC<{
 				</ul>
 			</div>
 			<div
-				className='col-span-2 absolute 
-			-translate-x-52 sm:translate-x-0 sm:sticky top-0 w-10/12 mx-auto max-h-[85vh] overflow-y-auto
-			'
+				className={`col-span-2 
+			 sm:translate-x-0 sm:sticky w-10/12 mx-auto max-h-[85vh] duration-150 overflow-y-auto ${
+					displayFilter
+						? 'translate-x-[0] fixed z-30 top-0 left-0 max-h-screen bg-white w-full my-2'
+						: '-translate-x-[150%]'
+				}
+			`}
 			>
 				{children2}
 			</div>

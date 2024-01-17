@@ -14,6 +14,8 @@ const LayoutHeader: FC = () => {
 		// closeModal: closeDropdown,
 	} = useHandleModal();
 
+	// TODO: check URL, if chnaged. r=trigger handleToggleHamburger
+
 	const { modal: HamburgerState, handleModal: handleToggleHamburger } =
 		useHandleModal();
 
@@ -118,7 +120,7 @@ const LayoutHeader: FC = () => {
 	const MobileNav: FC = () => {
 		return (
 			<div
-				className={`absolute z-20 w-[250px] h-[88%] rounded-md p-3 top-[80px] sm:hidden bg-white block ${
+				className={`absolute z-40 w-[250px] h-[88%] rounded-md p-3 top-[80px] sm:hidden bg-white block ${
 					HamburgerState ? '-translate-x-[1rem]' : '-translate-x-[20rem]'
 				} `}
 			>
