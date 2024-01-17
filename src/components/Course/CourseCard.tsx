@@ -4,23 +4,24 @@ import { IoMdTime } from 'react-icons/io';
 import { FaGraduationCap } from 'react-icons/fa6';
 import { Link } from 'react-router-dom';
 import { courseCardType } from '../../pages/Home/types/homePageType';
+import { handleDateFormat } from '../../util/helperFunctions/dateFormatter';
 
 const CourseCard: FC<courseCardType> = (props) => {
 	return (
 		<WhiteBackground
-			className={`rounded-b-none my-0 w-full px-0 shadow-md hover:scale-105 duration-150 ${
+			className={`rounded-b-none my-0 w-full px-0 shadow-md hover:scale-105 duration-150  ${
 				props.activeLayout === 'grid' ? 'sm:my-0' : 'my-5'
 			}`}
 		>
 			<Link
 				to='/courses/'
 				className={` hover:text-effect-active relative ${
-					props.activeLayout === 'grid' ? 'block' : 'flex'
+					props.activeLayout === 'grid' ? 'block' : 'flex h-[11rem]'
 				}`}
 			>
 				<figure
 					className={` ${
-						props.activeLayout === 'grid' ? 'h-[12rem]' : 'basis-full'
+						props.activeLayout === 'grid' ? 'h-[11rem]' : 'basis-[50%]'
 					}`}
 				>
 					<img
@@ -28,7 +29,7 @@ const CourseCard: FC<courseCardType> = (props) => {
 						alt=''
 						className={`${
 							props.activeLayout === 'grid' ? 'rounded-t-lg' : 'rounded-l-lg'
-						} h-full w-full`}
+						} h-full w-full object-cover`}
 					/>
 				</figure>
 				<div
@@ -46,12 +47,12 @@ const CourseCard: FC<courseCardType> = (props) => {
 							props.activeLayout === 'grid' ? 'flex' : 'block'
 						}`}
 					>
-						<div className='flex items-center'>
+						<div className='flex items-center gap-1'>
 							<IoMdTime className='fill-[#45A5CD]' />
-							<span>{new Date(props.createdAt).toISOString()}</span>
+							<span>{handleDateFormat(props.createdAt)}</span>
 						</div>
 
-						<div className='flex items-center'>
+						<div className='flex items-center gap-1'>
 							<FaGraduationCap className='fill-[#45A5CD]' />
 							<span>
 								{props.noOfStudents}{' '}

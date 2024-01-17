@@ -1,18 +1,19 @@
 import { FC } from 'react';
-import CardsPlaceholder from './CardsPlaceholder';
-import ArticleCard from './ArticleCard';
+import CardsPlaceholder from '../Home/CardsPlaceholder';
+import BlogCard from './BlogCard';
 import img from '../../assets/image/card2.jpg';
+import { blogCardType } from '../../pages/Home/types/homePageType';
 
-const Articles: FC = () => {
-	interface cardProps {
-		img: string;
-		instructor: string;
-		articleTitle: string;
-		createdAt: string;
-		summary: string;
-	}
+const Blogs: FC = () => {
+	// interface cardProps {
+	// 	img: string;
+	// 	instructor: string;
+	// 	articleTitle: string;
+	// 	createdAt: string;
+	// 	summary: string;
+	// }
 
-	const articles: cardProps[] = [
+	const articles: blogCardType[] = [
 		{
 			img,
 			instructor: 'Joe Praise',
@@ -20,6 +21,7 @@ const Articles: FC = () => {
 			createdAt: '1-01-2024',
 			summary:
 				'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum, ipsa! Aperiam distinctio sit consectetur dolorem, id odit aspernatur facere architecto delectus, eligendi assumenda nihil non unde. Nobis magni suscipit non eligendi natus ea, accusantium earum, delectus incidunt reiciendis asperiores qui.',
+			activeLayout: 'grid',
 		},
 		{
 			img,
@@ -28,6 +30,7 @@ const Articles: FC = () => {
 			createdAt: '1-01-2024',
 			summary:
 				'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum, ipsa! Aperiam distinctio sit consectetur dolorem, id odit aspernatur facere architecto delectus, eligendi assumenda nihil non unde. Nobis magni suscipit non eligendi natus ea, accusantium earum, delectus incidunt reiciendis asperiores qui.',
+			activeLayout: 'grid',
 		},
 		{
 			img,
@@ -36,6 +39,7 @@ const Articles: FC = () => {
 			createdAt: '1-01-2024',
 			summary:
 				'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum, ipsa! Aperiam distinctio sit consectetur dolorem, id odit aspernatur facere architecto delectus, eligendi assumenda nihil non unde. Nobis magni suscipit non eligendi natus ea, accusantium earum, delectus incidunt reiciendis asperiores qui.',
+			activeLayout: 'grid',
 		},
 		{
 			img,
@@ -44,6 +48,7 @@ const Articles: FC = () => {
 			createdAt: '1-01-2024',
 			summary:
 				'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum, ipsa! Aperiam distinctio sit consectetur dolorem, id odit aspernatur facere architecto delectus, eligendi assumenda nihil non unde. Nobis magni suscipit non eligendi natus ea, accusantium earum, delectus incidunt reiciendis asperiores qui.',
+			activeLayout: 'grid',
 		},
 		{
 			img,
@@ -52,6 +57,7 @@ const Articles: FC = () => {
 			createdAt: '1-01-2024',
 			summary:
 				'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum, ipsa! Aperiam distinctio sit consectetur dolorem, id odit aspernatur facere architecto delectus, eligendi assumenda nihil non unde. Nobis magni suscipit non eligendi natus ea, accusantium earum, delectus incidunt reiciendis asperiores qui.',
+			activeLayout: 'grid',
 		},
 		{
 			img,
@@ -60,6 +66,7 @@ const Articles: FC = () => {
 			createdAt: '1-01-2024',
 			summary:
 				'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum, ipsa! Aperiam distinctio sit consectetur dolorem, id odit aspernatur facere architecto delectus, eligendi assumenda nihil non unde. Nobis magni suscipit non eligendi natus ea, accusantium earum, delectus incidunt reiciendis asperiores qui.',
+			activeLayout: 'grid',
 		},
 		{
 			img,
@@ -68,8 +75,10 @@ const Articles: FC = () => {
 			createdAt: '1-01-2024',
 			summary:
 				'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum, ipsa! Aperiam distinctio sit consectetur dolorem, id odit aspernatur facere architecto delectus, eligendi assumenda nihil non unde. Nobis magni suscipit non eligendi natus ea, accusantium earum, delectus incidunt reiciendis asperiores qui.',
+			activeLayout: 'grid',
 		},
 	];
+
 	return (
 		<CardsPlaceholder
 			title={'Articles'}
@@ -82,12 +91,14 @@ const Articles: FC = () => {
 				{articles.map((el, id) => {
 					if (id <= 5) {
 						return (
-							<ArticleCard
+							<BlogCard
 								key={id}
 								img={el.img}
+								instructor={el.instructor}
 								articleTitle={el.articleTitle}
 								createdAt={el.createdAt}
 								summary={el.summary}
+								activeLayout={''}
 							/>
 						);
 					}
@@ -97,4 +108,4 @@ const Articles: FC = () => {
 	);
 };
 
-export default Articles;
+export default Blogs;

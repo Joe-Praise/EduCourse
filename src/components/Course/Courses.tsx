@@ -1,8 +1,7 @@
 import { FC } from 'react';
 import CourseCard from './CourseCard';
 import img from '../../assets/image/card3.jpg';
-// import LinkBtn from '../LinkBtn';
-import CardsPlaceholder from './CardsPlaceholder';
+import CardsPlaceholder from '../Home/CardsPlaceholder';
 import { courseCardType } from '../../pages/Home/types/homePageType';
 
 const Courses: FC = () => {

@@ -13,15 +13,17 @@ export type courseCardType = {
 	noOfStudents: string;
 	price: string;
 	category: string;
-	// activeLayout is used to witch the layout ou=f the card and is added in the front end
+	// activeLayout is used to switch the layout ou=f the card and is added in the front end
 	activeLayout: string;
 };
 
-export type articleCardType = {
+export type blogCardType = {
 	img: string;
+	instructor: string;
 	articleTitle: string;
 	createdAt: string;
 	summary: string;
+	activeLayout: string;
 };
 
 export type topCategoryCardType = {

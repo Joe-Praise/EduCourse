@@ -14,10 +14,12 @@ const LayoutHeader: FC = () => {
 		// closeModal: closeDropdown,
 	} = useHandleModal();
 
+	// TODO: check URL, if chnaged. r=trigger handleToggleHamburger
+
 	const { modal: HamburgerState, handleModal: handleToggleHamburger } =
 		useHandleModal();
 
-	const [user] = useState(false);
+	const [user] = useState(true);
 	const leftLnks: linkType[] = [
 		{
 			id: 1,
@@ -118,7 +120,7 @@ const LayoutHeader: FC = () => {
 	const MobileNav: FC = () => {
 		return (
 			<div
-				className={`absolute z-20 w-[250px] h-[88%] rounded-md p-3 top-[80px] sm:hidden bg-white block  ${
+				className={`absolute z-40 w-[250px] h-[88%] rounded-md p-3 top-[80px] sm:hidden bg-white block ${
 					HamburgerState ? '-translate-x-[1rem]' : '-translate-x-[20rem]'
 				} `}
 			>
@@ -195,7 +197,7 @@ const LayoutHeader: FC = () => {
 
 	return (
 		<header className=' h-[80px]'>
-			<nav className='w-100 max-w-[95rem] mx-auto h-full bg-white px-4 rounded-lg'>
+			<nav className='w-100 max-w-[95rem] mx-auto h-full bg-white px-4 rounded-lg shadow-md'>
 				<div className='flex items-center h-full gap-3 relative'>
 					<div className=''>
 						<Logo />
