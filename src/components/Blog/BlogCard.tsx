@@ -19,7 +19,7 @@ const BlogCard: FC<blogCardType> = (props) => {
 			}`}
 		>
 			<Link
-				to='/articles/'
+				to='/blogs'
 				className={`block hover:text-effect-active ${
 					props.activeLayout === 'grid' ? 'block' : 'flex h-[11rem]'
 				}`}

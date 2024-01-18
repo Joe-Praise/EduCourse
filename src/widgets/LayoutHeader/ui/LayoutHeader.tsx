@@ -34,7 +34,7 @@ const LayoutHeader: FC = () => {
 		{
 			id: 3,
 			name: 'Blog',
-			path: '/blog',
+			path: '/blogs',
 		},
 		{
 			id: 4,
@@ -93,7 +93,7 @@ const LayoutHeader: FC = () => {
 		{
 			id: 3,
 			name: 'Blog',
-			path: '/blog',
+			path: '/blogs',
 		},
 		{
 			id: 4,

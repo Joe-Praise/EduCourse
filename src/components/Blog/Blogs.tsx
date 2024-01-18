@@ -98,7 +98,7 @@ const Blogs: FC = () => {
 								articleTitle={el.articleTitle}
 								createdAt={el.createdAt}
 								summary={el.summary}
-								activeLayout={''}
+								activeLayout={el.activeLayout}
 							/>
 						);
 					}

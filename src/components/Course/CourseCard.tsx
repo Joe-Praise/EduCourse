@@ -14,7 +14,7 @@ const CourseCard: FC<courseCardType> = (props) => {
 			}`}
 		>
 			<Link
-				to='/courses/'
+				to='/courses/testing'
 				className={` hover:text-effect-active relative ${
 					props.activeLayout === 'grid' ? 'block' : 'flex h-[11rem]'
 				}`}
