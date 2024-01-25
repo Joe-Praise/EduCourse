@@ -17,6 +17,7 @@ const TabContainer: FC<{
 }> = (props) => {
 	const [activeView, setActiveView] = useState<string>('Overview');
 
+	// setting the expected headers for the tabs
 	const tabHeader: tabheaderType = {
 		Overview: 'Overview',
 		Curriculum: 'Curriculum',
@@ -52,8 +53,8 @@ const TabContainer: FC<{
 						key={i}
 						className={`p-2 basis-1/4 border cursor-pointer flex justify-center items-center ${
 							activeView === key ? 'bg-effect-active text-white' : ''
-						} ${i === 0 ? 'rounded-l-md' : ''} ${
-							i === arr.length - 1 ? 'rounded-r-md' : ''
+						} ${i === 0 ? 'rounded-tl-md' : ''} ${
+							i === arr.length - 1 ? 'rounded-tr-md' : ''
 						}`}
 						onClick={() => setActiveView(value)}
 					>
@@ -61,7 +62,9 @@ const TabContainer: FC<{
 					</li>
 				))}
 			</ul>
-			<div className='p-2'>{display}</div>
+			<div className='p-2 bg-effect-active text-white md:max-h-[50vh] overflow-auto rounded-b-md'>
+				{display}
+			</div>
 		</div>
 	);
 };

@@ -5,8 +5,8 @@ import FilterActionMenu from '../../../components/FilterActionMenu';
 import CourseCard from '../../../components/Course/CourseCard';
 import { FaFilter } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
-import { setFilter } from '../../../store/course/courseSlice';
-import { RootState } from '../../../store/store';
+import { setFilter } from '../../../redux/actions/courseAction';
+import { RootState } from '../../../redux/store';
 
 const Course: FC = () => {
 	const dispatch = useDispatch();

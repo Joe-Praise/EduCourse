@@ -3,7 +3,8 @@ import { IoGridSharp } from 'react-icons/io5';
 import { FaList } from 'react-icons/fa';
 import { FaFilter } from 'react-icons/fa';
 import { useDispatch } from 'react-redux';
-import { setFilter } from '../store/course/courseSlice';
+// import { setFilter } from '../redux/reducers/courseSlice';
+import { setFilter } from '../redux/actions/courseAction';
 
 // import { stateBoolean } from '../pages/Courses/types/courseType';
 
@@ -13,9 +14,11 @@ const SearchAndLayout: FC<{
 	activeLayout: string;
 }> = (props) => {
 	const dispatch = useDispatch();
-	const handleDisplayFilterMenu = () => {
+
+	const handleDisplayFilterMenu = async () => {
 		dispatch(setFilter());
 	};
+
 	return (
 		<div className='flex gap-3 mt-2 items-center'>
 			<form>

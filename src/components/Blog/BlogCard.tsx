@@ -10,8 +10,6 @@ const BlogCard: FC<blogCardType> = (props) => {
 		return summary.length > 30 ? summary.slice(0, 80) + '...' : summary;
 	};
 
-	console.log(props.activeLayout);
-
 	return (
 		<WhiteBackground
 			className={`rounded-b-none my-0 sm:my-3 w-full px-0 shadow-md hover:scale-105 duration-150 ${

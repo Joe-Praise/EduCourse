@@ -11,8 +11,8 @@ const Breadcrumbs: FC = () => {
 		.map((crumb, i, arr) => {
 			currentLink.push(`/${crumb}`);
 			return (
-				<div className='border-red-600' key={crumb}>
-					<Link to={currentLink.join('')}>
+				<div key={crumb}>
+					<Link to={currentLink.join('')} className=' text-white'>
 						{crumb} {i === arr.length - 1 ? '' : '>'}
 					</Link>
 				</div>

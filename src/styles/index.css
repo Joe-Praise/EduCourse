@@ -38,9 +38,15 @@
 .badge {
 	@apply rounded-full border-none p-2 text-white absolute top-2 left-2 bg-black;
 }
-
+.layoutWidth {
+	@apply w-11/12 sm:w-9/12 md:w-11/12 xl:w-9/12 mx-auto;
+}
 .searchInput {
 	@apply border-t-0 border-r-0 border-l-0 border-2 outline-none px-2 border-black;
+}
+
+.btnStyle {
+	@apply border text-black p-2 rounded-full hover:text-effect-hover hover:border-effect-hover active:bg-effect-active active:text-white;
 }
 /* body { */
 /* font-family: Exo, 'Helvetica Neue', Helvetica, sans-serif; */

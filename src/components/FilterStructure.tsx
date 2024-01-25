@@ -1,7 +1,7 @@
 import { ChangeEvent, FC } from 'react';
 import FilterPageHeader from './FilterPageHeader';
 import { useSelector } from 'react-redux';
-import { RootState } from '../store/store';
+import { RootState } from '../redux/store';
 
 type event = ChangeEvent<HTMLInputElement>;
 
@@ -26,8 +26,8 @@ const FilterStructure: FC<{
 	const arr = Array.from(Array(4), () => 0);
 
 	return (
-		<section className='grid grid-cols-6 gap-3 xl:gap-12 w-11/12 sm:w-9/12 md:w-11/12 xl:w-9/12 mx-auto mt-2 relative'>
-			<div className='col-start-1 col-span-6 sm:col-span-4 '>
+		<section className='grid grid-cols-6 gap-3 xl:gap-12 mt-2 relative layoutWidth'>
+			<div className='col-start-1 col-span-6 sm:col-span-4'>
 				<FilterPageHeader
 					title={title}
 					searchFunc={searchFunc}
@@ -60,7 +60,7 @@ const FilterStructure: FC<{
 			</div>
 			<div
 				className={`col-span-2 
-			 sm:translate-x-0 sm:sticky w-10/12 mx-auto max-h-[85vh] duration-150 overflow-y-auto ${
+			 sm:translate-x-0 sm:sticky sm:top-4 w-10/12 mx-auto max-h-[85vh] duration-150 overflow-y-auto ${
 					displayFilter
 						? 'translate-x-[0] fixed z-30 top-0 left-0 max-h-screen bg-white w-full my-2'
 						: '-translate-x-[150%]'

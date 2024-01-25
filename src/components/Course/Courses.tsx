@@ -3,6 +3,7 @@ import CourseCard from './CourseCard';
 import img from '../../assets/image/card3.jpg';
 import CardsPlaceholder from '../Home/CardsPlaceholder';
 import { courseCardType } from '../../pages/Home/types/homePageType';
+// import { getLocalStorage } from '../../util/helperFunctions/helper';
 
 const Courses: FC = () => {
 	// interface cardProps {
@@ -15,6 +16,29 @@ const Courses: FC = () => {
 	// 	category: string;
 	// 	activeLayout:string
 	// }
+
+	type User = {
+		name: string;
+		age: number;
+	};
+
+	// type LocalStorageData = {
+	// 	name: string;
+	// 	age: number;
+	// };
+
+	const storeUser = (user: User) => {
+		localStorage.setItem('user', JSON.stringify(user));
+	};
+
+	storeUser({
+		name: 'Joe',
+		age: 15,
+	});
+
+	// const storedData: LocalStorageData = getLocalStorage('user');
+
+	// console.log(storedData, 'data');
 
 	const courses: courseCardType[] = [
 		{

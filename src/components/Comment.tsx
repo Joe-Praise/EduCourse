@@ -29,10 +29,9 @@ const Comment: FC<func> = ({ onCommentvalue }) => {
 					ref={commentRef}
 				></textarea>
 				<Button
-					className={
-						'border p-2 rounded-full hover:text-effect-hover hover:border-effect-hover active:bg-effect-active active:text-white'
-					}
+					className={'btnStyle'}
 					value={'Post Comment'}
+					onClick={function (): void {}}
 				/>
 			</form>
 		</div>
