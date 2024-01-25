@@ -1,11 +1,12 @@
 import { ChangeEvent, FC, useEffect, useState } from 'react';
-import img from '../../../assets/image/card5.jpg';
+import img from '../../../assets/image/card4.jpg';
 import FilterStructure from '../../../components/FilterStructure';
 import FilterActionMenu from '../../../components/FilterActionMenu';
 import BlogCard from '../../../components/Blog/BlogCard';
 import { useDispatch, useSelector } from 'react-redux';
-import { setFilter } from '../../../store/course/courseSlice';
-import { RootState } from '../../../store/store';
+// import { setFilter } from '../../../redux/reducers/courseSlice';
+import { setFilter } from '../../../redux/actions/courseAction';
+import { RootState } from '../../../redux/store';
 import { FaFilter } from 'react-icons/fa';
 
 const Blog: FC = () => {

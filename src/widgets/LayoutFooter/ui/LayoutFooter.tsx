@@ -23,7 +23,7 @@ const link1: linkType[] = [
 	{
 		id: 3,
 		name: 'Blog',
-		path: '/blog',
+		path: '/blogs',
 	},
 	{
 		id: 4,

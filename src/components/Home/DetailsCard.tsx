@@ -5,7 +5,6 @@ import { detailCardType } from '../../pages/Home/types/homePageType';
 const DetailsCard: FC<detailCardType> = (props) => {
 	const extension = (role: string, total: string): string => {
 		let digit = '';
-		console.log(role, total);
 		switch (role) {
 			case 'students':
 			case 'courses':

@@ -7,6 +7,21 @@ import { courseCardType } from '../../pages/Home/types/homePageType';
 import { handleDateFormat } from '../../util/helperFunctions/dateFormatter';
 
 const CourseCard: FC<courseCardType> = (props) => {
+	// type test = {
+	// 	name: string;
+	// 	age: number;
+	// };
+
+	// type Nested = test & {
+	// 	isDeveloper: boolean;
+	// };
+
+	// type Prettify<T> = {
+	// 	[K in keyof T]: T[K];
+	// };
+
+	// type idk = Prettify<Nested>;
+
 	return (
 		<WhiteBackground
 			className={`rounded-b-none my-0 w-full px-0 shadow-md hover:scale-105 duration-150  ${
@@ -14,7 +29,7 @@ const CourseCard: FC<courseCardType> = (props) => {
 			}`}
 		>
 			<Link
-				to='/courses/'
+				to='/courses/testing'
 				className={` hover:text-effect-active relative ${
 					props.activeLayout === 'grid' ? 'block' : 'flex h-[11rem]'
 				}`}
@@ -48,12 +63,12 @@ const CourseCard: FC<courseCardType> = (props) => {
 						}`}
 					>
 						<div className='flex items-center gap-1'>
-							<IoMdTime className='fill-[#45A5CD]' />
+							<IoMdTime className='fill-effect-active' />
 							<span>{handleDateFormat(props.createdAt)}</span>
 						</div>
 
 						<div className='flex items-center gap-1'>
-							<FaGraduationCap className='fill-[#45A5CD]' />
+							<FaGraduationCap className='fill-effect-active' />
 							<span>
 								{props.noOfStudents}{' '}
 								{+props.noOfStudents > 1 ? 'students' : 'student'}
