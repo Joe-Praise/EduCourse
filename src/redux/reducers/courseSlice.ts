@@ -8,7 +8,7 @@ import * as types from '../constants/courseConstants';
 // 	createdAt: string;
 // };
 
-type courseState = {
+export type courseState = {
 	filterState: boolean;
 };
 

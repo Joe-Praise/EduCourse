@@ -6,26 +6,10 @@ import { courseCardType } from '../../pages/Home/types/homePageType';
 // import { getLocalStorage } from '../../util/helperFunctions/helper';
 
 const Courses: FC = () => {
-	// interface cardProps {
-	// 	img: string;
-	// 	instructor: string;
-	// 	coureTitle: string;
-	// 	createdAt: string;
-	// 	noOfStudents: string;
-	// 	price: string;
-	// 	category: string;
-	// 	activeLayout:string
-	// }
-
 	type User = {
 		name: string;
 		age: number;
 	};
-
-	// type LocalStorageData = {
-	// 	name: string;
-	// 	age: number;
-	// };
 
 	const storeUser = (user: User) => {
 		localStorage.setItem('user', JSON.stringify(user));

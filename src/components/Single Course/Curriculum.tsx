@@ -1,4 +1,4 @@
-import Accordion from '../Accordion';
+import Accordion from '../shared/Accordion';
 interface dropDown {
 	title: string;
 	duration: string;

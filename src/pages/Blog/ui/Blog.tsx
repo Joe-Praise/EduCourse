@@ -1,7 +1,7 @@
 import { ChangeEvent, FC, useEffect, useState } from 'react';
 import img from '../../../assets/image/card4.jpg';
-import FilterStructure from '../../../components/FilterStructure';
-import FilterActionMenu from '../../../components/FilterActionMenu';
+import FilterStructure from '../../../components/shared/FilterStructure';
+import FilterActionMenu from '../../../components/shared/FilterActionMenu';
 import BlogCard from '../../../components/Blog/BlogCard';
 import { useDispatch, useSelector } from 'react-redux';
 // import { setFilter } from '../../../redux/reducers/courseSlice';

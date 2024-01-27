@@ -4,7 +4,7 @@ import { FaList } from 'react-icons/fa';
 import { FaFilter } from 'react-icons/fa';
 import { useDispatch } from 'react-redux';
 // import { setFilter } from '../redux/reducers/courseSlice';
-import { setFilter } from '../redux/actions/courseAction';
+import { setFilter } from '../../redux/actions/courseAction';
 
 // import { stateBoolean } from '../pages/Courses/types/courseType';
 

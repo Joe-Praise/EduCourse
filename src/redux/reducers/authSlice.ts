@@ -4,7 +4,7 @@ import { user } from './userSlice';
 type authState = {
 	userData: user;
 	refreshToken: string;
-	accessToken: string;
+	token: string;
 	signInError: string;
 	signUpError: string[];
 	successMessage: string;
@@ -19,7 +19,7 @@ const initialState: authState = {
 		role: '',
 	},
 	refreshToken: '',
-	accessToken: '',
+	token: '',
 	signInError: '',
 	successMessage: '',
 	signUpError: [],
@@ -32,7 +32,7 @@ const authReducer = (state = initialState, action: any) => {
 		case types.SET_ACCESS_TOKEN:
 			return {
 				...state,
-				accessToken: payload ? payload : null,
+				token: payload ? payload : null,
 			};
 		case types.SET_REFRESH_TOKEN:
 			return {
@@ -49,7 +49,7 @@ const authReducer = (state = initialState, action: any) => {
 				...state,
 				signInError: null,
 				signUpError: [],
-				successMessage: payload ? payload : null,
+				successMessage: payload ? payload?.status : null,
 			};
 
 		case types.SIGNUP_FAIL:
@@ -64,10 +64,10 @@ const authReducer = (state = initialState, action: any) => {
 			return {
 				...state,
 				userData: payload ? payload.user : null,
-				accessToken: payload ? payload.accessToken : null,
+				token: payload ? payload.token : null,
 				refreshToken: payload ? payload.refreshToken : null,
 				signInError: null,
-				successMessage: payload ? payload : null,
+				successMessage: payload ? payload?.status : null,
 			};
 
 		case types.SIGNIN_FAIL:
@@ -82,7 +82,7 @@ const authReducer = (state = initialState, action: any) => {
 				...state,
 				userData: null,
 				refreshToken: null,
-				accessToken: null,
+				token: null,
 				signInError: null,
 				signUpError: [],
 				successMessage: null,
@@ -91,7 +91,7 @@ const authReducer = (state = initialState, action: any) => {
 		case types.REFRESH_TOKEN_SUCCESS:
 			return {
 				...state,
-				accessToken: payload ? payload.accessToken : null,
+				token: payload ? payload.token : null,
 				refreshToken: payload ? payload.refreshToken : null,
 			};
 
@@ -100,7 +100,7 @@ const authReducer = (state = initialState, action: any) => {
 				...state,
 				userData: null,
 				refreshToken: null,
-				accessToken: null,
+				token: null,
 				signUpError: [],
 				signInError: null,
 				successMessage: null,

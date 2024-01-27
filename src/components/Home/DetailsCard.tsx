@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import WhiteBackground from '../WhiteBackground';
+import WhiteBackground from '../shared/WhiteBackground';
 import { detailCardType } from '../../pages/Home/types/homePageType';
 
 const DetailsCard: FC<detailCardType> = (props) => {

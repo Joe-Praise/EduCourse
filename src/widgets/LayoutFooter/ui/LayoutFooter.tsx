@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import LinksList from './UnorderedLinksList';
 import { linkType } from '../../LayoutHeader/model/navigationType';
-import Logo from '../../../components/Logo';
+import Logo from '../../../components/shared/Logo';
 import { contactUs, socialMediaLinksIcons } from '../models/LayoutFooterModels';
 import { FaFacebookF, FaYoutube } from 'react-icons/fa';
 import { FaXTwitter } from 'react-icons/fa6';

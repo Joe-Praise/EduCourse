@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import WhiteBackground from '../WhiteBackground';
+import WhiteBackground from '../shared/WhiteBackground';
 import { FaRegCalendarAlt } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { blogCardType } from '../../pages/Home/types/homePageType';
