@@ -1,6 +1,6 @@
 import Breadcrumbs from '../../util/Breadcrumbs';
 import img from '../../assets/image/card5.jpg';
-import Button from '../Button';
+import Button from '../shared/Button';
 import { IoBarChart } from 'react-icons/io5';
 import { FaFile } from 'react-icons/fa6';
 import { FaGraduationCap } from 'react-icons/fa';

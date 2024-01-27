@@ -11,7 +11,7 @@ export type user = {
 
 type userState = {
 	userObj: user;
-	token: string;
+	// token: string;
 	userError: string;
 };
 
@@ -23,7 +23,7 @@ const initialState: userState = {
 		photo: '',
 		role: '',
 	},
-	token: '',
+	// token: '',
 	userError: '',
 };
 
@@ -34,7 +34,7 @@ const userSlice = (state = initialState, action: any) => {
 			return {
 				...state,
 				userObj: {},
-				token: '',
+				// token: '',
 			};
 		case types.GET_USER_SUCCESS:
 			return {
@@ -47,16 +47,9 @@ const userSlice = (state = initialState, action: any) => {
 				...state,
 				userError: payload,
 			};
-		// case types.GET_USER_FAIL:
-		// 	return {
-		// 		...state,
-		// 		userError: payload,
-		// 	};
 		default:
 			return state;
 	}
-	// setUser: (state, action) => {
-	// 	// state.token =
 };
 
 export default userSlice;

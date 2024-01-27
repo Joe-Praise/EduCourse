@@ -1,7 +1,7 @@
-import { FC } from 'react';
+import { FC, ReactNode } from 'react';
 
 interface childrenProp {
-	children: JSX.Element;
+	children: ReactNode;
 	className: string;
 }
 

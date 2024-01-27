@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import WhiteBackground from '../WhiteBackground';
+import WhiteBackground from '../shared/WhiteBackground';
 import { IoMdTime } from 'react-icons/io';
 import { FaGraduationCap } from 'react-icons/fa6';
 import { Link } from 'react-router-dom';

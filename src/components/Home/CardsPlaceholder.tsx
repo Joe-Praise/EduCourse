@@ -1,5 +1,5 @@
-import { FC } from 'react';
-import LinkBtn from '../LinkBtn';
+import { FC, ReactNode } from 'react';
+import LinkBtn from '../shared/LinkBtn';
 
 interface sectionProps {
 	className: string;
@@ -7,7 +7,7 @@ interface sectionProps {
 	description: string;
 	path: string;
 	btnValue: string;
-	children: JSX.Element;
+	children: ReactNode;
 }
 
 const CardsPlaceholder: FC<sectionProps> = (props) => {

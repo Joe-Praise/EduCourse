@@ -1,16 +1,12 @@
-import { Tuple, configureStore } from '@reduxjs/toolkit';
+import { configureStore } from '@reduxjs/toolkit';
 import { rootReducer } from './reducers';
 import { thunk } from 'redux-thunk';
 // import userReducer from './reducers/userSlice';
 // import courseReducer from './reducers/courseSlice';
 
 export const store = configureStore({
-	// reducer: {
-	// 	user: userReducer,
-	// 	course: courseReducer,
-	// },
 	reducer: rootReducer,
-	middleware: () => new Tuple(thunk),
+	middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(thunk),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

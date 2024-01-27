@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import WhiteBackground from './WhiteBackground';
-import { bannerTextType } from '../pages/Home/types/homePageType';
+import { bannerTextType } from '../../pages/Home/types/homePageType';
 import LinkBtn from './LinkBtn';
 
 const CentralizedHeaderText: FC<bannerTextType> = ({ title, body }) => {

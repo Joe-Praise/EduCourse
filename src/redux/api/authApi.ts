@@ -17,15 +17,14 @@ export const signIn = async (details: signInType) => {
 
 export type signUpType = {
 	name: string;
-	matricNumber: string;
 	email: string;
 	password: string;
-	passwordConfirm: string;
+	confirmPassword: string;
 };
 
 export const signUp = async (details: signUpType) => {
 	try {
-		const { data } = await API.post('api/v1/users/login', details);
+		const { data } = await API.post('api/v1/users/signup', details);
 		return { error: null, data };
 	} catch (error) {
 		return handleApiError(error);

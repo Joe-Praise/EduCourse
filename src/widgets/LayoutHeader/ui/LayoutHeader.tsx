@@ -4,17 +4,25 @@ import angleIcon from '../../../assets/icon/chevron-down.svg';
 import avi from '../../../assets/image/Ellipse 1.jpg';
 import { linkType } from '../model/navigationType';
 import useHandleModal from '../../../hooks/UseHandleModal';
-import HamburgerBtn from '../../../components/HamburgerBtn';
-import Logo from '../../../components/Logo';
+import HamburgerBtn from '../../../components/shared/HamburgerBtn';
+import Logo from '../../../components/shared/Logo';
+import { getLocalStorage } from '../../../util/helperFunctions/helper';
+import config from '../../../../config';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../redux/store';
 
 const LayoutHeader: FC = () => {
+	const userDetails = getLocalStorage('profile')?.user;
+	const userData = useSelector((state: RootState) => state.auth);
+	console.log(userData);
+
 	const {
 		modal: toggleDropdown,
 		handleModal: handleToggleDropdown,
 		// closeModal: closeDropdown,
 	} = useHandleModal();
 
-	// TODO: check URL, if chnaged. r=trigger handleToggleHamburger
+	// TODO: check URL, if chnaged. retrigger handleToggleHamburger
 
 	const { modal: HamburgerState, handleModal: handleToggleHamburger } =
 		useHandleModal();
@@ -53,6 +61,7 @@ const LayoutHeader: FC = () => {
 			id: 1,
 			name: 'Login',
 			path: '/login',
+			// onClick: ''
 		},
 		{
 			id: 2,
@@ -184,7 +193,7 @@ const LayoutHeader: FC = () => {
 										/>
 									</figure>
 									<p className='font-exo font-[600] text-secondary-light hover:text-secondary-dark'>
-										Annette Black
+										{userDetails ? userDetails?.name : 'Annette Black'}
 									</p>
 								</Link>
 							</li>
@@ -254,19 +263,20 @@ const LayoutHeader: FC = () => {
 								))
 							) : (
 								<li className='relative' onClick={handleToggleDropdown}>
-									<Link
-										to={''}
-										className='flex items-center gap-1 cursor-pointer'
-									>
+									<div className='flex items-center gap-1 cursor-pointer'>
 										<figure>
 											<img
-												src={avi}
+												src={
+													userDetails
+														? `${config.baseUrl}/img/${userDetails?.photo}`
+														: avi
+												}
 												alt='user avi'
 												className='w-[38px] h-[38px] rounded-[48px]'
 											/>
 										</figure>
 										<p className='font-exo font-[600] text-secondary-light hover:text-secondary-dark'>
-											Annette Black
+											{userDetails ? userDetails?.name : 'Annette Black'}
 										</p>
 
 										<img
@@ -278,7 +288,7 @@ const LayoutHeader: FC = () => {
 													: 'rotate-0 duration-75'
 											}`}
 										/>
-									</Link>
+									</div>
 
 									{toggleDropdown && (
 										<ul className='absolute z-20 border w-[12rem] -right-4 top-[3.5rem] bg-white rounded-lg'>

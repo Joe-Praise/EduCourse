@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import Comment from '../../../components/Comment';
+import Comment from '../../../components/shared/Comment';
 import Curriculum from '../../../components/Single Course/Curriculum';
 import HeaderContainer from '../../../components/Single Course/HeaderContainer';
 import Instructor from '../../../components/Single Course/Instructor';

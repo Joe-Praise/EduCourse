@@ -1,7 +1,7 @@
 import { ChangeEvent, FC } from 'react';
 import FilterPageHeader from './FilterPageHeader';
 import { useSelector } from 'react-redux';
-import { RootState } from '../redux/store';
+import { RootState } from '../../redux/store';
 
 type event = ChangeEvent<HTMLInputElement>;
 

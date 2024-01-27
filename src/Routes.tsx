@@ -1,6 +1,6 @@
 // import { lazy } from 'react';
 import Signin from './pages/Signin/ui/Signin';
-import Signup from './pages/Signup/ui/Signup';
+import Signup from './pages/Signup/ui/SignUp';
 import { Courses, SingleCourse, Blog } from './pages/index';
 
 export const publicRoutes = [
