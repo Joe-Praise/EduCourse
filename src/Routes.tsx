@@ -1,7 +1,7 @@
 // import { lazy } from 'react';
 import Signin from './pages/Signin/ui/Signin';
 import Signup from './pages/Signup/ui/SignUp';
-import { Courses, SingleCourse, Blog } from './pages/index';
+import { Courses, SingleCourse, Blog, LectureCourse } from './pages/index';
 
 export const publicRoutes = [
 	{
@@ -28,8 +28,8 @@ export const publicRoutes = [
 
 export const protectedRoutes = [
 	{
-		path: 'courses/main/:id',
-		component: SingleCourse,
+		path: 'courses/lecture/:id',
+		component: LectureCourse,
 	},
 ];
 

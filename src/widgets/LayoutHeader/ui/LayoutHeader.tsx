@@ -263,7 +263,7 @@ const LayoutHeader: FC = () => {
 								))
 							) : (
 								<li className='relative' onClick={handleToggleDropdown}>
-									<div className='flex items-center gap-1 cursor-pointer'>
+									<button className='flex items-center gap-1 cursor-pointer'>
 										<figure>
 											<img
 												src={
@@ -288,7 +288,7 @@ const LayoutHeader: FC = () => {
 													: 'rotate-0 duration-75'
 											}`}
 										/>
-									</div>
+									</button>
 
 									{toggleDropdown && (
 										<ul className='absolute z-20 border w-[12rem] -right-4 top-[3.5rem] bg-white rounded-lg'>

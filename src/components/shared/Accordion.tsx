@@ -1,54 +1,54 @@
-import { FC, useState } from 'react';
-import { FaLock } from 'react-icons/fa6';
+import { FC, useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
+import { AccordionBtnIcon } from '../../assets/Svg';
+import AccordionBtn from './AccordionBtn';
+
 type items = {
 	title: string;
 	duration: string;
 	lessonIndex: string;
 };
+
+// add more field when API data comes from the backend
 type accordion = {
 	title: string;
 	items: items[];
 };
 
-const Accordion: FC<{ content: accordion[] }> = ({ content }) => {
-	const [accordionOpen, setAccordionOpen] = useState(false);
+const showCheckBox = [/\/courses\/lecture/].map((regex) => new RegExp(regex));
+
+const Accordion: FC<{ content: accordion }> = ({ content }) => {
 	console.log(content);
+	/**
+	 * isMainCourse: is used to check if the url permitted to watch videos
+	 */
+	const [isMainCourse, setIsMainCourse] = useState(false);
+	const [accordionOpen, setAccordionOpen] = useState(false);
+	const location = useLocation();
+
+	useEffect(() => {
+		const showCheckbox = showCheckBox.some((regex) =>
+			regex.test(location.pathname)
+		);
+
+		setIsMainCourse(showCheckbox);
+	}, [location.pathname]);
 
 	return (
-		<div className='bg-white text-black rounded-lg p-3 my-1 '>
+		<div
+			className={`bg-white text-black rounded-lg p-3 my-1 ${
+				isMainCourse ? 'border-b' : ''
+			} `}
+		>
 			<button
 				className='flex justify-between w-full items-center'
 				onClick={() => setAccordionOpen((prevState) => !prevState)}
 			>
-				<span>{content[0].title}</span>
+				<span>{content.title}</span>
 				<div className='text-xs flex items-center gap-1'>
 					<span className='hidden md:inline-block'>5 lessons</span>
 					<span className='hidden md:inline-block'>45 mins</span>
-					<svg
-						className='fill-effect-active shrink-0 ml-8'
-						width='16'
-						height='16'
-						xmlns='http://www.w3.org/2000/svg'
-					>
-						<rect
-							y='7'
-							width='16'
-							height='2'
-							rx='1'
-							className={`transform origin-center transition duration-200 ease-out ${
-								accordionOpen && '!rotate-180'
-							}`}
-						/>
-						<rect
-							y='7'
-							width='16'
-							height='2'
-							rx='1'
-							className={`transform origin-center rotate-90 transition duration-200 ease-out ${
-								accordionOpen && '!rotate-180'
-							}`}
-						/>
-					</svg>
+					<AccordionBtnIcon accordionOpen={accordionOpen} />
 				</div>
 			</button>
 			<div
@@ -59,21 +59,11 @@ const Accordion: FC<{ content: accordion[] }> = ({ content }) => {
 				}`}
 			>
 				<ul className='overflow-hidden'>
-					{content[0].items
+					{content.items
 						?.sort((a, b) => parseInt(a.lessonIndex) - parseInt(b.lessonIndex))
 						.map((el, idx) => {
 							return (
-								// check if user has applied ? li should use link : no link and padlock icon present
-								<li
-									key={idx}
-									className='flex items-center justify-between cursor-pointer p-2 active:bg-effect-focus active:text-white border-b'
-								>
-									<span>{el.title}</span>
-									<div className='text-xs flex items-center gap-2'>
-										<span>{el.duration}</span>
-										<FaLock className='fill-effect-active' />
-									</div>
-								</li>
+								<AccordionBtn key={idx} item={el} isMainCourse={isMainCourse} />
 							);
 						})}
 				</ul>

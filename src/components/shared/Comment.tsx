@@ -10,7 +10,7 @@ const Comment: FC<func> = ({ onCommentvalue }) => {
 		event.preventDefault();
 		const commentValue = commentRef.current!.value;
 		if (commentValue?.trim().length === 0) {
-			// throw err with toast
+			// TODO:throw err with toast
 			return;
 		}
 		onCommentvalue(commentValue);

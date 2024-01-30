@@ -1,39 +1,43 @@
 import { FC, ReactNode, useState } from 'react';
 
 type tabheaderType = {
+	CourseContent: string | undefined;
 	Overview: string;
-	Curriculum: string;
 	Instructor: string;
 	Reviews: string;
 };
 
 type Jsx = ReactNode;
 
-const TabContainer: FC<{
+const LectureTabContainer: FC<{
 	children1: Jsx;
 	children2: Jsx;
 	children3: Jsx;
 	children4: Jsx;
+	isHideCourseContent: boolean;
 }> = (props) => {
-	const { children1, children2, children3, children4 } = props;
+	const { children1, children2, children3, children4, isHideCourseContent } =
+		props;
 	const [activeView, setActiveView] = useState<string>('Overview');
 
 	// setting the expected headers for the tabs
 	const tabHeader: tabheaderType = {
+		CourseContent: isHideCourseContent ? 'Course Content' : undefined,
 		Overview: 'Overview',
-		Curriculum: 'Curriculum',
 		Instructor: 'Instructor',
 		Reviews: 'Reviews',
 	};
+
+	console.log(isHideCourseContent);
 
 	// switch the detail rendered content
 	let display;
 
 	switch (activeView) {
-		case 'Overview':
+		case 'Course Content':
 			display = children1;
 			break;
-		case 'Curriculum':
+		case 'Overview':
 			display = children2;
 			break;
 		case 'Instructor':
@@ -47,28 +51,26 @@ const TabContainer: FC<{
 	}
 
 	return (
-		<div className='min-h-[40vh]'>
-			<ul className='flex rounded-lg '>
-				{Object.entries(tabHeader).map(([key, value], i, arr) => (
+		<div className='min-h-[40vh] md:w-3/4 mx-auto '>
+			<ul className='flex gap-4 border-y'>
+				{Object.entries(tabHeader).map(([, value], i) => (
 					<li
 						key={i}
-						className={`p-2 basis-1/4 border cursor-pointer flex justify-center items-center ${
-							activeView === key ? 'bg-effect-active text-white' : ''
-						} ${i === 0 ? 'rounded-tl-md' : ''} ${
-							i === arr.length - 1 ? 'rounded-tr-md' : ''
+						className={`p-2 cursor-pointer flex justify-center items-center ${
+							activeView === value ? 'text-effect-active' : ''
 						}`}
-						onClick={() => setActiveView(value)}
+						onClick={() => setActiveView(value || '')}
 					>
 						{value}
 					</li>
 				))}
 			</ul>
-			{/* md:max-h-[50vh] overflow-auto */}
-			<div className='p-2 bg-effect-active text-white  rounded-b-md'>
-				{display}
-			</div>
+
+			<div className='p-2 rounded-b-md'>{display}</div>
 		</div>
 	);
 };
 
-export default TabContainer;
+export default LectureTabContainer;
+
+// bg-effect-active text-white

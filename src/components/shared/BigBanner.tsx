@@ -1,8 +1,8 @@
 // import CentralizedHeaderText from './CentralizedHeaderText';
-import { FC } from 'react';
+import { FC, ReactNode } from 'react';
 interface props {
 	img: string;
-	children: JSX.Element;
+	children: ReactNode;
 }
 
 const BigBanner: FC<props> = ({ img, children }) => {

@@ -6,6 +6,7 @@ import { FaFile } from 'react-icons/fa6';
 import { FaGraduationCap } from 'react-icons/fa';
 import { BsQuestionSquareFill } from 'react-icons/bs';
 import { IconType } from 'react-icons';
+import { useNavigate } from 'react-router-dom';
 
 interface headerbadge {
 	title: string;
@@ -14,36 +15,34 @@ interface headerbadge {
 }
 
 const HeaderContainer = () => {
-	const handleStartCourse = () => {
-		console.log('Start course initiated!');
+	const navigate = useNavigate();
+	const handleStartCourse = (to: string) => {
+		navigate(to);
 	};
 
 	const dataDisplay: headerbadge[] = [
 		{
 			title: 'Students',
 			total: '150',
-			// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 			icon: FaGraduationCap,
 		},
 		{
 			title: 'All levels',
 			total: '',
-			// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 			icon: IoBarChart,
 		},
 		{
 			title: 'Lessons',
 			total: '20',
-			// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 			icon: FaFile,
 		},
 		{
 			title: 'Quizzes' || 'Quiz',
 			total: '3',
-			// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 			icon: BsQuestionSquareFill,
 		},
 	];
+	const testing = 'thisisworking';
 	return (
 		<section className='bg-black text-white p-2'>
 			<div className='layoutWidth flex md:justify-between relative flex-wrap gap-3 md:gap-0'>
@@ -97,8 +96,9 @@ const HeaderContainer = () => {
 								className={
 									' border text-white md:text-black p-2 rounded-full hover:text-effect-hover hover:border-effect-hover active:bg-effect-active active:text-white'
 								}
+								// href={`/courses/lecture/${testing}`}
 								value={'Start now'}
-								onClick={handleStartCourse}
+								onClick={() => handleStartCourse(`/courses/lecture/${testing}`)}
 							/>
 						</figcaption>
 					</figure>
