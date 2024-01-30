@@ -1,4 +1,4 @@
-import { ChangeEvent, FC } from 'react';
+import { ChangeEvent, FC, ReactNode } from 'react';
 import FilterPageHeader from './FilterPageHeader';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
@@ -9,8 +9,8 @@ const FilterStructure: FC<{
 	title: string;
 	searchFunc: (e: event) => void;
 	layoutFunc: (value: string) => void;
-	children1: JSX.Element;
-	children2: JSX.Element;
+	children1: ReactNode;
+	children2: ReactNode;
 	activeLayout: string;
 }> = ({
 	title,

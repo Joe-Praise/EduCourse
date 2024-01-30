@@ -22,16 +22,6 @@ const App: FC = () => {
 			<Route path='/' element={<Layout />}>
 				<Route index element={<Home />} />
 
-				<Route element={<PrivateRoutes user={userData} />}>
-					{protectedRoutes.map((route) => (
-						<Route
-							key={route.path}
-							path={route.path}
-							element={<route.component />}
-						/>
-					))}
-				</Route>
-
 				{publicRoutes.map((route) => (
 					<Fragment key={route.path}>
 						<Route path={route.path} element={<route.component />} />
@@ -45,6 +35,15 @@ const App: FC = () => {
 								/>
 							))}
 					</Fragment>
+				))}
+			</Route>
+			<Route element={<PrivateRoutes user={userData} />}>
+				{protectedRoutes.map((route) => (
+					<Route
+						key={route.path}
+						path={route.path}
+						element={<route.component />}
+					/>
 				))}
 			</Route>
 

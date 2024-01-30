@@ -1,14 +1,5 @@
+import { accordionType } from '../../pages/Courses/types/courseType';
 import Accordion from '../shared/Accordion';
-interface dropDown {
-	title: string;
-	duration: string;
-	lessonIndex: string;
-}
-
-interface accordionType {
-	title: string;
-	items: dropDown[];
-}
 
 const Curriculum = () => {
 	const dropDown1: accordionType[] = [
@@ -32,13 +23,72 @@ const Curriculum = () => {
 				},
 			],
 		},
+		{
+			title: 'Module 2',
+			items: [
+				{
+					title: 'lesson 2',
+					duration: '10:01',
+					lessonIndex: '2',
+				},
+				{
+					title: 'lesson 3',
+					duration: '5:01',
+					lessonIndex: '3',
+				},
+				{
+					title: 'lesson 1',
+					duration: '15:01',
+					lessonIndex: '1',
+				},
+			],
+		},
+		{
+			title: 'Module 3',
+			items: [
+				{
+					title: 'lesson 2',
+					duration: '10:01',
+					lessonIndex: '2',
+				},
+				{
+					title: 'lesson 3',
+					duration: '5:01',
+					lessonIndex: '3',
+				},
+				{
+					title: 'lesson 1',
+					duration: '15:01',
+					lessonIndex: '1',
+				},
+			],
+		},
+		{
+			title: 'Module 4',
+			items: [
+				{
+					title: 'lesson 2',
+					duration: '10:01',
+					lessonIndex: '2',
+				},
+				{
+					title: 'lesson 3',
+					duration: '5:01',
+					lessonIndex: '3',
+				},
+				{
+					title: 'lesson 1',
+					duration: '15:01',
+					lessonIndex: '1',
+				},
+			],
+		},
 	];
 	return (
 		<div>
-			<Accordion content={dropDown1} />
-			{/* <Accordion content={dropDown1} />
-			<Accordion content={dropDown1} />
-			<Accordion content={dropDown1} /> */}
+			{dropDown1.map((el, idx) => {
+				return <Accordion content={el} key={idx} />;
+			})}
 		</div>
 	);
 };

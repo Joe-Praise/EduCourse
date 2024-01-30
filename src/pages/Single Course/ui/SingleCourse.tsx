@@ -16,7 +16,7 @@ const SingleCourse: FC = () => {
 		<section>
 			<HeaderContainer />
 			<div className='layoutWidth flex mt-9'>
-				<div className='basis-2/3'>
+				<div className='mx-auto md:mx-0 basis-2/3'>
 					<TabContainer
 						children1={<OverView />}
 						children2={<Curriculum />}
@@ -27,7 +27,7 @@ const SingleCourse: FC = () => {
 						<Comment onCommentvalue={handleCourseComment} />
 					</div>
 				</div>
-				<div></div>
+				{/* <div></div> */}
 			</div>
 		</section>
 	);

@@ -3,7 +3,7 @@ import FormLayout from '../../../components/shared/FormLayout';
 import img from '../../../assets/image/card6.jpg';
 import SignupForm from '../../../components/Signup/Form';
 
-const Signin: FC = () => {
+const Signup: FC = () => {
 	return (
 		<main className='h-screen'>
 			<FormLayout formDiv={'order-1'} imgDiv={'order-2'} img={img}>
@@ -13,4 +13,4 @@ const Signin: FC = () => {
 	);
 };
 
-export default Signin;
+export default Signup;
