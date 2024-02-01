@@ -1,7 +1,13 @@
 // import { lazy } from 'react';
-import Signin from './pages/Signin/ui/Signin';
-import Signup from './pages/Signup/ui/SignUp';
-import { Courses, SingleCourse, Blog, LectureCourse } from './pages/index';
+import Signin from './pages/Signin/Signin';
+import Signup from './pages/Signup/SignUp';
+import {
+	Courses,
+	SingleCourse,
+	Blog,
+	LectureCourse,
+	SingleBlog,
+} from './pages/index';
 
 export const publicRoutes = [
 	{
@@ -20,7 +26,7 @@ export const publicRoutes = [
 		children: [
 			{
 				path: ':id',
-				component: SingleCourse,
+				component: SingleBlog,
 			},
 		],
 	},

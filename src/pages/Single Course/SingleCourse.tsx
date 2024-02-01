@@ -1,11 +1,11 @@
 import { FC } from 'react';
-import Comment from '../../../components/shared/Comment';
-import Curriculum from '../../../components/Single Course/Curriculum';
-import HeaderContainer from '../../../components/Single Course/HeaderContainer';
-import Instructor from '../../../components/Single Course/Instructor';
-import OverView from '../../../components/Single Course/OverView';
-import Reviews from '../../../components/Single Course/Reviews';
-import TabContainer from '../../../components/Single Course/TabContainer';
+import Comment from '../../components/shared/Comment';
+import Curriculum from '../../components/Single Course/Curriculum';
+import HeaderContainer from '../../components/Single Course/HeaderContainer';
+import Instructor from '../../components/Single Course/Instructor';
+import OverView from '../../components/Single Course/OverView';
+import Reviews from '../../components/Single Course/Reviews';
+import TabContainer from '../../components/Single Course/TabContainer';
 
 const SingleCourse: FC = () => {
 	const handleCourseComment = (commentText: string): void => {

@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import WhiteBackground from '../shared/WhiteBackground';
-import { detailCardType } from '../../pages/Home/types/homePageType';
+import { detailCardType } from '../../pages/Home/homePageType';
 
 const DetailsCard: FC<detailCardType> = (props) => {
 	const extension = (role: string, total: string): string => {

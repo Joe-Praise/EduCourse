@@ -1,7 +1,7 @@
 import { FC } from 'react';
-import FormLayout from '../../../components/shared/FormLayout';
-import img from '../../../assets/image/card6.jpg';
-import SignupForm from '../../../components/Signup/Form';
+import FormLayout from '../../components/shared/FormLayout';
+import img from '../../assets/image/card6.jpg';
+import SignupForm from '../../components/Signup/Form';
 
 const Signup: FC = () => {
 	return (

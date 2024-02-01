@@ -1,6 +1,7 @@
 // eslint-disable-next-line react-refresh/only-export-components
-export { default as Home } from './Home/ui/Home';
-export { default as Courses } from './Courses/ui/Course';
-export { default as Blog } from './Blog/ui/Blog';
-export { default as SingleCourse } from './Single Course/ui/SingleCourse';
-export { default as LectureCourse } from './Main Course/ui/LectureCourse';
+export { default as Home } from './Home/Home';
+export { default as Courses } from './Courses/Course';
+export { default as Blog } from './Blog/Blog';
+export { default as SingleCourse } from './Single Course/SingleCourse';
+export { default as LectureCourse } from './Main Course/LectureCourse';
+export { default as SingleBlog } from './Single Blog/SingleBlog';

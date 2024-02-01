@@ -2,14 +2,11 @@ import { FC } from 'react';
 import WhiteBackground from '../shared/WhiteBackground';
 import { FaRegCalendarAlt } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
-import { blogCardType } from '../../pages/Home/types/homePageType';
+import { blogCardType } from '../../pages/Home/homePageType';
 import { handleDateFormat } from '../../util/helperFunctions/dateFormatter';
+import { truncateValue } from '../../util/helperFunctions/helper';
 
 const BlogCard: FC<blogCardType> = (props) => {
-	const summary = (summary: string) => {
-		return summary.length > 30 ? summary.slice(0, 80) + '...' : summary;
-	};
-
 	return (
 		<WhiteBackground
 			className={`rounded-b-none my-0 sm:my-3 w-full px-0 shadow-md hover:scale-105 duration-150 ${
@@ -17,7 +14,7 @@ const BlogCard: FC<blogCardType> = (props) => {
 			}`}
 		>
 			<Link
-				to='/blogs'
+				to='/blogs/data'
 				className={`block hover:text-effect-active ${
 					props.activeLayout === 'grid' ? 'block' : 'flex h-[11rem]'
 				}`}
@@ -49,7 +46,7 @@ const BlogCard: FC<blogCardType> = (props) => {
 					</div>
 
 					<div className='mt-1'>
-						<p>{summary(props.summary)}</p>
+						<p>{truncateValue(props.summary, true, 100)}</p>
 					</div>
 				</div>
 			</Link>

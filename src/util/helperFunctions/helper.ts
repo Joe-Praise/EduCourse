@@ -52,3 +52,15 @@ export const getUserRole = (key: string) => {
 	}
 	return role;
 };
+
+export const copyToClipBoard = (value: any) => {
+	navigator.clipboard.writeText(value);
+};
+
+export const truncateValue = (value: string, trunc: boolean, limit: number) => {
+	if (trunc) {
+		return value.slice(0, limit) + '...';
+	} else {
+		return value;
+	}
+};

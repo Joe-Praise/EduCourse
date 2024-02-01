@@ -1,7 +1,7 @@
 import { FC, Fragment } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import Layout from './Layout/Layout';
-import Home from '../pages/Home/ui/Home';
+import Home from '../pages/Home/Home';
 
 import { useSelector } from 'react-redux';
 import { RootState } from '../redux/reducers';

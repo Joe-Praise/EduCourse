@@ -2,7 +2,7 @@ import { FC } from 'react';
 import CardsPlaceholder from '../Home/CardsPlaceholder';
 import BlogCard from './BlogCard';
 import img from '../../assets/image/card2.jpg';
-import { blogCardType } from '../../pages/Home/types/homePageType';
+import { blogCardType } from '../../pages/Home/homePageType';
 
 const Blogs: FC = () => {
 	// interface cardProps {

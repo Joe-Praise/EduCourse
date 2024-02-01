@@ -1,6 +1,6 @@
 import { FC } from 'react';
 // import WhiteBackground from '../WhiteBackground';
-import { topCategoryCardType } from '../../pages/Home/types/homePageType';
+import { topCategoryCardType } from '../../pages/Home/homePageType';
 
 const TopCategoryCard: FC<topCategoryCardType> = (props) => {
 	return (

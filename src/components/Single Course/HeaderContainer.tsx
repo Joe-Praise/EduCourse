@@ -7,12 +7,13 @@ import { FaGraduationCap } from 'react-icons/fa';
 import { BsQuestionSquareFill } from 'react-icons/bs';
 import { IconType } from 'react-icons';
 import { useNavigate } from 'react-router-dom';
+import DataBadge from '../shared/DataBadge';
 
-interface headerbadge {
+export type headerbadge = {
 	title: string;
 	total: string;
 	icon: IconType;
-}
+};
 
 const HeaderContainer = () => {
 	const navigate = useNavigate();
@@ -42,6 +43,7 @@ const HeaderContainer = () => {
 			icon: BsQuestionSquareFill,
 		},
 	];
+
 	const testing = 'thisisworking';
 	return (
 		<section className='bg-black text-white p-2'>
@@ -61,20 +63,8 @@ const HeaderContainer = () => {
 
 					<h1 className='my-2'>React and Redux master class</h1>
 
-					<div className='flex items-center gap-3 my-1 flex-wrap'>
-						{dataDisplay.map((el, idx) => {
-							return (
-								<div
-									key={idx}
-									className='flex basis-1/3 md:basis-auto items-center gap-1'
-								>
-									<el.icon className='fill-effect-active' />
-									{el.total.length > 0 ? <span>{el.total}</span> : null}
-									<span>{el.title}</span>
-								</div>
-							);
-						})}
-					</div>
+					{/* displays summary of the course  with icons e.g totla students */}
+					<DataBadge dataDisplay={dataDisplay} />
 				</div>
 				<div className='md:absolute md:right-0 md:top-5'>
 					<figure className='md:w-56 md:h-44 md:bg-white rounded-t-lg'>
@@ -96,7 +86,6 @@ const HeaderContainer = () => {
 								className={
 									' border text-white md:text-black p-2 rounded-full hover:text-effect-hover hover:border-effect-hover active:bg-effect-active active:text-white'
 								}
-								// href={`/courses/lecture/${testing}`}
 								value={'Start now'}
 								onClick={() => handleStartCourse(`/courses/lecture/${testing}`)}
 							/>

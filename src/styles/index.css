@@ -14,6 +14,10 @@
 	border-radius: 10px;
 }
 
+.copyText::-webkit-scrollbar {
+	display: none;
+}
+
 @tailwind components;
 @tailwind utilities;
 
@@ -48,6 +52,31 @@
 .btnStyle {
 	@apply border text-black p-2 rounded-full hover:text-effect-hover hover:border-effect-hover active:bg-effect-active active:text-white;
 }
+
+.position-center {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	translate: -50% -50%;
+}
+
+/* .unordered-list {
+	display: inline-flex;
+	min-width: 100%;
+	justify-content: flex-start;
+	margin: 0;
+	padding: 0;
+	list-style-type: none;
+	overflow-x: scroll;
+}
+
+.unordered-list li {
+	flex-basis: 100%;
+	width: 100%;
+	padding: 10px;
+	font-weight: 550;
+	font-size: 14px;
+} */
 /* body { */
 /* font-family: Exo, 'Helvetica Neue', Helvetica, sans-serif; */
 /* background-color: #deefe7; */
