@@ -1,4 +1,4 @@
-import { FC, ReactNode, useState } from 'react';
+import { FC, useState } from 'react';
 
 type tabheaderType = {
 	CourseContent: string | undefined;
@@ -7,28 +7,29 @@ type tabheaderType = {
 	Reviews: string;
 };
 
-type Jsx = ReactNode;
+import { lectureType } from '../../pages/Main Course/LectureType';
 
-const LectureTabContainer: FC<{
-	children1: Jsx;
-	children2: Jsx;
-	children3: Jsx;
-	children4: Jsx;
-	isHideCourseContent: boolean;
-}> = (props) => {
-	const { children1, children2, children3, children4, isHideCourseContent } =
-		props;
+const LectureTabContainer: FC<lectureType> = (props) => {
+	const {
+		children1,
+		children2,
+		children3,
+		children4,
+		isHideCourseContent,
+		onWindowSize,
+	} = props;
+
 	const [activeView, setActiveView] = useState<string>('Overview');
 
 	// setting the expected headers for the tabs
 	const tabHeader: tabheaderType = {
-		CourseContent: isHideCourseContent ? 'Course Content' : undefined,
+		// this hides the course content when on desktop || course content(sidebar) is hidden
+		CourseContent:
+			isHideCourseContent || onWindowSize < 900 ? 'Course Content' : undefined,
 		Overview: 'Overview',
 		Instructor: 'Instructor',
 		Reviews: 'Reviews',
 	};
-
-	console.log(isHideCourseContent);
 
 	// switch the detail rendered content
 	let display;
@@ -56,7 +57,7 @@ const LectureTabContainer: FC<{
 				{Object.entries(tabHeader).map(([, value], i) => (
 					<li
 						key={i}
-						className={`p-2 cursor-pointer flex justify-center items-center ${
+						className={`p-2 py-5 cursor-pointer flex justify-center items-center text-sm font-semibold ${
 							activeView === value ? 'text-effect-active' : ''
 						}`}
 						onClick={() => setActiveView(value || '')}

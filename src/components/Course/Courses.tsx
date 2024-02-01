@@ -2,23 +2,23 @@ import { FC } from 'react';
 import CourseCard from './CourseCard';
 import img from '../../assets/image/card3.jpg';
 import CardsPlaceholder from '../Home/CardsPlaceholder';
-import { courseCardType } from '../../pages/Home/types/homePageType';
+import { courseCardType } from '../../pages/Home/homePageType';
 // import { getLocalStorage } from '../../util/helperFunctions/helper';
 
 const Courses: FC = () => {
-	type User = {
-		name: string;
-		age: number;
-	};
+	// type User = {
+	// 	name: string;
+	// 	age: number;
+	// };
 
-	const storeUser = (user: User) => {
-		localStorage.setItem('user', JSON.stringify(user));
-	};
+	// const storeUser = (user: User) => {
+	// 	localStorage.setItem('user', JSON.stringify(user));
+	// };
 
-	storeUser({
-		name: 'Joe',
-		age: 15,
-	});
+	// storeUser({
+	// 	name: 'Joe',
+	// 	age: 15,
+	// });
 
 	// const storedData: LocalStorageData = getLocalStorage('user');
 
@@ -96,6 +96,7 @@ const Courses: FC = () => {
 			activeLayout: 'grid',
 		},
 	];
+
 	return (
 		<CardsPlaceholder
 			title='Courses'

@@ -3,7 +3,7 @@ import WhiteBackground from '../shared/WhiteBackground';
 import { IoMdTime } from 'react-icons/io';
 import { FaGraduationCap } from 'react-icons/fa6';
 import { Link } from 'react-router-dom';
-import { courseCardType } from '../../pages/Home/types/homePageType';
+import { courseCardType } from '../../pages/Home/homePageType';
 import { handleDateFormat } from '../../util/helperFunctions/dateFormatter';
 
 const CourseCard: FC<courseCardType> = (props) => {

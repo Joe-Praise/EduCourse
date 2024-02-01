@@ -54,31 +54,26 @@ const socials: socialMediaLinksIcons[] = [
 	{
 		id: 1,
 		path: '/facebook',
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 		Icon: FaFacebookF,
 	},
 	{
 		id: 2,
 		path: '/twitter',
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 		Icon: FaXTwitter,
 	},
 	{
 		id: 3,
 		path: '/pintrest',
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 		Icon: FaPinterestP,
 	},
 	{
 		id: 4,
 		path: '/instagram',
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 		Icon: AiFillInstagram,
 	},
 	{
 		id: 5,
 		path: '/youTube',
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 		Icon: FaYoutube,
 	},
 ];

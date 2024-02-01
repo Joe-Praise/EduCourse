@@ -1,20 +1,37 @@
-import { FC, useState } from 'react';
-import VideoSection from '../../../components/Lecture Course/VideoSection';
-import LayoutFooter from '../../../widgets/LayoutFooter/ui/LayoutFooter';
+import { FC, useEffect, useState } from 'react';
+import VideoSection from '../../components/Lecture Course/VideoSection';
+import LayoutFooter from '../../widgets/LayoutFooter/ui/LayoutFooter';
 import { IoClose } from 'react-icons/io5';
-import Accordion from '../../../components/shared/Accordion';
-import { accordionType } from '../../Courses/types/courseType';
-import RenderIf from '../../../components/shared/RenderIf';
+import Accordion from '../../components/shared/Accordion';
+import { accordionType } from '../Courses/types/courseType';
+import RenderIf from '../../components/shared/RenderIf';
 import { FaArrowLeft } from 'react-icons/fa';
-import LectureHeader from '../../../components/Lecture Course/LectureHeader';
-import OverView from '../../../components/Single Course/OverView';
-import Curriculum from '../../../components/Single Course/Curriculum';
-import Instructor from '../../../components/Single Course/Instructor';
-import Review from '../../../components/Single Course/Reviews';
-import LectureTabContainer from '../../../components/Lecture Course/LectureTabContainer';
+import LectureHeader from '../../components/Lecture Course/LectureHeader';
+import OverView from '../../components/Single Course/OverView';
+import Curriculum from '../../components/Single Course/Curriculum';
+import Instructor from '../../components/Single Course/Instructor';
+import Review from '../../components/Single Course/Reviews';
+import LectureTabContainer from '../../components/Lecture Course/LectureTabContainer';
 
 const LectureCourse: FC = () => {
 	const [handleReposition, setHandleReposition] = useState(false);
+
+	const [windowSize, setWindowSize] = useState([
+		window.innerWidth,
+		window.innerHeight,
+	]);
+
+	useEffect(() => {
+		const handleWindowResize = () => {
+			setWindowSize([window.innerWidth, window.innerHeight]);
+		};
+
+		window.addEventListener('resize', handleWindowResize);
+
+		return () => {
+			window.removeEventListener('resize', handleWindowResize);
+		};
+	}, []);
 
 	const stickyNavbar = () => {
 		if (window.scrollY >= 45) setHandleReposition(true);
@@ -113,9 +130,9 @@ const LectureCourse: FC = () => {
 	return (
 		<section className=''>
 			{/* LECTURE HEADER PAGE COMPONENT */}
-			<LectureHeader />
+			<LectureHeader onWindowSize={windowSize[0]} />
 
-			<div className='flex relative overflow-hidden'>
+			<div className='flex relative overflow-hidden '>
 				<div
 					className={`min-h-screen  lg:basis-9/12 bg-gray-50 ${
 						hideCourseContent ? 'flex-1 transition-all' : ''
@@ -128,6 +145,7 @@ const LectureCourse: FC = () => {
 						children3={<Instructor />}
 						children4={<Review />}
 						isHideCourseContent={hideCourseContent}
+						onWindowSize={windowSize[0]}
 					/>
 					<LayoutFooter />
 				</div>

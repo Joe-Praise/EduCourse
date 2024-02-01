@@ -1,12 +1,12 @@
 import { FC } from 'react';
-import BigBanner from '../../../components/shared/BigBanner';
-import img from '../../../assets/image/brain and ideas.jpg';
-import CentralizedHeaderText from '../../../components/shared/CentralizedHeaderText';
-import { bannerTextType } from '../types/homePageType';
-import Courses from '../../../components/Course/Courses';
-import Blogs from '../../../components/Blog/Blogs';
-import TopCategories from '../../../components/Home/TopCategories';
-import Details from '../../../components/Home/Details';
+import BigBanner from '../../components/shared/BigBanner';
+import img from '../../assets/image/brain and ideas.jpg';
+import CentralizedHeaderText from '../../components/shared/CentralizedHeaderText';
+import { bannerTextType } from './homePageType';
+import Courses from '../../components/Course/Courses';
+import Blogs from '../../components/Blog/Blogs';
+import TopCategories from '../../components/Home/TopCategories';
+import Details from '../../components/Home/Details';
 
 const bannerTextDetails: bannerTextType[] = [
 	{
