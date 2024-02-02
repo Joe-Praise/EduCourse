@@ -1,15 +1,15 @@
-import { FC, useState } from 'react';
+import { FC } from 'react';
 import { Link, NavLink } from 'react-router-dom';
-import angleIcon from '../../../assets/icon/chevron-down.svg';
-import avi from '../../../assets/image/Ellipse 1.jpg';
-import { linkType } from '../model/navigationType';
-import useHandleModal from '../../../hooks/UseHandleModal';
-import HamburgerBtn from '../../../components/shared/HamburgerBtn';
-import Logo from '../../../components/shared/Logo';
-import { getLocalStorage } from '../../../util/helperFunctions/helper';
-import config from '../../../../config';
+import angleIcon from '../../assets/icon/chevron-down.svg';
+import avi from '../../assets/image/Ellipse 1.jpg';
+import { linkType } from './navigationType';
+import useHandleModal from '../../hooks/UseHandleModal';
+import HamburgerBtn from '../../components/shared/HamburgerBtn';
+import Logo from '../../components/shared/Logo';
+import { getLocalStorage } from '../../util/helperFunctions/helper';
+import config from '../../../config';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../../redux/store';
+import { RootState } from '../../redux/store';
 
 const LayoutHeader: FC = () => {
 	const userDetails = getLocalStorage('profile')?.user;
@@ -27,7 +27,7 @@ const LayoutHeader: FC = () => {
 	const { modal: HamburgerState, handleModal: handleToggleHamburger } =
 		useHandleModal();
 
-	const [user] = useState(true);
+	// const [user] = useState(false);
 	const leftLnks: linkType[] = [
 		{
 			id: 1,
@@ -60,13 +60,13 @@ const LayoutHeader: FC = () => {
 		{
 			id: 1,
 			name: 'Login',
-			path: '/login',
+			path: '/signin',
 			// onClick: ''
 		},
 		{
 			id: 2,
 			name: 'Register',
-			path: '/register',
+			path: '/signup',
 		},
 	];
 
@@ -154,7 +154,7 @@ const LayoutHeader: FC = () => {
 				</ul>
 
 				<ul className='items-center sm:flex'>
-					{!user ? (
+					{!userDetails ? (
 						rightLinks?.map((el) => (
 							<li key={el.id}>
 								<NavLink
@@ -246,7 +246,7 @@ const LayoutHeader: FC = () => {
 						</ul>
 
 						<ul className='items-center sm:flex'>
-							{!user ? (
+							{!userDetails ? (
 								rightLinks?.map((el) => (
 									<li key={el.id}>
 										<NavLink

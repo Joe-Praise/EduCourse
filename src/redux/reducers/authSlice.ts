@@ -1,5 +1,8 @@
+import { getLocalStorage } from '../../util/helperFunctions/helper';
 import * as types from '../constants/authConstants';
 import { user } from './userSlice';
+
+const authToken = getLocalStorage('profile')?.token;
 
 type authState = {
 	userData: user;
@@ -8,6 +11,7 @@ type authState = {
 	signInError: string;
 	signUpError: string[];
 	successMessage: string;
+	isLoading: boolean;
 };
 
 const initialState: authState = {
@@ -19,10 +23,11 @@ const initialState: authState = {
 		role: '',
 	},
 	refreshToken: '',
-	token: '',
+	token: authToken || null,
 	signInError: '',
 	successMessage: '',
 	signUpError: [],
+	isLoading: true,
 };
 
 const authReducer = (state = initialState, action: any) => {
@@ -58,6 +63,7 @@ const authReducer = (state = initialState, action: any) => {
 				successMessage: null,
 				signInError: null,
 				signUpError: payload ? payload : [],
+				isLoading: false,
 			};
 
 		case types.SIGNIN_SUCCESS:
@@ -68,6 +74,7 @@ const authReducer = (state = initialState, action: any) => {
 				refreshToken: payload ? payload.refreshToken : null,
 				signInError: null,
 				successMessage: payload ? payload?.status : null,
+				isLoading: false,
 			};
 
 		case types.SIGNIN_FAIL:
@@ -86,6 +93,7 @@ const authReducer = (state = initialState, action: any) => {
 				signInError: null,
 				signUpError: [],
 				successMessage: null,
+				isLoading: false,
 			};
 
 		case types.REFRESH_TOKEN_SUCCESS:
@@ -104,6 +112,7 @@ const authReducer = (state = initialState, action: any) => {
 				signUpError: [],
 				signInError: null,
 				successMessage: null,
+				isLoading: false,
 			};
 		case types.CLEAR_MESSAGE:
 			return {

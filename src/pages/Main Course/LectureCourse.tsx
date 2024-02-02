@@ -1,9 +1,9 @@
 import { FC, useEffect, useState } from 'react';
 import VideoSection from '../../components/Lecture Course/VideoSection';
-import LayoutFooter from '../../widgets/LayoutFooter/ui/LayoutFooter';
+import LayoutFooter from '../../widgets/LayoutFooter/LayoutFooter';
 import { IoClose } from 'react-icons/io5';
 import Accordion from '../../components/shared/Accordion';
-import { accordionType } from '../Courses/types/courseType';
+import { accordionType } from '../Courses/courseType';
 import RenderIf from '../../components/shared/RenderIf';
 import { FaArrowLeft } from 'react-icons/fa';
 import LectureHeader from '../../components/Lecture Course/LectureHeader';

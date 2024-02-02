@@ -4,10 +4,10 @@ import FilterStructure from '../../components/shared/FilterStructure';
 import FilterActionMenu from '../../components/shared/FilterActionMenu';
 import BlogCard from '../../components/Blog/BlogCard';
 import { useDispatch, useSelector } from 'react-redux';
-// import { setFilter } from '../../../redux/reducers/courseSlice';
 import { setFilter } from '../../redux/actions/courseAction';
 import { RootState } from '../../redux/store';
 import { FaFilter } from 'react-icons/fa';
+import { FilterType } from '../../components/shared/type';
 
 const Blog: FC = () => {
 	const dispatch = useDispatch();
@@ -104,11 +104,79 @@ const Blog: FC = () => {
 		},
 	];
 
-	const arr2 = Array.from(Array(5), () => 0);
+	type tagType = { _id: string; name: string };
+
+	interface overAll {
+		Category: FilterType[];
+		Tags: tagType[];
+	}
+
+	const dataClone: overAll = {
+		Category: [
+			{
+				_id: '658ab986d421165a9bf08666',
+				name: 'building',
+			},
+			{
+				_id: '65bccf37a4916e592cd7a757',
+				name: 'Development',
+			},
+			{
+				_id: '65bccf5ba4916e592cd7a75a',
+				name: 'Business',
+			},
+			{
+				_id: '65bccf70a4916e592cd7a75d',
+				name: 'Finance & Accounting',
+			},
+			{
+				_id: '65bccf85a4916e592cd7a760',
+				name: 'IT & Software',
+			},
+			{
+				_id: '65bccfc2a4916e592cd7a763',
+				name: 'Office Productivity',
+			},
+			{
+				_id: '65bccfdba4916e592cd7a766',
+				name: 'Personal Development',
+			},
+			{
+				_id: '65bccfe8a4916e592cd7a769',
+				name: 'Design',
+			},
+			{
+				_id: '65bccff5a4916e592cd7a76c',
+				name: 'Marketing',
+			},
+			{
+				_id: '65bcd009a4916e592cd7a76f',
+				name: 'Life Style',
+			},
+			{
+				_id: '65bcd01fa4916e592cd7a772',
+				name: 'Photography & Video',
+			},
+			{
+				_id: '65bcd02ea4916e592cd7a775',
+				name: 'Health & Fitness',
+			},
+			{
+				_id: '65bcd042a4916e592cd7a778',
+				name: 'Music',
+			},
+			{
+				_id: '65bcd057a4916e592cd7a77b',
+				name: 'Teaching & Academics',
+			},
+		],
+		Tags: [{ _id: '658aca7bf5797e2701fcbd28', name: 'Education' }],
+	};
+
 	useEffect(() => {}, [activeLayout, setActiveLayout]);
 	return (
 		<FilterStructure
-			title={'All Blogs'}
+			title={'Articles'}
 			searchFunc={handleSearch}
 			layoutFunc={handleLayoutChange}
 			children1={
@@ -130,8 +198,9 @@ const Blog: FC = () => {
 			}
 			children2={
 				<>
-					{arr2.map((_, i) => {
-						return <FilterActionMenu header={'Courses Category'} key={i} />;
+					{Object.entries(dataClone).map(([key, value], i) => {
+						// console.log(key, value);
+						return <FilterActionMenu header={key} values={value} key={i} />;
 					})}
 
 					<div

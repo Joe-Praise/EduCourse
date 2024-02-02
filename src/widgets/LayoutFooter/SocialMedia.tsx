@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { Link } from 'react-router-dom';
-import { socialMediaProp } from '../models/LayoutFooterModels';
+import { socialMediaProp } from './LayoutFooterModels';
 
 const SocialMedia: FC<socialMediaProp> = ({ path, Icon }) => {
 	return (

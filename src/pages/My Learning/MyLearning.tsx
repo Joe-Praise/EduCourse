@@ -1,15 +1,17 @@
 import { ChangeEvent, FC, useEffect, useState } from 'react';
-import img from '../../assets/image/card5.jpg';
+import LayoutHeader from '../../widgets/LayoutHeader/LayoutHeader';
+import LayoutFooter from '../../widgets/LayoutFooter/LayoutFooter';
 import FilterStructure from '../../components/shared/FilterStructure';
-import FilterActionMenu from '../../components/shared/FilterActionMenu';
-import CourseCard from '../../components/Course/CourseCard';
-import { FaFilter } from 'react-icons/fa';
+import img from '../../assets/image/card5.jpg';
 import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../redux/reducers';
 import { setFilter } from '../../redux/actions/courseAction';
-import { RootState } from '../../redux/store';
+import CourseCard from '../../components/Course/CourseCard';
+import FilterActionMenu from '../../components/shared/FilterActionMenu';
+import { FaFilter } from 'react-icons/fa6';
 import { FilterType } from '../../components/shared/type';
 
-const Course: FC = () => {
+const MyLearning: FC = () => {
 	const dispatch = useDispatch();
 	const displayFilter = useSelector(
 		(state: RootState) => state.course.filterState
@@ -207,51 +209,58 @@ const Course: FC = () => {
 		],
 		Level: [{ _id: 'All Levels', name: 'All Levels' }],
 	};
-
+	// const arr2 = Array.from(Array(5), () => 0);
 	useEffect(() => {}, [activeLayout, setActiveLayout]);
 	return (
-		<FilterStructure
-			title={'All Courses'}
-			searchFunc={handleSearch}
-			layoutFunc={handleLayoutChange}
-			children1={
-				<>
-					{courses.map((el, i) => {
-						return (
-							<CourseCard
-								key={i}
-								img={el.img}
-								instructor={el.instructor}
-								coureTitle={el.coureTitle}
-								createdAt={el.createdAt}
-								noOfStudents={el.noOfStudents}
-								price={el.price}
-								category={el.category}
-								activeLayout={el.activeLayout}
-							/>
-						);
-					})}
-				</>
-			}
-			children2={
-				<>
-					{Object.entries(dataClone).map(([key, value], i) => {
-						// console.log(key, value);
-						return <FilterActionMenu header={key} values={value} key={i} />;
-					})}
+		<>
+			<LayoutHeader />
+			<main className='min-h-[65.1vh] py-5'>
+				<FilterStructure
+					title={'My Learning'}
+					searchFunc={handleSearch}
+					layoutFunc={handleLayoutChange}
+					children1={
+						<>
+							{courses.map((el, i) => {
+								return (
+									<CourseCard
+										key={i}
+										img={el.img}
+										instructor={el.instructor}
+										coureTitle={el.coureTitle}
+										createdAt={el.createdAt}
+										noOfStudents={el.noOfStudents}
+										price={el.price}
+										category={el.category}
+										activeLayout={el.activeLayout}
+									/>
+								);
+							})}
+						</>
+					}
+					children2={
+						<>
+							{Object.entries(dataClone).map(([key, value], i) => {
+								return <FilterActionMenu header={key} values={value} key={i} />;
+							})}
 
-					<div
-						className='flex absolute top-0 right-0 sm:hidden'
-						onClick={handleCloseFilterOnMobile}
-					>
-						<p className='font-bold'>Filter</p>
-						<FaFilter className={displayFilter ? 'fill-effect-active' : ''} />
-					</div>
-				</>
-			}
-			activeLayout={activeLayout}
-		/>
+							<div
+								className='flex absolute top-0 right-0 sm:hidden'
+								onClick={handleCloseFilterOnMobile}
+							>
+								<p className='font-bold'>Filter</p>
+								<FaFilter
+									className={displayFilter ? 'fill-effect-active' : ''}
+								/>
+							</div>
+						</>
+					}
+					activeLayout={activeLayout}
+				/>
+			</main>
+			<LayoutFooter />
+		</>
 	);
 };
 
-export default Course;
+export default MyLearning;

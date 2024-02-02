@@ -31,11 +31,17 @@ type SignInFailAction = {
 	payload: any; // Adjust the payload type accordingly
 };
 
+type RefreshTokenFail = {
+	type: typeof types.REFRESH_TOKEN_FAIL;
+	payload: any;
+};
+
 export type AuthActionTypes =
 	| SignUpSuccessAction
 	| SignUpFailAction
 	| SignInSuccessAction
-	| SignInFailAction;
+	| SignInFailAction
+	| RefreshTokenFail;
 
 // Correctly align the ThunkDispatch type
 // type ThunkDispatchType = ThunkDispatch<
@@ -121,6 +127,38 @@ export const signInAction =
 			navigate('/signin');
 		}
 	};
+
+export const isLoggedIn = (): AppThunk => async (dispatch: AppDispatch) => {
+	try {
+		const response = await api.checkToken();
+		const { error, data } = response;
+		if (error) {
+			// done in order to hide the loading page as we have unprotected routes
+			dispatch({
+				type: types.REFRESH_TOKEN_FAIL,
+				payload: error,
+			});
+		} else {
+			const { data: user, token, status } = data;
+			const profile = {
+				user: user?.user,
+				token,
+				status,
+			};
+
+			saveLocalStorage(profile, 'profile');
+			dispatch({
+				type: types.SIGNIN_SUCCESS,
+				payload: profile,
+			});
+		}
+	} catch (error) {
+		await dispatch({
+			type: types.SIGNIN_FAIL,
+			payload: types.ERROR_MESSAGE,
+		});
+	}
+};
 
 export const logoutAction = () => {
 	try {

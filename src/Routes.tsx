@@ -7,6 +7,7 @@ import {
 	Blog,
 	LectureCourse,
 	SingleBlog,
+	MyLearning,
 } from './pages/index';
 
 export const publicRoutes = [
@@ -36,6 +37,10 @@ export const protectedRoutes = [
 	{
 		path: 'courses/lecture/:id',
 		component: LectureCourse,
+	},
+	{
+		path: 'my-courses/learning',
+		component: MyLearning,
 	},
 ];
 
