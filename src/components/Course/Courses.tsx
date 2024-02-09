@@ -1,8 +1,10 @@
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import CourseCard from './CourseCard';
-import img from '../../assets/image/card3.jpg';
+// import img from '../../assets/image/card3.jpg';
 import CardsPlaceholder from '../Home/CardsPlaceholder';
-import { courseCardType } from '../../pages/Home/homePageType';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../redux/store';
+import { getCoursesAction } from '../../redux/actions/courseAction';
 // import { getLocalStorage } from '../../util/helperFunctions/helper';
 
 const Courses: FC = () => {
@@ -23,79 +25,87 @@ const Courses: FC = () => {
 	// const storedData: LocalStorageData = getLocalStorage('user');
 
 	// console.log(storedData, 'data');
+	const dispatch: AppDispatch = useDispatch();
+	const coursesData = useSelector((state: RootState) => state.course.course);
 
-	const courses: courseCardType[] = [
-		{
-			img,
-			instructor: 'Joe Praise',
-			coureTitle: 'React and Redux master class',
-			createdAt: '1-01-2024',
-			noOfStudents: '1',
-			price: '45',
-			category: 'Programming',
-			activeLayout: 'grid',
-		},
-		{
-			img,
-			instructor: 'Joe Praise',
-			coureTitle: 'React and Redux master class',
-			createdAt: '12-01-2024',
-			noOfStudents: '50',
-			price: '45',
-			category: 'Programming',
-			activeLayout: 'grid',
-		},
-		{
-			img,
-			instructor: 'Joe Praise',
-			coureTitle: 'React and Redux master class',
-			createdAt: '12-01-2024',
-			noOfStudents: '50',
-			price: '45',
-			category: 'Programming',
-			activeLayout: 'grid',
-		},
-		{
-			img,
-			instructor: 'Joe Praise',
-			coureTitle: 'React and Redux master class',
-			createdAt: '12-01-2024',
-			noOfStudents: '50',
-			price: '45',
-			category: 'Programming',
-			activeLayout: 'grid',
-		},
-		{
-			img,
-			instructor: 'Joe Praise',
-			coureTitle: 'React and Redux master class',
-			createdAt: '12-01-2024',
-			noOfStudents: '50',
-			price: '45',
-			category: 'Programming',
-			activeLayout: 'grid',
-		},
-		{
-			img,
-			instructor: 'Joe Praise',
-			coureTitle: 'React and Redux master class',
-			createdAt: '12-01-2024',
-			noOfStudents: '50',
-			price: '45',
-			category: 'Programming',
-			activeLayout: 'grid',
-		},
-		{
-			img,
-			instructor: 'Joe Praise',
-			coureTitle: 'React and Redux master class',
-			createdAt: '12-01-2024',
-			noOfStudents: '50',
-			price: '45',
-			category: 'Programming',
-			activeLayout: 'grid',
-		},
-	];
+	useEffect(() => {
+		dispatch(getCoursesAction({ page: '1', limit: '6' }));
+	}, [dispatch]);
+
+	// console.log(coursesData.data);
+
+	// const courses: courseCardType[] = [
+	// 	{
+	// 		img,
+	// 		instructor: 'Joe Praise',
+	// 		coureTitle: 'React and Redux master class',
+	// 		createdAt: '1-01-2024',
+	// 		noOfStudents: '1',
+	// 		price: '45',
+	// 		category: 'Programming',
+	// 		activeLayout: 'grid',
+	// 	},
+	// 	{
+	// 		img,
+	// 		instructor: 'Joe Praise',
+	// 		coureTitle: 'React and Redux master class',
+	// 		createdAt: '12-01-2024',
+	// 		noOfStudents: '50',
+	// 		price: '45',
+	// 		category: 'Programming',
+	// 		activeLayout: 'grid',
+	// 	},
+	// 	{
+	// 		img,
+	// 		instructor: 'Joe Praise',
+	// 		coureTitle: 'React and Redux master class',
+	// 		createdAt: '12-01-2024',
+	// 		noOfStudents: '50',
+	// 		price: '45',
+	// 		category: 'Programming',
+	// 		activeLayout: 'grid',
+	// 	},
+	// 	{
+	// 		img,
+	// 		instructor: 'Joe Praise',
+	// 		coureTitle: 'React and Redux master class',
+	// 		createdAt: '12-01-2024',
+	// 		noOfStudents: '50',
+	// 		price: '45',
+	// 		category: 'Programming',
+	// 		activeLayout: 'grid',
+	// 	},
+	// 	{
+	// 		img,
+	// 		instructor: 'Joe Praise',
+	// 		coureTitle: 'React and Redux master class',
+	// 		createdAt: '12-01-2024',
+	// 		noOfStudents: '50',
+	// 		price: '45',
+	// 		category: 'Programming',
+	// 		activeLayout: 'grid',
+	// 	},
+	// 	{
+	// 		img,
+	// 		instructor: 'Joe Praise',
+	// 		coureTitle: 'React and Redux master class',
+	// 		createdAt: '12-01-2024',
+	// 		noOfStudents: '50',
+	// 		price: '45',
+	// 		category: 'Programming',
+	// 		activeLayout: 'grid',
+	// 	},
+	// 	{
+	// 		img,
+	// 		instructor: 'Joe Praise',
+	// 		coureTitle: 'React and Redux master class',
+	// 		createdAt: '12-01-2024',
+	// 		noOfStudents: '50',
+	// 		price: '45',
+	// 		category: 'Programming',
+	// 		activeLayout: 'grid',
+	// 	},
+	// ];
 
 	return (
 		<CardsPlaceholder
@@ -106,21 +116,9 @@ const Courses: FC = () => {
 			className='grid-cols-1 sm:grid-cols-3 sm:gap-4 gap-y-8'
 		>
 			<>
-				{courses.map((el, id) => {
+				{coursesData?.data.map((el: any, id: any) => {
 					if (id <= 5) {
-						return (
-							<CourseCard
-								key={id}
-								img={el.img}
-								instructor={el.instructor}
-								coureTitle={el.coureTitle}
-								createdAt={el.createdAt}
-								noOfStudents={el.noOfStudents}
-								price={el.price}
-								category={el.category}
-								activeLayout={el.activeLayout}
-							/>
-						);
+						return <CourseCard key={el._id} activeLayout='grid' {...el} />;
 					}
 				})}
 			</>

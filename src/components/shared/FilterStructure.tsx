@@ -24,7 +24,6 @@ const FilterStructure: FC<{
 	const displayFilter = useSelector(
 		(state: RootState) => state.course.filterState
 	);
-
 	return (
 		<section className='grid grid-cols-6 gap-3 xl:gap-12 mt-2 relative layoutWidth'>
 			<div className='col-start-1 col-span-6 sm:col-span-4'>

@@ -1,19 +1,22 @@
 import { ChangeEvent, FC, useEffect, useState } from 'react';
-import img from '../../assets/image/card5.jpg';
+// import img from '../../assets/image/card5.jpg';
 import FilterStructure from '../../components/shared/FilterStructure';
 import FilterActionMenu from '../../components/shared/FilterActionMenu';
 import CourseCard from '../../components/Course/CourseCard';
 import { FaFilter } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
-import { setFilter } from '../../redux/actions/courseAction';
-import { RootState } from '../../redux/store';
+import { getCoursesAction, setFilter } from '../../redux/actions/courseAction';
+import { AppDispatch, RootState } from '../../redux/store';
 import { FilterType } from '../../components/shared/type';
+// import { Instructor, Category } from '../Home/homePageType';
 
 const Course: FC = () => {
-	const dispatch = useDispatch();
-	const displayFilter = useSelector(
-		(state: RootState) => state.course.filterState
-	);
+	const dispatch: AppDispatch = useDispatch();
+	const courseState = useSelector((state: RootState) => state.course);
+
+	const displayFilter = courseState.filterState;
+	const coursesData = courseState.course;
+
 	const [activeLayout, setActiveLayout] = useState('grid');
 
 	const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
@@ -28,89 +31,93 @@ const Course: FC = () => {
 		dispatch(setFilter());
 	};
 
-	interface cardProps {
-		img: string;
-		instructor: string;
-		coureTitle: string;
-		createdAt: string;
-		noOfStudents: string;
-		price: string;
-		category: string;
-		activeLayout: string;
-	}
+	useEffect(() => {
+		dispatch(getCoursesAction({ page: '1', limit: '6' }));
+	}, [dispatch]);
 
-	const courses: cardProps[] = [
-		{
-			img,
-			instructor: 'Joe Praise',
-			coureTitle: 'React and Redux master class',
-			createdAt: '1-01-2024',
-			noOfStudents: '1',
-			price: '45',
-			category: 'Programming',
-			activeLayout,
-		},
-		{
-			img,
-			instructor: 'Joe Praise',
-			coureTitle: 'React and Redux master class',
-			createdAt: '12-01-2024',
-			noOfStudents: '50',
-			price: '45',
-			category: 'Programming',
-			activeLayout,
-		},
-		{
-			img,
-			instructor: 'Joe Praise',
-			coureTitle: 'React and Redux master class',
-			createdAt: '12-01-2024',
-			noOfStudents: '50',
-			price: '45',
-			category: 'Programming',
-			activeLayout,
-		},
-		{
-			img,
-			instructor: 'Joe Praise',
-			coureTitle: 'React and Redux master class',
-			createdAt: '12-01-2024',
-			noOfStudents: '50',
-			price: '45',
-			category: 'Programming',
-			activeLayout,
-		},
-		{
-			img,
-			instructor: 'Joe Praise',
-			coureTitle: 'React and Redux master class',
-			createdAt: '12-01-2024',
-			noOfStudents: '50',
-			price: '45',
-			category: 'Programming',
-			activeLayout,
-		},
-		{
-			img,
-			instructor: 'Joe Praise',
-			coureTitle: 'React and Redux master class',
-			createdAt: '12-01-2024',
-			noOfStudents: '50',
-			price: '45',
-			category: 'Programming',
-			activeLayout,
-		},
-		{
-			img,
-			instructor: 'Joe Praise',
-			coureTitle: 'React and Redux master class',
-			createdAt: '12-01-2024',
-			noOfStudents: '50',
-			price: '45',
-			category: 'Programming',
-			activeLayout,
-		},
-	];
+	// interface cardProps {
+	// 	img: string;
+	// 	instructor: string;
+	// 	coureTitle: string;
+	// 	createdAt: string;
+	// 	noOfStudents: string;
+	// 	price: string;
+	// 	category: string;
+	// 	activeLayout: string;
+	// }
+
+	// const courses: cardProps[] = [
+	// 	{
+	// 		img,
+	// 		instructor: 'Joe Praise',
+	// 		coureTitle: 'React and Redux master class',
+	// 		createdAt: '1-01-2024',
+	// 		noOfStudents: '1',
+	// 		price: '45',
+	// 		category: 'Programming',
+	// 		activeLayout,
+	// 	},
+	// 	{
+	// 		img,
+	// 		instructor: 'Joe Praise',
+	// 		coureTitle: 'React and Redux master class',
+	// 		createdAt: '12-01-2024',
+	// 		noOfStudents: '50',
+	// 		price: '45',
+	// 		category: 'Programming',
+	// 		activeLayout,
+	// 	},
+	// 	{
+	// 		img,
+	// 		instructor: 'Joe Praise',
+	// 		coureTitle: 'React and Redux master class',
+	// 		createdAt: '12-01-2024',
+	// 		noOfStudents: '50',
+	// 		price: '45',
+	// 		category: 'Programming',
+	// 		activeLayout,
+	// 	},
+	// 	{
+	// 		img,
+	// 		instructor: 'Joe Praise',
+	// 		coureTitle: 'React and Redux master class',
+	// 		createdAt: '12-01-2024',
+	// 		noOfStudents: '50',
+	// 		price: '45',
+	// 		category: 'Programming',
+	// 		activeLayout,
+	// 	},
+	// 	{
+	// 		img,
+	// 		instructor: 'Joe Praise',
+	// 		coureTitle: 'React and Redux master class',
+	// 		createdAt: '12-01-2024',
+	// 		noOfStudents: '50',
+	// 		price: '45',
+	// 		category: 'Programming',
+	// 		activeLayout,
+	// 	},
+	// 	{
+	// 		img,
+	// 		instructor: 'Joe Praise',
+	// 		coureTitle: 'React and Redux master class',
+	// 		createdAt: '12-01-2024',
+	// 		noOfStudents: '50',
+	// 		price: '45',
+	// 		category: 'Programming',
+	// 		activeLayout,
+	// 	},
+	// 	{
+	// 		img,
+	// 		instructor: 'Joe Praise',
+	// 		coureTitle: 'React and Redux master class',
+	// 		createdAt: '12-01-2024',
+	// 		noOfStudents: '50',
+	// 		price: '45',
+	// 		category: 'Programming',
+	// 		activeLayout,
+	// 	},
+	// ];
 
 	type priceCategory = { _id: string; name: 'Free' | 'Paid' };
 
@@ -216,19 +223,9 @@ const Course: FC = () => {
 			layoutFunc={handleLayoutChange}
 			children1={
 				<>
-					{courses.map((el, i) => {
+					{coursesData?.data?.map((el: any) => {
 						return (
-							<CourseCard
-								key={i}
-								img={el.img}
-								instructor={el.instructor}
-								coureTitle={el.coureTitle}
-								createdAt={el.createdAt}
-								noOfStudents={el.noOfStudents}
-								price={el.price}
-								category={el.category}
-								activeLayout={el.activeLayout}
-							/>
+							<CourseCard key={el._id} activeLayout={activeLayout} {...el} />
 						);
 					})}
 				</>

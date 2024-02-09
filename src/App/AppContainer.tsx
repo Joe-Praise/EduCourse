@@ -16,8 +16,7 @@ const AppContainer: FC = () => {
 	useEffect(() => {
 		const Validatetoken = async () => {
 			if (token) {
-				console.log('issues here');
-				await dispatch(isLoggedIn());
+				dispatch(isLoggedIn());
 			} else {
 				setTimeout(() => {
 					dispatch({

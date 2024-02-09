@@ -59,7 +59,7 @@ export type AuthActionTypes =
 export type AppDispatchType = AppDispatch;
 
 // Correctly align the AppThunk type
-export type AppThunk<ReturnType = void> = ThunkAction<
+export type AuthThunk<ReturnType = void> = ThunkAction<
 	ReturnType,
 	RootState,
 	undefined,
@@ -67,7 +67,7 @@ export type AppThunk<ReturnType = void> = ThunkAction<
 >;
 
 export const signUpAction =
-	(details: api.signUpType, navigate: NavigateFunction): AppThunk =>
+	(details: api.signUpType, navigate: NavigateFunction): AuthThunk =>
 	async (dispatch: AppDispatch) => {
 		try {
 			localStorage.removeItem('profile');
@@ -94,7 +94,7 @@ export const signUpAction =
 	};
 
 export const signInAction =
-	(details: api.signInType, navigate: NavigateFunction): AppThunk =>
+	(details: api.signInType, navigate: NavigateFunction): AuthThunk =>
 	async (dispatch: AppDispatch) => {
 		try {
 			const response = await api.signIn(details);
@@ -128,7 +128,7 @@ export const signInAction =
 		}
 	};
 
-export const isLoggedIn = (): AppThunk => async (dispatch: AppDispatch) => {
+export const isLoggedIn = (): AuthThunk => async (dispatch: AppDispatch) => {
 	try {
 		const response = await api.checkToken();
 		const { error, data } = response;
@@ -153,7 +153,7 @@ export const isLoggedIn = (): AppThunk => async (dispatch: AppDispatch) => {
 			});
 		}
 	} catch (error) {
-		await dispatch({
+		dispatch({
 			type: types.SIGNIN_FAIL,
 			payload: types.ERROR_MESSAGE,
 		});

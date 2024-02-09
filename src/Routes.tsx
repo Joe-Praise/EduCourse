@@ -16,7 +16,7 @@ export const publicRoutes = [
 		component: Courses,
 		children: [
 			{
-				path: ':id',
+				path: ':slug',
 				component: SingleCourse,
 			},
 		],
@@ -26,7 +26,7 @@ export const publicRoutes = [
 		component: Blog,
 		children: [
 			{
-				path: ':id',
+				path: ':slug',
 				component: SingleBlog,
 			},
 		],

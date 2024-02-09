@@ -64,3 +64,8 @@ export const truncateValue = (value: string, trunc: boolean, limit: number) => {
 		return value;
 	}
 };
+
+export const formatAmount = (amount: number) => {
+	const formattedAmount = amount.toLocaleString('en-US');
+	return formattedAmount;
+};

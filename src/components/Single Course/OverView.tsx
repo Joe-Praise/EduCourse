@@ -1,28 +1,71 @@
-const OverView = () => {
+import { useEffect, useState } from 'react';
+
+const OverView = (props: any) => {
+	const { description } = props;
+	const [curatedText, setCuratedText] = useState<string[]>([]);
+
+	// const value =
+	// 	'Lorem ipsum dolor, sit amet consectetur adipisicing elit./n Odit libero facere labore voluptatibus enim hic corrupti esse, eius dolore tempore eveniet quae, accusantium dolorum dicta velit?/n At qui, necessitatibus asperiores provident voluptatum sed aliquid et deserunt, nesciunt voluptas adipisci eos suscipit assumenda./n Adipisci aspernatur esse labore dignissimos quibusdam recusandae modi.';
+
+	const formatText = (value: string) => {
+		let check = '/n';
+		if (check.length >= value.length) {
+			return '';
+		}
+
+		let newString = [];
+		let accumulatedStr = '';
+		let skipIndex = [];
+
+		for (let i = 0; i < value.length; i++) {
+			// if current str and next str is /n
+			if (value[i] + value[i + 1] === check) {
+				// push existing string to newString as one paragraph
+				newString.push(accumulatedStr);
+
+				// check if index has passed last index of the last /n(new line) encountered
+				if (i > skipIndex[0] || i > skipIndex[1]) {
+					// if true, reset the variable
+					skipIndex = [];
+				}
+
+				// push the index of / & n to array
+				skipIndex.push(i);
+				skipIndex.push(i + 1);
+
+				// clear the existing paragraph accumulator
+				accumulatedStr = '';
+			}
+
+			// if index gets to the /n index, skip them and dont add /n to the string accumulated str
+			if (i === skipIndex[0] || i === skipIndex[1]) {
+				continue;
+			}
+
+			// accumulate str that comes before /n(new line)
+			accumulatedStr += value[i];
+		}
+
+		// if any string still exists in the accumulated str add it to arr
+		if (accumulatedStr.length) {
+			newString.push(accumulatedStr);
+		}
+
+		// set arr to description state.
+		setCuratedText(newString);
+	};
+
+	useEffect(() => {
+		formatText(description);
+	}, [description]);
+
 	return (
 		<div className='p-2'>
-			Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil quia
-			perferendis harum, obcaecati, consectetur similique eveniet neque quam
-			quae itaque fuga accusamus architecto, dolorem iure unde animi dolorum!
-			Minus impedit officiis aliquam omnis blanditiis, aut ad nesciunt autem
-			beatae vel perferendis architecto saepe quis, atque quo accusantium
-			dolores eos fugiat necessitatibus quod. Hic eligendi dolorum vitae totam
-			unde tenetur assumenda illo, eos expedita nam porro similique. Excepturi
-			atque velit nisi inventore voluptates quibusdam, consequatur eos non
-			temporibus unde illum rem rerum dolorum voluptatem aperiam. Sapiente ea
-			fugit cumque, sint consectetur nesciunt quia quae dolore possimus ipsa
-			error impedit veniam porro qui hic minima repellat voluptas aut
-			laboriosam. Molestias cumque excepturi, optio possimus ratione quasi, sed
-			sint, tempore veniam non nesciunt? Ex beatae error sint nulla odio. Quod
-			porro eaque minus perspiciatis deserunt cumque repudiandae magnam magni
-			molestias, expedita, sit unde autem officiis. Error hic saepe repudiandae
-			natus a obcaecati, alias labore, optio id officiis architecto nobis
-			blanditiis illo! Earum excepturi mollitia nihil quia, voluptatibus quae
-			labore provident aliquam, at doloremque commodi enim totam necessitatibus
-			cupiditate qui iste doloribus deleniti ipsa, obcaecati nam reiciendis
-			distinctio et ullam aspernatur! Impedit eveniet nobis quos sint
-			voluptatibus? Sapiente, voluptatibus quam inventore assumenda labore
-			distinctio.
+			{curatedText.map((el, index) => (
+				<p key={index} className='mt-3'>
+					{el}
+				</p>
+			))}
 		</div>
 	);
 };
