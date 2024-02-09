@@ -7,6 +7,7 @@ import {
 	Blog,
 	LectureCourse,
 	SingleBlog,
+	MyLearning,
 } from './pages/index';
 
 export const publicRoutes = [
@@ -15,7 +16,7 @@ export const publicRoutes = [
 		component: Courses,
 		children: [
 			{
-				path: ':id',
+				path: ':slug',
 				component: SingleCourse,
 			},
 		],
@@ -25,7 +26,7 @@ export const publicRoutes = [
 		component: Blog,
 		children: [
 			{
-				path: ':id',
+				path: ':slug',
 				component: SingleBlog,
 			},
 		],
@@ -36,6 +37,10 @@ export const protectedRoutes = [
 	{
 		path: 'courses/lecture/:id',
 		component: LectureCourse,
+	},
+	{
+		path: 'my-courses/learning',
+		component: MyLearning,
 	},
 ];
 

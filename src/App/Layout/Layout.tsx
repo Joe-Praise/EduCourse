@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { Outlet } from 'react-router-dom';
-import LayoutHeader from '../../widgets/LayoutHeader/ui/LayoutHeader';
-import LayoutFooter from '../../widgets/LayoutFooter/ui/LayoutFooter';
+import LayoutHeader from '../../widgets/LayoutHeader/LayoutHeader';
+import LayoutFooter from '../../widgets/LayoutFooter/LayoutFooter';
 
 const Layout: FC = () => {
 	return (

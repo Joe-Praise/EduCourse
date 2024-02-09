@@ -8,6 +8,7 @@ import { RootState } from '../redux/reducers';
 
 import { authRoutes, protectedRoutes, publicRoutes } from '../Routes';
 import PrivateRoutes from './PrivateRoutes';
+import NotFound from '../pages/Not Found/NotFound';
 
 // import the admin login page with lazy loading
 // const AdminPanel = lazy(() => import("./pages/AdminPanel"));
@@ -17,7 +18,6 @@ const App: FC = () => {
 	const userData = useSelector((state: RootState) => state.user?.userObj);
 
 	return (
-		// <BrowserRouter>
 		<Routes>
 			<Route path='/' element={<Layout />}>
 				<Route index element={<Home />} />
@@ -55,9 +55,8 @@ const App: FC = () => {
 				/>
 			))}
 
-			<Route path='*' element={<div>404</div>} />
+			<Route path='*' element={<NotFound />} />
 		</Routes>
-		// </BrowserRouter>
 	);
 };
 

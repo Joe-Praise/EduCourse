@@ -27,7 +27,7 @@ export const axiosInstance = axios.create({
 
 const decodeJwt = (jwt: string) => {
 	try {
-		return JSON.parse(atob(jwt));
+		return atob(jwt);
 	} catch (error) {
 		return '';
 	}

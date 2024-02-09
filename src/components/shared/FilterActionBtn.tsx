@@ -1,9 +1,14 @@
-import { FC, useState } from 'react';
+import { useState } from 'react';
 import { MdCheckBoxOutlineBlank } from 'react-icons/md';
 import { MdCheckBox } from 'react-icons/md';
 
+interface Iprop {
+	value: string[];
+}
 // type Dispatcher<S> = Dispatch<SetStateAction<S>>;
-const FilterActionBtn: FC = () => {
+const FilterActionBtn = (props: Iprop) => {
+	const { value } = props;
+	console.log(value);
 	const [isChecked, setIsChecked] = useState(false);
 
 	const handleChange = () => {
@@ -20,7 +25,6 @@ const FilterActionBtn: FC = () => {
 
 				<div className='flex gap-3 justify-between flex-1'>
 					<span>Commercial</span>
-					<span>15</span>
 				</div>
 			</li>
 		</>

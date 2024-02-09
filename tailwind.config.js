@@ -17,6 +17,7 @@ export default {
 					active: '#45A5CD',
 					focus: '#335664',
 				},
+				NotFound: '#204283',
 			},
 		},
 		fontFamily: {

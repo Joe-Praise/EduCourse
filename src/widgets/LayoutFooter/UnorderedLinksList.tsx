@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { Link } from 'react-router-dom';
-import { linkType } from '../../LayoutHeader/model/navigationType';
+import { linkType } from '../LayoutHeader/navigationType';
 
 const LinksList: FC<{ link: linkType[] }> = (props) => {
 	return (

@@ -30,3 +30,12 @@ export const signUp = async (details: signUpType) => {
 		return handleApiError(error);
 	}
 };
+
+export const checkToken = async () => {
+	try {
+		const { data } = await API.get('api/v1/users/checkToken');
+		return { error: null, data };
+	} catch (error) {
+		return handleApiError(error);
+	}
+};

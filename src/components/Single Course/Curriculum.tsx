@@ -1,4 +1,4 @@
-import { accordionType } from '../../pages/Courses/types/courseType';
+import { accordionType } from '../../pages/Courses/courseType';
 import Accordion from '../shared/Accordion';
 
 const Curriculum = () => {
