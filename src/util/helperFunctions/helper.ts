@@ -69,3 +69,20 @@ export const formatAmount = (amount: number) => {
 	const formattedAmount = amount.toLocaleString('en-US');
 	return formattedAmount;
 };
+
+export const capitalizeFirstLetters = (str: any) => {
+	let splitStr =
+		str.indexOf('-') !== -1
+			? str.toLowerCase().split('-')
+			: str.toLowerCase().split(' ');
+	let newArr = [],
+		result;
+	for (let i = 0; i < splitStr.length; i++) {
+		if (splitStr[i] !== '') {
+			let joinedStr = splitStr[i][0].toUpperCase() + splitStr[i].slice(1);
+			newArr.push(joinedStr);
+		}
+	}
+	result = newArr.join('');
+	return result;
+};

@@ -12,7 +12,10 @@ import DataBadge from '../shared/DataBadge';
 import { courseCardType } from '../../pages/Home/homePageType';
 import { handleDateFormat } from '../../util/helperFunctions/dateFormatter';
 import config from '../../../config';
-import { formatAmount } from '../../util/helperFunctions/helper';
+import {
+	capitalizeFirstLetters,
+	formatAmount,
+} from '../../util/helperFunctions/helper';
 
 export type headerbadge = {
 	title: string;
@@ -63,19 +66,26 @@ const HeaderContainer = (props: courseCardType) => {
 	return (
 		<section className='bg-black text-white p-2'>
 			<div className='layoutWidth flex md:justify-between relative flex-wrap gap-3 md:gap-0'>
-				<div className='basis-full sm:basis-auto '>
+				<div className='basis-full sm:basis-auto'>
 					<h3 className='mb-4'>
 						<Breadcrumbs />
 					</h3>
 					<div className='my-1'>
 						<div className='text-sm flex gap-2 items-center'>
 							<span className='p-2 bg-tertiary-color rounded-md text-black'>
-								<span className='text-xs font-bold'>{category?.name}</span>
+								<span className='text-xs font-bold'>
+									{capitalizeFirstLetters(category?.name)}
+								</span>
 							</span>
 							<span>by</span>
 							{instructors?.map((el, index, arr) => (
 								<span key={el._id}>
-									{index === arr.length - 1 ? '& ' : index > 0 ? ', ' : ''}
+									{index === arr.length - 1 && arr.length > 1
+										? '& '
+										: index > 0
+										? ', '
+										: ''}
+
 									{el?.userId.name}
 								</span>
 							))}
