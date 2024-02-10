@@ -65,3 +65,29 @@ export const getCourseBySlug = async <T>(slug: T): Promise<ApiResponse> => {
 		return handleApiError(error);
 	}
 };
+
+export const getCourseModules = async <T>(
+	courseId: T
+): Promise<ApiResponse> => {
+	try {
+		const { data } = await API.get<ApiResponse>(
+			`/api/v1/modules?courseId=${courseId}`
+		);
+		return data;
+	} catch (error) {
+		return handleApiError(error);
+	}
+};
+
+export const getCourseReviews = async <T>(
+	courseId: T
+): Promise<ApiResponse> => {
+	try {
+		const { data } = await API.get<ApiResponse>(
+			`/api/v1/courses/${courseId}/reviews`
+		);
+		return data;
+	} catch (error) {
+		return handleApiError(error);
+	}
+};

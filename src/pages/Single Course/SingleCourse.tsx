@@ -21,22 +21,24 @@ const SingleCourse: FC = () => {
 		console.log(commentText);
 	};
 
+	// console.log(singleCourse.modules);
+
 	useEffect(() => {
 		dispatch(getSingleCourseAction(slug));
 	}, [dispatch, slug]);
 
 	return (
 		<section>
-			{singleCourse?.data?.length && (
+			{singleCourse?.course?._id && (
 				<>
-					<HeaderContainer {...singleCourse?.data[0]} />
+					<HeaderContainer {...singleCourse?.course} />
 					<div className='layoutWidth flex mt-9'>
 						<div className='mx-auto md:mx-0 basis-2/3'>
 							<TabContainer
 								children1={
-									<OverView description={singleCourse?.data[0].description} />
+									<OverView description={singleCourse?.course?.description} />
 								}
-								children2={<Curriculum />}
+								children2={<Curriculum modules={singleCourse?.modules} />}
 								children3={<Instructor />}
 								children4={<Reviews />}
 							/>

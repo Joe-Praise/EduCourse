@@ -61,8 +61,19 @@ export const getSingleCourseAction =
 	(slug: any): CourseThunk =>
 	async (dispatch: AppDispatch) => {
 		try {
-			const response = await api.getCourseBySlug(slug);
-			const data = response;
+			let data: any = {};
+			const { data: courseData } = await api.getCourseBySlug(slug);
+			data.course = courseData[0];
+
+			if (data?.course?._id) {
+				const courseId = data?.course?._id;
+				const { data: moduleData } = await api.getCourseModules(courseId);
+				data.modules = moduleData;
+
+				// const { data: reviewData } = await api.getCourseReviews(courseId);
+				// data.reviews = reviewData;
+			}
+
 			dispatch({
 				type: types.GET_SINGLE_COURSE_SUCCESS,
 				payload: data,
