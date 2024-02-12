@@ -1,82 +1,78 @@
-import { socialMediaLinksIcons } from '../../widgets/LayoutFooter/LayoutFooterModels';
 import SocialMedia from '../../widgets/LayoutFooter/SocialMedia';
-import { FaFacebookF, FaGraduationCap, FaYoutube } from 'react-icons/fa';
-import { FaXTwitter } from 'react-icons/fa6';
-import { FaPinterestP } from 'react-icons/fa';
-import { AiFillInstagram } from 'react-icons/ai';
+import { FaGraduationCap } from 'react-icons/fa';
 import { FaFile } from 'react-icons/fa6';
-import img from '../../assets/image/card2.jpg';
+import { FC, Fragment } from 'react';
+import config from '../../../config';
 
-const socials: socialMediaLinksIcons[] = [
-	{
-		id: 1,
-		path: '/facebook',
-		Icon: FaFacebookF,
-	},
-	{
-		id: 2,
-		path: '/twitter',
-		Icon: FaXTwitter,
-	},
-	{
-		id: 3,
-		path: '/pintrest',
-		Icon: FaPinterestP,
-	},
-	{
-		id: 4,
-		path: '/instagram',
-		Icon: AiFillInstagram,
-	},
-	{
-		id: 5,
-		path: '/youTube',
-		Icon: FaYoutube,
-	},
-];
+export interface InstructorType {
+	_id: string;
+	userId: UserID;
+	links: LinkType[];
+	__v: number;
+	description: string;
+}
 
-const Instructor = () => {
+export interface UserID {
+	_id: string;
+	name: string;
+	email: string;
+	role: string[];
+	photo: string;
+}
+
+export interface LinkType {
+	_id: string;
+	userId: string;
+	platform: string;
+	url: string;
+}
+
+const Instructor: FC<{ instructors: InstructorType[] }> = ({ instructors }) => {
 	return (
 		<div>
-			<div className='md:flex gap-3'>
-				{/* <div className='basis-[80%]'> */}
-				<figure className='w-full md:w-[600px] h-40'>
-					<img
-						src={img}
-						alt={'joe praise profile pic'}
-						className='h-full w-full rounded-lg object-cover'
-					/>
-				</figure>
-				{/* </div> */}
-				<div className='my-2 md:my-0'>
-					<h1>Joe Praise</h1>
-					<p>
-						Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores et
-						officia molestias ipsum ad perferendis quam soluta provident.
-						Repellendus, ea! Lorem ipsum dolor, sit amet consectetur adipisicing
-						elit. Delectus sequi tempora quibusdam corrupti, rerum vel ipsam
-						quidem saepe voluptate rem.
-					</p>
-					<div className='flex items-center gap-1'>
-						<FaGraduationCap />
-						<span>150 students</span>
+			{instructors?.map((el) => (
+				<Fragment key={el._id}>
+					<div className='md:flex gap-3'>
+						<figure className='w-full md:w-[150px] h-40'>
+							<img
+								src={`${config?.baseUrl}/img/${el?.userId?.photo}`}
+								alt={`${el?.userId?.name}'s display image`}
+								className='h-full w-full rounded-lg object-cover'
+							/>
+						</figure>
+						<div className='my-2 md:my-0'>
+							<h1>{el?.userId?.name}</h1>
+							<p>{el?.description}</p>
+							<div className='flex items-center gap-1'>
+								<FaGraduationCap />
+								<span>150 students</span>
+							</div>
+							<div className='flex items-center gap-1'>
+								<FaFile />
+								<span>20 courses</span>
+							</div>
+						</div>
 					</div>
-					<div className='flex items-center gap-1'>
-						<FaFile />
-						<span>20 courses</span>
+					<div className='flex items-center mt-2'>
+						<h2>Follow:</h2>
+						<ul>
+							<li className='flex gap-2 py-1'>
+								{/* TODO: Handle links on backend to be actual links */}
+								{el?.links?.map((socials) => {
+									console.log(typeof socials);
+									return (
+										<SocialMedia
+											platform={socials.platform}
+											url={socials.url}
+											key={socials._id}
+										/>
+									);
+								})}
+							</li>
+						</ul>
 					</div>
-				</div>
-			</div>
-			<div className='flex items-center mt-2'>
-				<h2>Follow:</h2>
-				<ul>
-					<li className='flex gap-2 py-1'>
-						{socials?.map((el) => (
-							<SocialMedia Icon={el.Icon} path={el.path} key={el.id} />
-						))}
-					</li>
-				</ul>
-			</div>
+				</Fragment>
+			))}
 		</div>
 	);
 };

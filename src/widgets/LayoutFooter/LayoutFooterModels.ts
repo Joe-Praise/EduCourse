@@ -13,6 +13,8 @@ export type contactUs = {
 };
 
 export type socialMediaProp = {
-	path: string;
-	Icon: IconType;
+	// path: string;
+	// Icon: IconType;
+	platform: string;
+	url: string;
 };
