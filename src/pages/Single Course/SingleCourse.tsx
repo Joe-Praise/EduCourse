@@ -21,7 +21,7 @@ const SingleCourse: FC = () => {
 		console.log(commentText);
 	};
 
-	// console.log(singleCourse.modules);
+	console.log(singleCourse);
 
 	useEffect(() => {
 		dispatch(getSingleCourseAction(slug));
@@ -39,7 +39,9 @@ const SingleCourse: FC = () => {
 									<OverView description={singleCourse?.course?.description} />
 								}
 								children2={<Curriculum modules={singleCourse?.modules} />}
-								children3={<Instructor />}
+								children3={
+									<Instructor instructors={singleCourse?.course?.instructors} />
+								}
 								children4={<Reviews />}
 							/>
 							<div className='mt-4'>
