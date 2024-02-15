@@ -4,12 +4,12 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
 import Pagination from './Pagination';
 
-type event = ChangeEvent<HTMLInputElement>;
+// type event = ChangeEvent<HTMLInputElement>;
 
 const FilterStructure: FC<{
 	title: string;
-	searchFunc: (e: ChangeEvent<HTMLInputElement>) => void;
-	layoutFunc: (value: string) => void;
+	searchFunc: (_: ChangeEvent<HTMLInputElement>) => void;
+	layoutFunc: (_: string) => void;
 	children1: ReactNode;
 	children2: ReactNode;
 	activeLayout: string;

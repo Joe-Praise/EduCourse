@@ -1,18 +1,38 @@
+import { useEffect } from 'react';
 import RatingStarsContainer from '../shared/RatingStarsContainer';
 import CommentCard from './CommentCard';
-const Review = () => {
+import { AppDispatch } from '../../redux/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { getCoursesReviewAction } from '../../redux/actions/reviewAction';
+import { RootState } from '../../redux/reducers';
+import { OmittedReviewDataType } from '../../redux/api/reviewApi';
+import { SingleCourseType } from '../../redux/api/courseAPI';
+
+interface Iprop {
+	course: SingleCourseType;
+}
+
+const Review = (props: Iprop) => {
+	const dispatch: AppDispatch = useDispatch();
+	const reviews = useSelector((state: RootState) => state.review.review);
 	const arr = Array.from(Array(4), () => 0);
+
+	const { course } = props;
+	useEffect(() => {
+		dispatch(getCoursesReviewAction({ page: '1', limit: '3' }, course?._id));
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
 	return (
 		<section>
 			<h1>Students Feedback</h1>
 			<RatingStarsContainer
-				rating={'4'}
-				// totalRating={'146,951'}
-				percentage={[100, 50, 10, 5, 22]}
+				rating={course?.ratingsAverage + ''}
+				percentage={course?.ratingSummary}
 			/>
-			<CommentCard />
-			<CommentCard />
-			<CommentCard />
+			{reviews?.data?.map((el: OmittedReviewDataType) => {
+				return <CommentCard key={el._id} {...el} />;
+			})}
 			<ul className='flex gap-2 justify-center mt-5'>
 				{arr.map((_, i) => {
 					return (
@@ -30,15 +50,3 @@ const Review = () => {
 };
 
 export default Review;
-// interface Iprop {
-// 	value: number;
-// 	star: number;
-// }
-
-// const percentage: Iprop[] = [
-// 	{ value: 100, star: 1 },
-// 	{ value: 5, star: 2 },
-// 	{ value: 10, star: 3 },
-// 	{ value: 30, star: 4 },
-// 	{ value: 20, star: 5 },
-// ];

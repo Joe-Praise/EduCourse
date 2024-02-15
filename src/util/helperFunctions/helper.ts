@@ -58,7 +58,8 @@ export const copyToClipBoard = (value: any) => {
 };
 
 export const truncateValue = (value: string, trunc: boolean, limit: number) => {
-	if (trunc) {
+	const longerThanLimit = value.length > limit;
+	if (trunc && longerThanLimit) {
 		return value.slice(0, limit) + '...';
 	} else {
 		return value;

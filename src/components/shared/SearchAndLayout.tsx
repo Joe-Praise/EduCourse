@@ -9,8 +9,8 @@ import { setFilter } from '../../redux/actions/courseAction';
 // import { stateBoolean } from '../pages/Courses/types/courseType';
 
 const SearchAndLayout: FC<{
-	handleSearch: (e: ChangeEvent<HTMLInputElement>) => void;
-	handleLayout: (value: string) => void;
+	handleSearch: (_: ChangeEvent<HTMLInputElement>) => void;
+	handleLayout: (_: string) => void;
 	activeLayout: string;
 }> = (props) => {
 	const dispatch = useDispatch();

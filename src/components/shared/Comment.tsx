@@ -2,7 +2,7 @@ import React, { FC, useRef } from 'react';
 import Button from './Button';
 
 type func = {
-	onCommentvalue: (commentText: string) => void;
+	onCommentvalue: (_: string) => void;
 };
 const Comment: FC<func> = ({ onCommentvalue }) => {
 	const commentRef = useRef<HTMLTextAreaElement>(null);
