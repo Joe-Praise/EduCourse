@@ -1,5 +1,5 @@
 import { FC, useEffect } from 'react';
-import Comment from '../../components/shared/Comment';
+// import Comment from '../../components/shared/Comment';
 import Curriculum from '../../components/Single Course/Curriculum';
 import HeaderContainer from '../../components/Single Course/HeaderContainer';
 import Instructor from '../../components/Single Course/Instructor';
@@ -16,10 +16,11 @@ const SingleCourse: FC = () => {
 	const singleCourse = useSelector(
 		(state: RootState) => state.course?.singleCourse
 	);
+
 	const { slug } = useParams();
-	const handleCourseComment = (commentText: string): void => {
-		console.log(commentText);
-	};
+	// const handleCourseComment = (commentText: string): void => {
+	// 	console.log(commentText);
+	// };
 
 	console.log(singleCourse);
 
@@ -42,11 +43,11 @@ const SingleCourse: FC = () => {
 								children3={
 									<Instructor instructors={singleCourse?.course?.instructors} />
 								}
-								children4={<Reviews />}
+								children4={<Reviews course={singleCourse?.course} />}
 							/>
-							<div className='mt-4'>
+							{/* <div className='mt-4'>
 								<Comment onCommentvalue={handleCourseComment} />
-							</div>
+							</div> */}
 						</div>
 					</div>
 				</>

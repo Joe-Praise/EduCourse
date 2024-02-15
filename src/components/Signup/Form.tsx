@@ -6,6 +6,7 @@ import InputField from '../shared/InputField';
 import { AppDispatchType, signUpAction } from '../../redux/actions/authAction';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 const initialValues = {
 	name: '',
@@ -42,6 +43,17 @@ const SignUpForm: FC = () => {
 		setLodaing(true);
 		await dispatch(signUpAction(values, navigate));
 		setLodaing(false);
+	};
+
+	// Inside your component
+	SignUpForm.propTypes = {
+		values: PropTypes.object.isRequired,
+		handleChange: PropTypes.func.isRequired,
+		handleBlur: PropTypes.func.isRequired,
+		handleSubmit: PropTypes.func.isRequired,
+		errors: PropTypes.object.isRequired,
+		touched: PropTypes.object.isRequired,
+		resetForm: PropTypes.func.isRequired,
 	};
 
 	return (

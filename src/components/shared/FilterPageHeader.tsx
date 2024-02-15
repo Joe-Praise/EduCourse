@@ -4,8 +4,8 @@ import SearchAndLayout from './SearchAndLayout';
 
 interface headerType {
 	title: string;
-	searchFunc: (e: ChangeEvent<HTMLInputElement>) => void;
-	layoutFunc: (value: string) => void;
+	searchFunc: (_: ChangeEvent<HTMLInputElement>) => void;
+	layoutFunc: (_: string) => void;
 	activeLayout: string;
 }
 

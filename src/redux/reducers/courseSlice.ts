@@ -1,5 +1,5 @@
 // import { createSlice } from '@reduxjs/toolkit';
-import { courseType } from '../api/courseAPI';
+import { SingleCourseType, courseType } from '../api/courseAPI';
 import * as types from '../constants/courseConstants';
 // type user = {
 // 	name: string;
@@ -12,7 +12,8 @@ import * as types from '../constants/courseConstants';
 export type courseState = {
 	filterState: boolean;
 	course: courseType;
-	singleCourse: [];
+	singleCourse: SingleCourseType[];
+	courseError: string;
 };
 
 /**
@@ -32,6 +33,7 @@ const initialState: courseState = {
 		data: [],
 	},
 	singleCourse: [],
+	courseError: '',
 };
 
 const courseSlice = (state = initialState, action: any) => {

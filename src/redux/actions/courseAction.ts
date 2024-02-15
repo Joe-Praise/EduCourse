@@ -5,12 +5,12 @@ import { AppDispatch, RootState } from '../store';
 
 type GetCoursesSuccessAction = {
 	type: typeof types.GET_COURSES_SUCCESS;
-	payload: any; // Adjust the payload type accordingly
+	payload: any;
 };
 
 type GetCoursesFailAction = {
 	type: typeof types.GET_COURSES_FAIL;
-	payload: any; // Adjust the payload type accordingly
+	payload: any;
 };
 
 export type CourseActionTypes = GetCoursesSuccessAction | GetCoursesFailAction;
@@ -23,26 +23,12 @@ export type CourseThunk<ReturnType = void> = ThunkAction<
 	undefined,
 	CourseActionTypes
 >;
-// type SignInSuccessAction = {
-// 	type: typeof types.SIGNIN_SUCCESS;
-// 	payload: any; // Adjust the payload type accordingly
-// };
-
-// type SignInFailAction = {
-// 	type: typeof types.SIGNIN_FAIL;
-// 	payload: any; // Adjust the payload type accordingly
-// };
-
-// type RefreshTokenFail = {
-// 	type: typeof types.REFRESH_TOKEN_FAIL;
-// 	payload: any;
-// };
 
 export const getCoursesAction =
 	(details: api.paginateType): CourseThunk =>
 	async (dispatch: AppDispatch) => {
 		try {
-			const response = await api.getCourses(details.page, details.limit);
+			const response = await api.getCourses(details);
 			const data = response;
 
 			dispatch({

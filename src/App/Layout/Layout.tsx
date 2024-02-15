@@ -5,7 +5,7 @@ import LayoutFooter from '../../widgets/LayoutFooter/LayoutFooter';
 
 const Layout: FC = () => {
 	return (
-		<div className='h-screen overflow-x-hidden'>
+		<div className='layoutHightWithGrid overflow-x-hidden'>
 			<LayoutHeader />
 			<main>
 				<Outlet />

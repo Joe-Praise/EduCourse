@@ -1,8 +1,9 @@
 import SocialMedia from '../../widgets/LayoutFooter/SocialMedia';
 import { FaGraduationCap } from 'react-icons/fa';
 import { FaFile } from 'react-icons/fa6';
-import { FC, Fragment } from 'react';
+import { FC } from 'react';
 import config from '../../../config';
+import useFormatText from '../../hooks/UseFormatText';
 
 export interface InstructorType {
 	_id: string;
@@ -28,11 +29,12 @@ export interface LinkType {
 }
 
 const Instructor: FC<{ instructors: InstructorType[] }> = ({ instructors }) => {
+	const { formatText } = useFormatText();
 	return (
 		<div>
 			{instructors?.map((el) => (
-				<Fragment key={el._id}>
-					<div className='md:flex gap-3'>
+				<div key={el._id} className='mb-5'>
+					<div className='md:flex gap-3 '>
 						<figure className='w-full md:w-[150px] h-40'>
 							<img
 								src={`${config?.baseUrl}/img/${el?.userId?.photo}`}
@@ -42,7 +44,12 @@ const Instructor: FC<{ instructors: InstructorType[] }> = ({ instructors }) => {
 						</figure>
 						<div className='my-2 md:my-0'>
 							<h1>{el?.userId?.name}</h1>
-							<p>{el?.description}</p>
+							{formatText(el?.description).map((el, index) => (
+								<p key={index} className='mt-3'>
+									{el}
+								</p>
+							))}
+							{/* <p>{el?.description}</p> */}
 							<div className='flex items-center gap-1'>
 								<FaGraduationCap />
 								<span>150 students</span>
@@ -59,7 +66,6 @@ const Instructor: FC<{ instructors: InstructorType[] }> = ({ instructors }) => {
 							<li className='flex gap-2 py-1'>
 								{/* TODO: Handle links on backend to be actual links */}
 								{el?.links?.map((socials) => {
-									console.log(typeof socials);
 									return (
 										<SocialMedia
 											platform={socials.platform}
@@ -71,7 +77,7 @@ const Instructor: FC<{ instructors: InstructorType[] }> = ({ instructors }) => {
 							</li>
 						</ul>
 					</div>
-				</Fragment>
+				</div>
 			))}
 		</div>
 	);

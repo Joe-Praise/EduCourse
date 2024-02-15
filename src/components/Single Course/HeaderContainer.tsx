@@ -41,7 +41,7 @@ const HeaderContainer = (props: courseCardType) => {
 
 	const dataDisplay: headerbadge[] = [
 		{
-			title: 'Students',
+			title: studentsQuantity > 1 ? 'Students' : 'Student',
 			total: studentsQuantity + '',
 			icon: FaGraduationCap,
 		},
