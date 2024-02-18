@@ -1,12 +1,7 @@
 import { handleApiError } from '../../util/helperFunctions/helper';
+import { metaData } from '../sharedTypes';
 import { paginateType } from './courseAPI';
 import { axiosInstance as API } from './utils';
-
-interface metaData {
-	page: number;
-	count: number;
-	limit: number;
-}
 
 export interface reviewType {
 	_id: string;

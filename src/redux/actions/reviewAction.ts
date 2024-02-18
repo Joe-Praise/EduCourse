@@ -76,12 +76,12 @@ export const createCourseReviewAction =
 			const data = response;
 
 			dispatch({
-				type: types.GET_COURSE_REVIEW_SUCCESS,
+				type: types.CREATE_COURSE_REVIEW_SUCCESS,
 				payload: data,
 			});
 		} catch (error) {
 			dispatch({
-				type: types.GET_COURSE_REVIEW_FAIL,
+				type: types.CREATE_COURSE_REVIEW_FAIL,
 				payload: error,
 			});
 		}
@@ -95,12 +95,12 @@ export const deleteReviewAction =
 			const data = response;
 
 			dispatch({
-				type: types.GET_COURSE_REVIEW_SUCCESS,
+				type: types.DELETE_REVIEW_SUCCESS,
 				payload: data,
 			});
 		} catch (error) {
 			dispatch({
-				type: types.GET_COURSE_REVIEW_FAIL,
+				type: types.DELETE_REVIEW_FAIL,
 				payload: error,
 			});
 		}

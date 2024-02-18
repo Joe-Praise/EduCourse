@@ -1,9 +1,9 @@
 import { handleApiError } from '../../util/helperFunctions/helper';
+import { metaData } from '../sharedTypes';
 import { axiosInstance as API } from './utils';
 
 // SINGLECOURSETYPE STARTS HERE
 export interface SingleCourseType {
-	ratingSummary: { title: string; value: number }[];
 	_id: string;
 	title: string;
 	description: string;
@@ -15,6 +15,7 @@ export interface SingleCourseType {
 	duration: string;
 	ratingsAverage: number;
 	ratingsQuantity: number;
+	ratingSummary: ratingSummaryType[];
 	price: number;
 	priceCategory: string;
 	studentsQuantity: number;
@@ -22,6 +23,11 @@ export interface SingleCourseType {
 	slug: string;
 	__v: number;
 	averageRatings: { [key: string]: number }[];
+}
+
+export interface ratingSummaryType {
+	title: string;
+	value: number;
 }
 
 export interface Category {
@@ -52,13 +58,6 @@ export interface UserID {
 	role: string[];
 }
 // SINGLECOURSETYPE ENDS HERE
-
-interface metaData {
-	totalDocuments: number;
-	pageNumber: number;
-	totalPages: number;
-	count: number;
-}
 
 export type paginateType = {
 	limit: string;

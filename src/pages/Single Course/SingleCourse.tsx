@@ -30,7 +30,7 @@ const SingleCourse: FC = () => {
 
 	return (
 		<section>
-			{singleCourse?.course?._id && (
+			{singleCourse?.course?._id ? (
 				<>
 					<HeaderContainer {...singleCourse?.course} />
 					<div className='layoutWidth flex mt-9'>
@@ -51,6 +51,15 @@ const SingleCourse: FC = () => {
 						</div>
 					</div>
 				</>
+			) : (
+				<>Loading...</>
+				// <div className='flex justify-center items-center h-scr'>
+				// 	<div className='flex flex-row gap-2'>
+				// 		<div className='w-4 h-4 rounded-full bg-blue-700 animate-bounce'></div>
+				// 		<div className='w-4 h-4 rounded-full bg-blue-700 animate-bounce [animation-delay:-.3s]'></div>
+				// 		<div className='w-4 h-4 rounded-full bg-blue-700 animate-bounce [animation-delay:-.5s]'></div>
+				// 	</div>
+				// </div>
 			)}
 		</section>
 	);
