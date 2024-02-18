@@ -2,6 +2,14 @@ import { handleApiError } from '../../util/helperFunctions/helper';
 import { axiosInstance as API } from './utils';
 handleApiError;
 
+export type user = {
+	_id: string;
+	name: string;
+	email: string;
+	photo: string;
+	role: string;
+};
+
 export const getUser = async () => {
 	try {
 		const { data } = await API.get(`/api/v1/users/me`);

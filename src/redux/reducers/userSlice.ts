@@ -1,13 +1,6 @@
+import { user } from '../api/userApi';
 import { LOGOUT } from '../constants/authConstants';
 import * as types from '../constants/userConstants';
-
-export type user = {
-	_id: string;
-	name: string;
-	email: string;
-	photo: string;
-	role: string;
-};
 
 type userState = {
 	userObj: user;

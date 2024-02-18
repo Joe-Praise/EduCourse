@@ -84,6 +84,6 @@ export const capitalizeFirstLetters = (str: any) => {
 			newArr.push(joinedStr);
 		}
 	}
-	result = newArr.join('');
+	result = newArr.join(' ');
 	return result;
 };

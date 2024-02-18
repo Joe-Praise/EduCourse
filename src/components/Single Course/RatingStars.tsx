@@ -10,9 +10,6 @@ const RatingStars = (props: Iprop) => {
 	return (
 		<div className='flex items-center gap-[2px]'>
 			{arr.map((_, idx) => {
-				/**
-				 * TODO: Fix the bug here on the render of stars
-				 */
 				return (
 					<FaStar
 						key={idx}

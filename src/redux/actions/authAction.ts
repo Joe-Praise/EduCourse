@@ -7,9 +7,6 @@ import * as api from '../api/authApi';
 import * as types from '../constants/authConstants';
 import { ThunkAction } from 'redux-thunk';
 import { AppDispatch, RootState } from '../store';
-// import { user } from '../reducers/userSlice';
-// import { courseState } from '../reducers/courseSlice';
-// import { Action } from '@reduxjs/toolkit';
 
 type SignUpSuccessAction = {
 	type: typeof types.SIGNUP_SUCCESS;
@@ -42,18 +39,6 @@ export type AuthActionTypes =
 	| SignInSuccessAction
 	| SignInFailAction
 	| RefreshTokenFail;
-
-// Correctly align the ThunkDispatch type
-// type ThunkDispatchType = ThunkDispatch<
-// 	{
-// 		user:
-// 			| { userObj: any; token: any; userError: string }
-// 			| { userError: any; userObj: user; token: string };
-// 		course: courseState;
-// 	},
-// 	undefined,
-// 	AuthActionTypes
-// >;
 
 // Correctly align the AppDispatch type
 export type AppDispatchType = AppDispatch;
