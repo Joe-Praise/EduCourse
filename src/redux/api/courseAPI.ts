@@ -94,6 +94,11 @@ interface ApiResponse {
 	error: string;
 }
 
+export interface createLectureType {
+	userId: string;
+	courseId: string;
+}
+
 export const getCourses = async (
 	details: paginateType
 ): Promise<ApiResponse> => {
@@ -117,6 +122,15 @@ export const getCourseBySlug = async <T>(slug: T): Promise<ApiResponse> => {
 	}
 };
 
+export const getCouresById = async <T>(courseId: T): Promise<ApiResponse> => {
+	try {
+		const { data } = await API.get<ApiResponse>(`/api/v1/courses/${courseId}`);
+		return data;
+	} catch (error) {
+		return handleApiError(error);
+	}
+};
+
 export const getCourseModules = async <T>(
 	courseId: T
 ): Promise<ApiResponse> => {
@@ -129,3 +143,59 @@ export const getCourseModules = async <T>(
 		return handleApiError(error);
 	}
 };
+
+export const getLectureModules = async <T>(
+	courseId: T
+): Promise<ApiResponse> => {
+	try {
+		const { data } = await API.get<ApiResponse>(
+			`/api/v1/modules/lecture?courseId=${courseId}`
+		);
+		return data;
+	} catch (error) {
+		return handleApiError(error);
+	}
+};
+
+export const createLectureCourse = async (
+	details: createLectureType
+): Promise<ApiResponse> => {
+	try {
+		const { data } = await API.post<ApiResponse>(
+			`/api/v1/completed-courses`,
+			details
+		);
+		return data;
+	} catch (error) {
+		return handleApiError(error);
+	}
+};
+
+export const checkIsActiveCourse = async (
+	details: createLectureType
+): Promise<ApiResponse> => {
+	const { userId, courseId } = details;
+	try {
+		const { data } = await API.get<ApiResponse>(
+			`/api/v1/completed-courses/active/course?courseId=${courseId}&userId=${userId}`
+		);
+		return data;
+	} catch (error) {
+		return handleApiError(error);
+	}
+};
+
+// export const checkIsActiveCourse = async (
+// 	details: createLectureType
+// ): Promise<ApiResponse> => {
+// 	try {
+// 		const { data } = await API.post<ApiResponse>(
+// 			`/api/v1/completed-courses`,
+// 			details
+// 		);
+// 		return data;
+// 	} catch (error) {}
+// };
+// (
+// 	`/api/v1/completed-courses/active/course?${}`,
+// )

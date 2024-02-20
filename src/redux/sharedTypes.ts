@@ -1,11 +1,11 @@
 export interface metaData {
-	totalPages: numberType;
-	totalDocuments: numberType;
-	page: numberType;
-	count: numberType;
-	limit: numberType;
+	totalPages: number;
+	totalDocuments: number;
+	page: number;
+	count: number;
+	limit: number;
 }
 
-interface numberType {
-	[key: string]: number;
-}
+// interface number {
+// 	[key: string]: number;
+// }

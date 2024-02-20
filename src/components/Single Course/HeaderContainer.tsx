@@ -15,7 +15,12 @@ import config from '../../../config';
 import {
 	capitalizeFirstLetters,
 	formatAmount,
+	getLocalStorage,
 } from '../../util/helperFunctions/helper';
+import { AppDispatch, RootState } from '../../redux/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { createLectureCourseAction } from '../../redux/actions/courseAction';
+import { useEffect } from 'react';
 
 export type headerbadge = {
 	title: string;
@@ -25,6 +30,7 @@ export type headerbadge = {
 
 const HeaderContainer = (props: courseCardType) => {
 	const {
+		_id,
 		studentsQuantity,
 		level,
 		createdAt,
@@ -35,8 +41,19 @@ const HeaderContainer = (props: courseCardType) => {
 		instructors,
 	} = props;
 	const navigate = useNavigate();
+	const dispatch: AppDispatch = useDispatch();
+	const notification = useSelector(
+		(state: RootState) => state.course.notification
+	);
 	const handleStartCourse = (to: string) => {
-		navigate(to);
+		const details = {
+			userId: getLocalStorage('profile')?.user?._id,
+			courseId: _id,
+		};
+
+		dispatch(createLectureCourseAction(details, navigate));
+
+		// navigate(to);
 	};
 
 	const dataDisplay: headerbadge[] = [
@@ -61,6 +78,10 @@ const HeaderContainer = (props: courseCardType) => {
 			icon: IoMdTime,
 		},
 	];
+
+	// useEffect(() => {
+	// 	console.log(notification);
+	// }, [dispatch, notification]);
 
 	const testing = 'thisisworking';
 	return (

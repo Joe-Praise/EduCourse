@@ -85,7 +85,7 @@ const Blogs: FC = () => {
 			description={'Explore our Free Articles'}
 			path={`/articles`}
 			btnValue={'All Articles'}
-			className='grid-cols-1 sm:grid-cols-3 sm:gap-4 gap-y-8'
+			className='grid-cols-1 gap-y-8 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3'
 		>
 			<>
 				{articles.map((el, id) => {

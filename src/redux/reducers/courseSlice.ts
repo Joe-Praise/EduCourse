@@ -13,7 +13,9 @@ export type courseState = {
 	filterState: boolean;
 	course: courseType;
 	singleCourse: SingleCourseType[];
+	lectureCourse: SingleCourseType[];
 	courseError: string;
+	notification: [];
 };
 
 /**
@@ -26,14 +28,17 @@ const initialState: courseState = {
 		status: '',
 		metaData: {
 			totalDocuments: 0,
-			pageNumber: 0,
+			page: 0,
 			totalPages: 0,
 			count: 0,
+			limit: 0,
 		},
 		data: [],
 	},
 	singleCourse: [],
 	courseError: '',
+	lectureCourse: [],
+	notification: [],
 };
 
 const courseSlice = (state = initialState, action: any) => {
@@ -73,6 +78,27 @@ const courseSlice = (state = initialState, action: any) => {
 				...state,
 				singleCourse: [],
 			};
+		case types.GET_LECTURE_COURSE_SUCCESS:
+			return {
+				...state,
+				lectureCourse: payload,
+			};
+		case types.GET_LECTURE_COURSE_FAIL:
+			return {
+				...state,
+				lectureCourse: [],
+			};
+		case types.CREATE_LECTURE_COURSE_SUCCESS:
+			return {
+				...state,
+				notification: payload,
+			};
+		case types.CREATE_LECTURE_COURSE_FAIL:
+			return {
+				...state,
+				notification: payload,
+			};
+
 		default:
 			return state;
 	}
