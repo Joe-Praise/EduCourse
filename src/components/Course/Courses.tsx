@@ -113,7 +113,7 @@ const Courses: FC = () => {
 			description='Explore our Popular Courses'
 			path='/courses'
 			btnValue='All Courses'
-			className='grid-cols-1 sm:grid-cols-3 sm:gap-4 gap-y-8'
+			className='grid-cols-1 gap-y-8 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3 '
 		>
 			<>
 				{coursesData?.data.map((el: any, id: any) => {

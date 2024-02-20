@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { courseCardType } from '../../pages/Home/homePageType';
 import { handleDateFormat } from '../../util/helperFunctions/dateFormatter';
 import config from '../../../config';
+import { formatAmount } from '../../util/helperFunctions/helper';
 
 const CourseCard: FC<courseCardType> = (props) => {
 	// type test = {
@@ -25,7 +26,7 @@ const CourseCard: FC<courseCardType> = (props) => {
 
 	return (
 		<WhiteBackground
-			className={`rounded-b-none my-0 w-full px-0 shadow-md hover:scale-105 duration-150  ${
+			className={`rounded-b-none my-0 w-full px-0 shadow-md hover:scale-105 duration-150 h-full ${
 				props?.activeLayout === 'grid' ? 'sm:my-0' : 'my-5'
 			}`}
 		>
@@ -35,22 +36,32 @@ const CourseCard: FC<courseCardType> = (props) => {
 					props?.activeLayout === 'grid' ? 'block' : 'flex h-[11rem]'
 				}`}
 			>
-				<figure
-					className={` ${
-						props?.activeLayout === 'grid' ? 'h-[11rem]' : 'basis-[50%]'
+				<div
+					className={`relative ${
+						props?.activeLayout === 'grid' ? 'pb-[12rem]' : 'pr-[14rem]'
 					}`}
 				>
-					<img
-						src={`${config.baseUrl}/course/${props?.imageCover}`}
-						alt=''
+					<figure
 						className={`${
-							props?.activeLayout === 'grid' ? 'rounded-t-lg' : 'rounded-l-lg'
-						} h-full w-full object-cover`}
-					/>
-				</figure>
+							props?.activeLayout === 'grid' ? 'h-full' : 'basis-[50%] h-full'
+						}`}
+					>
+						<img
+							src={`${config.baseUrl}/course/${props?.imageCover}`}
+							alt=''
+							className={`absolute top-0 w-full object-cover object-bottom ${
+								props?.activeLayout === 'grid'
+									? 'rounded-t-lg h-48'
+									: 'rounded-l-lg h-full'
+							}`}
+						/>
+					</figure>
+				</div>
 				<div
 					className={`p-3 ${
-						props?.activeLayout === 'grid' ? 'basis-[50%]' : 'basis-full'
+						props?.activeLayout === 'grid'
+							? 'basis-[50%]'
+							: 'basis-full flex justify-between flex-col'
 					}`}
 				>
 					<small>
@@ -86,7 +97,7 @@ const CourseCard: FC<courseCardType> = (props) => {
 						<div className='flex items-center justify-between mt-1'>
 							<p>
 								<span className='line-through text-secondary-light'>
-									${props?.price}
+									${formatAmount(props?.price)}
 								</span>{' '}
 								<span className='text-green-500'>Free</span>
 							</p>
