@@ -1,6 +1,10 @@
 import useFormatText from '../../hooks/UseFormatText';
 
-const OverView = (props: any) => {
+interface Iprop {
+	description: string;
+}
+
+const OverView = (props: Iprop) => {
 	const { description } = props;
 	const { formatText } = useFormatText();
 

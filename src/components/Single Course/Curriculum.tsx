@@ -1,9 +1,13 @@
 import { accordionType } from '../../pages/Courses/courseType';
+import { ModuleType } from '../../redux/actions/courseAction';
 // import { courseCardType } from '../../pages/Home/homePageType';
 import Accordion from '../shared/Accordion';
-
-const Curriculum = (props: any) => {
+interface Iprop {
+	modules: ModuleType[];
+}
+const Curriculum = (props: Iprop) => {
 	const { modules } = props;
+	console.log('from modules', modules);
 
 	// const { _id, courseId, title, moduleIndex, createdAt, lessons } = props;
 	// const dropDown1: accordionType[] = [
@@ -91,9 +95,11 @@ const Curriculum = (props: any) => {
 	// console.log(props);
 	return (
 		<div>
-			{modules.map((el: accordionType) => {
-				return <Accordion content={el} key={el._id} />;
-			})}
+			{modules
+				?.sort((a, b) => a.moduleIndex - b.moduleIndex)
+				.map((el: accordionType) => {
+					return <Accordion content={el} key={el._id} />;
+				})}
 		</div>
 	);
 };

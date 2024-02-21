@@ -29,14 +29,21 @@ const Accordion: FC<{ content: accordionType }> = ({ content }) => {
 			} `}
 		>
 			<button
-				className='flex justify-between w-full items-center'
+				className='flex w-full items-center flex-wrap'
 				onClick={() => setAccordionOpen((prevState) => !prevState)}
 			>
-				<span>{content?.title}</span>
+				<div className='basis-full flex justify-between'>
+					<span className=''>{content?.title}</span>
+
+					<span className=''>
+						<AccordionBtnIcon accordionOpen={accordionOpen} />
+					</span>
+				</div>
 				<div className='text-xs flex items-center gap-1'>
-					<span className='hidden md:inline-block'>5 lessons</span>
+					<span className='hidden md:inline-block'>
+						{content?.lessons.length} lessons
+					</span>
 					<span className='hidden md:inline-block'>45 mins</span>
-					<AccordionBtnIcon accordionOpen={accordionOpen} />
 				</div>
 			</button>
 			<div

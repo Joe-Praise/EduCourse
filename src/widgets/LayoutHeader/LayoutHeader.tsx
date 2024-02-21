@@ -8,13 +8,13 @@ import HamburgerBtn from '../../components/shared/HamburgerBtn';
 import Logo from '../../components/shared/Logo';
 import { getLocalStorage } from '../../util/helperFunctions/helper';
 import config from '../../../config';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../redux/store';
+// import { useSelector } from 'react-redux';
+// import { RootState } from '../../redux/store';
 
 const LayoutHeader: FC = () => {
 	const userDetails = getLocalStorage('profile')?.user;
-	const userData = useSelector((state: RootState) => state.auth);
-	console.log(userData);
+	// const userData = useSelector((state: RootState) => state.auth);
+	// console.log(userData);
 
 	const {
 		modal: toggleDropdown,

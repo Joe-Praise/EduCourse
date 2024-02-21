@@ -94,8 +94,8 @@ interface ApiResponse {
 	error: string;
 }
 
-export interface createLectureType {
-	userId: string;
+export interface LectureCourseType {
+	userId: string | undefined;
 	courseId: string;
 }
 
@@ -122,9 +122,24 @@ export const getCourseBySlug = async <T>(slug: T): Promise<ApiResponse> => {
 	}
 };
 
+// would be used by the admin dashboard
 export const getCouresById = async <T>(courseId: T): Promise<ApiResponse> => {
 	try {
 		const { data } = await API.get<ApiResponse>(`/api/v1/courses/${courseId}`);
+		return data;
+	} catch (error) {
+		return handleApiError(error);
+	}
+};
+
+export const getLectureCourse = async (
+	details: LectureCourseType
+): Promise<ApiResponse> => {
+	const { userId, courseId } = details;
+	try {
+		const { data } = await API.get<ApiResponse>(
+			`/api/v1/courses/learn/${userId}/${courseId}`
+		);
 		return data;
 	} catch (error) {
 		return handleApiError(error);
@@ -144,21 +159,21 @@ export const getCourseModules = async <T>(
 	}
 };
 
-export const getLectureModules = async <T>(
-	courseId: T
-): Promise<ApiResponse> => {
-	try {
-		const { data } = await API.get<ApiResponse>(
-			`/api/v1/modules/lecture?courseId=${courseId}`
-		);
-		return data;
-	} catch (error) {
-		return handleApiError(error);
-	}
-};
+// export const getLectureModules = async <T>(
+// 	courseId: T
+// ): Promise<ApiResponse> => {
+// 	try {
+// 		const { data } = await API.get<ApiResponse>(
+// 			`/api/v1/modules/lecture?courseId=${courseId}`
+// 		);
+// 		return data;
+// 	} catch (error) {
+// 		return handleApiError(error);
+// 	}
+// };
 
 export const createLectureCourse = async (
-	details: createLectureType
+	details: LectureCourseType
 ): Promise<ApiResponse> => {
 	try {
 		const { data } = await API.post<ApiResponse>(
@@ -172,7 +187,7 @@ export const createLectureCourse = async (
 };
 
 export const checkIsActiveCourse = async (
-	details: createLectureType
+	details: LectureCourseType
 ): Promise<ApiResponse> => {
 	const { userId, courseId } = details;
 	try {

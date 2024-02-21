@@ -25,6 +25,40 @@ export type CourseThunk<ReturnType = void> = ThunkAction<
 	CourseActionTypes
 >;
 
+export interface paramsType {
+	slug: string;
+	id: string;
+}
+
+export interface lectureCourseType {
+	courseId: string;
+	userId: string;
+}
+
+// module type
+export interface ModuleType {
+	_id: string;
+	courseId: string;
+	title: string;
+	moduleIndex: number;
+	createdAt: Date;
+	__v: number;
+	section: string;
+	lessons: Lesson[];
+	id: string;
+}
+
+export interface Lesson {
+	_id: string;
+	moduleId: string;
+	courseId: string;
+	url: string;
+	title: string;
+	duration: string;
+	lessonIndex: number;
+	active: boolean;
+}
+
 export const getCoursesAction =
 	(details: api.paginateType): CourseThunk =>
 	async (dispatch: AppDispatch) => {
@@ -71,16 +105,16 @@ export const getSingleCourseAction =
 	};
 
 export const getLectureCourseAction =
-	(courseId: string): CourseThunk =>
+	(details: api.LectureCourseType): CourseThunk =>
 	async (dispatch: AppDispatch) => {
 		try {
 			let data: any = {};
-			const { data: courseData } = await api.getCourseBySlug(courseId);
-			data.course = courseData;
+			const { data: courseData } = await api.getLectureCourse(details);
+			data.course = courseData[0];
 
 			if (data?.course?._id) {
 				const courseId = data?.course?._id;
-				const { data: moduleData } = await api.getLectureModules(courseId);
+				const { data: moduleData } = await api.getCourseModules(courseId);
 				data.modules = moduleData;
 			}
 
@@ -97,21 +131,25 @@ export const getLectureCourseAction =
 	};
 
 export const createLectureCourseAction =
-	(details: api.createLectureType, navigate: NavigateFunction): CourseThunk =>
+	(
+		details: api.LectureCourseType,
+		navigate: NavigateFunction,
+		params: paramsType
+	): CourseThunk =>
 	async (dispatch: AppDispatch) => {
+		const { slug, id } = params;
 		try {
 			const response = await api.createLectureCourse(details);
-			const { error, data } = response;
+			const { data } = response;
 
-			if (!error) {
-				dispatch({
-					type: types.CREATE_LECTURE_COURSE_SUCCESS,
-					payload: data,
-				});
+			dispatch({
+				type: types.CREATE_LECTURE_COURSE_SUCCESS,
+				payload: data,
+			});
 
-				console.log(data);
-			}
-		} catch (error) {
+			// routes to the learn course page
+			navigate(`/courses/${slug}/learn/lecture/${id}`);
+		} catch (error: any) {
 			dispatch({
 				type: types.CREATE_LECTURE_COURSE_FAIL,
 				payload: error,

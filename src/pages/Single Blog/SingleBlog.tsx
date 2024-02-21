@@ -5,7 +5,7 @@ import { FaRegCalendar, FaUser } from 'react-icons/fa';
 import { LiaCommentsSolid } from 'react-icons/lia';
 import img from '../../assets/image/card1.jpg';
 import Tags from '../../components/Single Blog/Tags';
-import CommentCard from '../../components/Single Course/CommentCard';
+// import CommentCard from '../../components/Single Course/CommentCard';
 import Comment from '../../components/shared/Comment';
 
 const SingleBlog: FC = () => {
@@ -100,9 +100,10 @@ const SingleBlog: FC = () => {
 				<div className='mt-10'>
 					<h1>Comments</h1>
 					<p>50 comments</p>
+					{/* TODO:Handle comments & review upload */}
+					{/* <CommentCard />
 					<CommentCard />
-					<CommentCard />
-					<CommentCard />
+					<CommentCard /> */}
 				</div>
 
 				<div className='mt-10'>
