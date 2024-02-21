@@ -1,9 +1,10 @@
 import { FC, useEffect } from 'react';
-import { user } from '../redux/reducers/userSlice';
+
 import { Outlet, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setInitialAuthState } from '../redux/actions/authAction';
 import { isAuthenticated } from '../util/helperFunctions/auth';
+import { user } from '../redux/api/userApi';
 
 type privateRoutetype = {
 	user: user;

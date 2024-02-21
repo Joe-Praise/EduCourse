@@ -1,4 +1,4 @@
-import SocialMedia from '../../widgets/LayoutFooter/SocialMedia';
+// import SocialMedia from '../../widgets/LayoutFooter/SocialMedia';
 import { FaGraduationCap } from 'react-icons/fa';
 import { FaFile } from 'react-icons/fa6';
 import { FC } from 'react';
@@ -60,11 +60,11 @@ const Instructor: FC<{ instructors: InstructorType[] }> = ({ instructors }) => {
 							</div>
 						</div>
 					</div>
-					<div className='flex items-center mt-2'>
+					{/* TODO: Handle links on backend to be actual links */}
+					{/* <div className='flex items-center mt-2'>
 						<h2>Follow:</h2>
 						<ul>
 							<li className='flex gap-2 py-1'>
-								{/* TODO: Handle links on backend to be actual links */}
 								{el?.links?.map((socials) => {
 									return (
 										<SocialMedia
@@ -76,7 +76,7 @@ const Instructor: FC<{ instructors: InstructorType[] }> = ({ instructors }) => {
 								})}
 							</li>
 						</ul>
-					</div>
+					</div> */}
 				</div>
 			))}
 		</div>
