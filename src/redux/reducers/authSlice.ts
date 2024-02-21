@@ -1,6 +1,6 @@
 import { getLocalStorage } from '../../util/helperFunctions/helper';
+import { user } from '../api/userApi';
 import * as types from '../constants/authConstants';
-import { user } from './userSlice';
 
 const authToken = getLocalStorage('profile')?.token;
 

@@ -19,7 +19,7 @@ const Pagination: FC<Iprop> = (props) => {
 
 	// this uses the array method to limit the movie on dsiplay
 	const displayData = data.slice(itemsViewed, itemsViewed + dataPerPage);
-	// console.log(displayData);
+	console.log(displayData);
 
 	const buildPages = useCallback(() => {
 		let start = 0,

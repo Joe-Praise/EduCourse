@@ -3,7 +3,7 @@ const VideoSection = () => {
 		<div>
 			<iframe
 				width='100%'
-				height='600px'
+				height='550px'
 				src='https://www.youtube.com/embed/favjC6EKFgw?si=GeooVdwNmT8LodxB'
 				title='YouTube video player'
 				frameBorder='0'

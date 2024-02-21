@@ -18,7 +18,7 @@ export interface accordionType {
 	title: string;
 	moduleIndex: number;
 	createdAt: Date;
-	__v: number;
+	// __v: number;
 	lessons: any[];
-	id: string;
+	// id: string;
 }

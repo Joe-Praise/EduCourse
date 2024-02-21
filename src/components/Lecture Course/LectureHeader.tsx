@@ -12,12 +12,17 @@ import { ModalRef } from '../../pages/Main Course/LectureType';
 import Modal from '../shared/Modal';
 import { useRef } from 'react';
 import CopyText from '../shared/CopyText';
-import { lectureType } from '../../pages/Main Course/LectureType';
+import { capitalizeFirstLetters } from '../../util/helperFunctions/helper';
+// import { lectureType } from '../../pages/Main Course/LectureType';
 
-const LectureHeader = (props: lectureType) => {
+interface Iprop {
+	onWindowSize: number;
+	courseTitle: string;
+}
+const LectureHeader = (props: Iprop) => {
 	const navigate = useNavigate();
 	const shareRef = useRef<ModalRef>(null);
-	const { onWindowSize } = props;
+	const { onWindowSize, courseTitle } = props;
 	const isTabView = onWindowSize > 600;
 	const isDesktopView = onWindowSize > 1000;
 	const {
@@ -68,7 +73,7 @@ const LectureHeader = (props: lectureType) => {
 					<li className=''>
 						<LinkBtn
 							className={'border-none text-xl font-bold text-black'}
-							value={'React and Redux Complete Course'}
+							value={capitalizeFirstLetters(courseTitle)}
 							path={''}
 						/>
 					</li>

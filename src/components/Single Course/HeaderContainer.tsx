@@ -1,10 +1,8 @@
 import Breadcrumbs from '../../util/Breadcrumbs';
-// import img from '../../assets/image/card5.jpg';
 import Button from '../shared/Button';
 import { IoBarChart } from 'react-icons/io5';
 import { FaFile } from 'react-icons/fa6';
 import { FaGraduationCap } from 'react-icons/fa';
-// import { BsQuestionSquareFill } from 'react-icons/bs';
 import { IoMdTime } from 'react-icons/io';
 import { IconType } from 'react-icons';
 import { useNavigate } from 'react-router-dom';
@@ -17,10 +15,9 @@ import {
 	formatAmount,
 	getLocalStorage,
 } from '../../util/helperFunctions/helper';
-import { AppDispatch, RootState } from '../../redux/store';
-import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch } from '../../redux/store';
+import { useDispatch } from 'react-redux';
 import { createLectureCourseAction } from '../../redux/actions/courseAction';
-import { useEffect } from 'react';
 
 export type headerbadge = {
 	title: string;
@@ -39,21 +36,23 @@ const HeaderContainer = (props: courseCardType) => {
 		price,
 		category,
 		instructors,
+		slug,
 	} = props;
 	const navigate = useNavigate();
 	const dispatch: AppDispatch = useDispatch();
-	const notification = useSelector(
-		(state: RootState) => state.course.notification
-	);
-	const handleStartCourse = (to: string) => {
+
+	const handleStartCourse = () => {
 		const details = {
 			userId: getLocalStorage('profile')?.user?._id,
 			courseId: _id,
 		};
 
-		dispatch(createLectureCourseAction(details, navigate));
+		const params = {
+			slug: slug,
+			id: _id,
+		};
 
-		// navigate(to);
+		dispatch(createLectureCourseAction(details, navigate, params));
 	};
 
 	const dataDisplay: headerbadge[] = [
@@ -79,11 +78,6 @@ const HeaderContainer = (props: courseCardType) => {
 		},
 	];
 
-	// useEffect(() => {
-	// 	console.log(notification);
-	// }, [dispatch, notification]);
-
-	const testing = 'thisisworking';
 	return (
 		<section className='bg-black text-white p-2'>
 			<div className='layoutWidth flex md:justify-between relative flex-wrap gap-3 md:gap-0'>
@@ -139,7 +133,7 @@ const HeaderContainer = (props: courseCardType) => {
 									' border text-white md:text-black p-2 rounded-full hover:text-effect-hover hover:border-effect-hover active:bg-effect-active active:text-white'
 								}
 								value={'Start now'}
-								onClick={() => handleStartCourse(`/courses/lecture/${testing}`)}
+								onClick={() => handleStartCourse()}
 							/>
 						</figcaption>
 					</figure>
