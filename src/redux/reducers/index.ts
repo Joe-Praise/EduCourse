@@ -6,6 +6,7 @@ import authReducer from './authSlice';
 import reviewReducer from './reviewSlice';
 import categoryReducer from './categorySlice';
 import instructorReducer from './instructorSlice';
+import blogReducer from './blogSlice';
 
 export const rootReducer = combineReducers({
 	user: userReducer,
@@ -14,6 +15,7 @@ export const rootReducer = combineReducers({
 	review: reviewReducer,
 	category: categoryReducer,
 	instructor: instructorReducer,
+	blog: blogReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

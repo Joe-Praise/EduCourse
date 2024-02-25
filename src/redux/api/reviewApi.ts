@@ -1,6 +1,5 @@
 import { handleApiError } from '../../util/helperFunctions/helper';
-import { metaData } from '../sharedTypes';
-import { paginateType } from './courseAPI';
+import { metaData, paginateType } from '../sharedTypes';
 import { axiosInstance as API } from './utils';
 
 export interface reviewType {

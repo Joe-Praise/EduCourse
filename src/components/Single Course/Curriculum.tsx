@@ -7,7 +7,6 @@ interface Iprop {
 }
 const Curriculum = (props: Iprop) => {
 	const { modules } = props;
-	console.log('from modules', modules);
 
 	// const { _id, courseId, title, moduleIndex, createdAt, lessons } = props;
 	// const dropDown1: accordionType[] = [

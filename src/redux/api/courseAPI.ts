@@ -1,8 +1,8 @@
 import { handleApiError } from '../../util/helperFunctions/helper';
-import { metaData } from '../sharedTypes';
+import { metaData, paginateType } from '../sharedTypes';
 import { axiosInstance as API } from './utils';
 
-// SINGLECOURSETYPE STARTS HERE
+// SINGLE COURSE TYPE STARTS HERE
 export interface SingleCourseType {
 	_id: string;
 	title: string;
@@ -57,12 +57,7 @@ export interface UserID {
 	photo: string;
 	role: string[];
 }
-// SINGLECOURSETYPE ENDS HERE
-
-export type paginateType = {
-	limit: string;
-	page: string;
-};
+// SINGLE COURSE TYPE ENDS HERE
 
 interface courseDataType {
 	_id: string;
@@ -100,13 +95,15 @@ export interface LectureCourseType {
 }
 
 export const getCourses = async (
-	details: paginateType
+	details: paginateType,
+	queryString: Partial<string>
 ): Promise<ApiResponse> => {
 	try {
 		const { page, limit } = details;
-		const { data } = await API.get<ApiResponse>(
-			`/api/v1/courses?page=${page}&limit=${limit}`
-		);
+		const url = queryString.length
+			? `/api/v1/courses${queryString}&page=${page}&limit=${limit}`
+			: `/api/v1/courses?page=${page}&limit=${limit}`;
+		const { data } = await API.get<ApiResponse>(url);
 		return data;
 	} catch (error) {
 		return handleApiError(error);

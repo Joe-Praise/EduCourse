@@ -2,7 +2,7 @@ import { ThunkAction } from 'redux-thunk';
 import * as api from '../api/categoryApi';
 import * as types from '../constants/categoryConstants';
 import { AppDispatch, RootState } from '../store';
-import { paginateType } from '../api/courseAPI';
+import { paginateType } from '../sharedTypes';
 
 type CreateCategorySuccessAction = {
 	type: typeof types.CREATE_CATEGORY_SUCCESS;

@@ -6,6 +6,16 @@ export interface metaData {
 	limit: number;
 }
 
-// interface number {
-// 	[key: string]: number;
-// }
+export interface obj {
+	[key: string]: any;
+}
+
+export type paginateType = {
+	limit: string;
+	page: string;
+};
+
+export interface ApiResponse {
+	data: obj[];
+	error: string;
+}

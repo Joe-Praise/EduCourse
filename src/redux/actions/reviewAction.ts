@@ -2,7 +2,7 @@ import { ThunkAction } from 'redux-thunk';
 import * as api from '../api/reviewApi';
 import * as types from '../constants/reviewConstants';
 import { AppDispatch, RootState } from '../store';
-import { paginateType } from '../api/courseAPI';
+import { paginateType } from '../sharedTypes';
 
 type GetCourseReviewSuccessAction = {
 	type: typeof types.GET_COURSE_REVIEW_SUCCESS;

@@ -1,12 +1,12 @@
-import { SingleCourseType, courseType } from '../api/courseAPI';
-import * as types from '../constants/courseConstants';
+import { blogType } from '../api/blogApi';
+import { SingleCourseType } from '../api/courseAPI';
+import * as types from '../constants/blogConstants';
 
-export type courseState = {
+export type blogState = {
 	filterState: boolean;
-	course: courseType;
-	singleCourse: SingleCourseType[];
-	lectureCourse: SingleCourseType[];
-	courseError: string;
+	blog: blogType;
+	singleBlog: SingleCourseType[];
+	blogError: string;
 	notification: [];
 	queryFilter: {};
 };
@@ -15,10 +15,10 @@ export type courseState = {
  * TODO: Handle Error if fetching data does not work. Both single course and all courses
  */
 
-const initialState: courseState = {
+const initialState: blogState = {
 	filterState: false,
 	queryFilter: {},
-	course: {
+	blog: {
 		status: '',
 		metaData: {
 			totalDocuments: 0,
@@ -29,9 +29,8 @@ const initialState: courseState = {
 		},
 		data: [],
 	},
-	singleCourse: [],
-	courseError: '',
-	lectureCourse: [],
+	singleBlog: [],
+	blogError: '',
 	notification: [],
 };
 
@@ -43,15 +42,15 @@ const courseSlice = (state = initialState, action: any) => {
 				...state,
 				filterState: !state.filterState,
 			};
-		case types.GET_COURSES_SUCCESS:
+		case types.GET_BLOGS_SUCCESS:
 			return {
 				...state,
-				course: payload,
+				blog: payload,
 			};
-		case types.GET_COURSES_FAIL:
+		case types.GET_BLOGS_FAIL:
 			return {
 				...state,
-				course: {
+				blog: {
 					status: '',
 					metaData: {
 						totalDocuments: 0,
@@ -62,46 +61,36 @@ const courseSlice = (state = initialState, action: any) => {
 					data: [],
 				},
 			};
-		case types.GET_SINGLE_COURSE_SUCCESS:
+		case types.GET_SINGLE_BLOG_SUCCESS:
 			return {
 				...state,
-				singleCourse: payload,
+				singleBlog: payload,
 			};
-		case types.GET_SINGLE_COURSE_FAIL:
+		case types.GET_SINGLE_BLOG_FAIL:
 			return {
 				...state,
-				singleCourse: [],
+				singleBlog: [],
 			};
-		case types.GET_LECTURE_COURSE_SUCCESS:
+		// TODO: TEST THIS OUT
+		case types.CREATE_BLOG_SUCCESS:
 			return {
 				...state,
-				lectureCourse: payload,
+				blog: payload,
 			};
-		case types.GET_LECTURE_COURSE_FAIL:
+		case types.CREATE_BLOG_FAIL:
 			return {
 				...state,
-				lectureCourse: [],
+				blogError: payload.message,
 			};
-		case types.CREATE_LECTURE_COURSE_SUCCESS:
-			// TODO: TEST THIS TO SEE THE OUTCOME
-			return {
-				...state,
-				course: {
-					...state.course,
-					metaData: {
-						...state.course.metaData,
-						totalDocuments: state.course.metaData.totalDocuments + 1,
-						count: state.course.metaData.count + 1,
-					},
-					data: [...state.course.data, payload],
-				},
-				notification: payload,
-			};
-		case types.CREATE_LECTURE_COURSE_FAIL:
-			return {
-				...state,
-				notification: payload,
-			};
+		// case types.GET_SINGLE_COURSE_REVIEWS_SUCCESS:
+		// 	return {
+		// 		...state,
+		// 	};
+		// case types.GET_SINGLE_COURSE_REVIEWS_FAIL:
+		// 	return {
+		// 		...state,
+		// 	};
+
 		case types.SET_QUERY_FILTER:
 			return {
 				...state,

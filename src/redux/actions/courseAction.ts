@@ -3,6 +3,7 @@ import { ThunkAction } from 'redux-thunk';
 import * as api from '../api/courseAPI';
 import * as types from '../constants/courseConstants';
 import { AppDispatch, RootState } from '../store';
+import { obj, paginateType } from '../sharedTypes';
 
 type GetCoursesSuccessAction = {
 	type: typeof types.GET_COURSES_SUCCESS;
@@ -60,10 +61,10 @@ export interface Lesson {
 }
 
 export const getCoursesAction =
-	(details: api.paginateType): CourseThunk =>
+	(details: paginateType, queryString: string = ''): CourseThunk =>
 	async (dispatch: AppDispatch) => {
 		try {
-			const response = await api.getCourses(details);
+			const response = await api.getCourses(details, queryString);
 			const data = response;
 
 			dispatch({
@@ -148,7 +149,7 @@ export const createLectureCourseAction =
 			});
 
 			// routes to the learn course page
-			navigate(`/courses/${slug}/learn/lecture/${id}`);
+			navigate(`/courses/${slug}/lecture/${id}`);
 		} catch (error: any) {
 			dispatch({
 				type: types.CREATE_LECTURE_COURSE_FAIL,
@@ -160,5 +161,19 @@ export const createLectureCourseAction =
 export const setFilter = () => {
 	return {
 		type: types.SET_FILTER,
+	};
+};
+
+export const setQueryFilterAction = (filter: obj) => {
+	return {
+		type: types.SET_QUERY_FILTER,
+		payload: filter,
+	};
+};
+
+export const removeQueryFilterAction = (filter: obj) => {
+	return {
+		type: types.REMOVE_QUERY_FILTER,
+		payload: filter,
 	};
 };

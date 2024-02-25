@@ -4,6 +4,13 @@ import { MdCheckBox } from 'react-icons/md';
 import { FilterType } from './type';
 import { capitalizeFirstLetters } from '../../util/helperFunctions/helper';
 import { FaStar } from 'react-icons/fa6';
+// import useQueryString from '../../hooks/UseQueryString';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../../redux/store';
+import {
+	removeQueryFilterAction,
+	setQueryFilterAction,
+} from '../../redux/actions/courseAction';
 
 interface Iprop {
 	header: string;
@@ -11,19 +18,64 @@ interface Iprop {
 }
 
 const FilterActionList = (props: Iprop) => {
+	const dispatch: AppDispatch = useDispatch();
 	const { values, header } = props;
+
+	// const {queryString, setQueryString]
+	// const { queryString, addQuerySting, removeQueryString, StringifyQuery } =
+	// 	useQueryString();
 
 	const [active, setActive] = useState<string>('');
 
 	const handleChange = (data: FilterType) => {
-		console.log(data);
+		let key = header;
+		if (key === 'Price') {
+			key = 'priceCategory';
+		}
+		const obj = {
+			[key]: data._id + '',
+		};
+		// addQuerySting(obj);
+
 		if (active === data?._id) {
 			setActive('');
+			dispatch(removeQueryFilterAction(obj));
 		} else {
+			dispatch(setQueryFilterAction(obj));
 			setActive(data?._id);
 		}
 	};
+
 	const arr = [1, 2, 3, 4, 5];
+
+	const handleFilterDisplay = (el: any) => {
+		if (header === 'Review') {
+			return (
+				<div className='flex gap-3 flex-1'>
+					{arr.map((_, idx) => {
+						return (
+							<FaStar
+								key={idx}
+								className={`${
+									idx < el._id ? 'fill-orange-400' : 'fill-slate-500'
+								} h-3 w-3`}
+							/>
+						);
+					})}
+				</div>
+			);
+		} else {
+			return (
+				<div className='flex gap-3 justify-between flex-1'>
+					<span>
+						{header === 'Instructors'
+							? capitalizeFirstLetters(el?.userId?.name)
+							: capitalizeFirstLetters(el?.name)}
+					</span>
+				</div>
+			);
+		}
+	};
 	return (
 		<ul className='list-none w-full'>
 			{values?.map((el) => {
@@ -37,28 +89,8 @@ const FilterActionList = (props: Iprop) => {
 					>
 						{active === el?._id ? <MdCheckBox /> : <MdCheckBoxOutlineBlank />}
 
-						{header === 'Review' ? (
-							<div className='flex gap-3 flex-1'>
-								{arr.map((_, idx) => {
-									return (
-										<FaStar
-											key={idx}
-											className={`${
-												idx < el._id ? 'fill-orange-400' : 'fill-slate-500'
-											} h-3 w-3`}
-										/>
-									);
-								})}
-							</div>
-						) : (
-							<div className='flex gap-3 justify-between flex-1'>
-								<span>
-									{header === 'Instructor'
-										? capitalizeFirstLetters(el?.userId?.name)
-										: capitalizeFirstLetters(el?.name)}
-								</span>
-							</div>
-						)}
+						{/* handles the display of the filters */}
+						{handleFilterDisplay(el)}
 					</li>
 				);
 			})}
@@ -74,4 +106,29 @@ export default FilterActionList;
 				return <FilterActionBtn key={idx} title={el} />;
 			})}
 		</ul> */
+}
+
+{
+	/* {header === 'Review' ? (
+							<div className='flex gap-3 flex-1'>
+								{arr.map((_, idx) => {
+									return (
+										<FaStar
+											key={idx}
+											className={`${
+												idx < el._id ? 'fill-orange-400' : 'fill-slate-500'
+											} h-3 w-3`}
+										/>
+									);
+								})}
+							</div>
+						) : (
+							<div className='flex gap-3 justify-between flex-1'>
+								<span>
+									{header === 'Instructors'
+										? capitalizeFirstLetters(el?.userId?.name)
+										: capitalizeFirstLetters(el?.name)}
+								</span>
+							</div>
+						)} */
 }

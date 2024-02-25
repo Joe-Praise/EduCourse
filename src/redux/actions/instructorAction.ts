@@ -2,7 +2,7 @@ import { ThunkAction } from 'redux-thunk';
 import * as api from '../api/instructorApi';
 import * as types from '../constants/instructorConstants';
 import { AppDispatch, RootState } from '../store';
-import { paginateType } from '../api/courseAPI';
+import { paginateType } from '../sharedTypes';
 
 type CreateInstructorSuccessAction = {
 	type: typeof types.CREATE_INSTRUCTOR_SUCCESS;

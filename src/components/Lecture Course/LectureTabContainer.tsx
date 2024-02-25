@@ -36,7 +36,13 @@ const LectureTabContainer: FC<lectureType> = (props) => {
 
 	switch (activeView) {
 		case 'Course Content':
-			display = children1;
+			// checks if course content is hidden and gives focus to overview
+			if (tabHeader.CourseContent === undefined) {
+				setActiveView('Overview');
+				display = children2;
+			} else {
+				display = children1;
+			}
 			break;
 		case 'Overview':
 			display = children2;
@@ -48,23 +54,26 @@ const LectureTabContainer: FC<lectureType> = (props) => {
 			display = children4;
 			break;
 		default:
-			display = <p>This view is not available.</p>;
+			display = children2;
 	}
 
 	return (
 		<div className='min-h-[40vh] md:w-3/4 mx-auto '>
 			<ul className='flex gap-4 border-y'>
-				{Object.entries(tabHeader).map(([, value], i) => (
-					<li
-						key={i}
-						className={`p-2 py-5 cursor-pointer flex justify-center items-center text-sm font-semibold ${
-							activeView === value ? 'text-effect-active' : ''
-						}`}
-						onClick={() => setActiveView(value || '')}
-					>
-						{value}
-					</li>
-				))}
+				{Object.entries(tabHeader).map(([, value], i) => {
+					console.log(value);
+					return (
+						<li
+							key={i}
+							className={`p-2 py-5 cursor-pointer flex justify-center items-center text-sm font-semibold ${
+								activeView === value ? 'text-effect-active' : ''
+							}`}
+							onClick={() => setActiveView(value || '')}
+						>
+							{value}
+						</li>
+					);
+				})}
 			</ul>
 
 			<div className='p-2 rounded-b-md'>{display}</div>

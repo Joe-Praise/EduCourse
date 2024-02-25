@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, useEffect, useState } from 'react';
+import { ChangeEvent, FC, useEffect, useRef, useState } from 'react';
 // import img from '../../assets/image/card5.jpg';
 import FilterStructure from '../../components/shared/FilterStructure';
 import FilterActionMenu from '../../components/shared/FilterActionMenu';
@@ -13,21 +13,27 @@ import { ratingSummaryType } from '../../redux/api/courseAPI';
 import { getInstructorAction } from '../../redux/actions/instructorAction';
 import { OmittedInstructorDataType } from '../../redux/api/instructorApi';
 import useDebounce from '../../hooks/UseDebounce';
-// import { Instructor, Category } from '../Home/homePageType';
+import { formQueryStr } from '../../util/helperFunctions/helper';
+import Pagination from '../../components/shared/Pagination';
+import { paginateType } from '../../redux/sharedTypes';
 
 const Course: FC = () => {
 	const dispatch: AppDispatch = useDispatch();
+	const initializeRef = useRef(true);
 	const courseState = useSelector((state: RootState) => state.course);
 	const category = useSelector((state: RootState) => state.category.categories);
 	const instructor = useSelector(
 		(state: RootState) => state.instructor.instructors
 	);
 
+	const metaData = courseState.course.metaData;
+	const queryFilterState = courseState.queryFilter;
 	const displayFilter = courseState.filterState;
 	const coursesData = courseState.course;
 
 	const [activeLayout, setActiveLayout] = useState('grid');
 	const [search, setSearch] = useState('');
+	const limit = '6';
 	const debouncedSearch = useDebounce(search);
 
 	const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
@@ -48,94 +54,10 @@ const Course: FC = () => {
 	}, [debouncedSearch]);
 
 	useEffect(() => {
-		dispatch(getCoursesAction({ page: '1', limit: '6' }));
+		dispatch(getCoursesAction({ page: '1', limit }));
 		dispatch(getCategoryAction({ page: '1', limit: '0' }));
 		dispatch(getInstructorAction({ page: '1', limit: '0' }));
 	}, [dispatch]);
-
-	// interface cardProps {
-	// 	img: string;
-	// 	instructor: string;
-	// 	coureTitle: string;
-	// 	createdAt: string;
-	// 	noOfStudents: string;
-	// 	price: string;
-	// 	category: string;
-	// 	activeLayout: string;
-	// }
-
-	// const courses: cardProps[] = [
-	// 	{
-	// 		img,
-	// 		instructor: 'Joe Praise',
-	// 		coureTitle: 'React and Redux master class',
-	// 		createdAt: '1-01-2024',
-	// 		noOfStudents: '1',
-	// 		price: '45',
-	// 		category: 'Programming',
-	// 		activeLayout,
-	// 	},
-	// 	{
-	// 		img,
-	// 		instructor: 'Joe Praise',
-	// 		coureTitle: 'React and Redux master class',
-	// 		createdAt: '12-01-2024',
-	// 		noOfStudents: '50',
-	// 		price: '45',
-	// 		category: 'Programming',
-	// 		activeLayout,
-	// 	},
-	// 	{
-	// 		img,
-	// 		instructor: 'Joe Praise',
-	// 		coureTitle: 'React and Redux master class',
-	// 		createdAt: '12-01-2024',
-	// 		noOfStudents: '50',
-	// 		price: '45',
-	// 		category: 'Programming',
-	// 		activeLayout,
-	// 	},
-	// 	{
-	// 		img,
-	// 		instructor: 'Joe Praise',
-	// 		coureTitle: 'React and Redux master class',
-	// 		createdAt: '12-01-2024',
-	// 		noOfStudents: '50',
-	// 		price: '45',
-	// 		category: 'Programming',
-	// 		activeLayout,
-	// 	},
-	// 	{
-	// 		img,
-	// 		instructor: 'Joe Praise',
-	// 		coureTitle: 'React and Redux master class',
-	// 		createdAt: '12-01-2024',
-	// 		noOfStudents: '50',
-	// 		price: '45',
-	// 		category: 'Programming',
-	// 		activeLayout,
-	// 	},
-	// 	{
-	// 		img,
-	// 		instructor: 'Joe Praise',
-	// 		coureTitle: 'React and Redux master class',
-	// 		createdAt: '12-01-2024',
-	// 		noOfStudents: '50',
-	// 		price: '45',
-	// 		category: 'Programming',
-	// 		activeLayout,
-	// 	},
-	// 	{
-	// 		img,
-	// 		instructor: 'Joe Praise',
-	// 		coureTitle: 'React and Redux master class',
-	// 		createdAt: '12-01-2024',
-	// 		noOfStudents: '50',
-	// 		price: '45',
-	// 		category: 'Programming',
-	// 		activeLayout,
-	// 	},
-	// ];
 
 	type priceCategory = { _id: string; name: 'Free' | 'Paid' };
 
@@ -148,12 +70,12 @@ const Course: FC = () => {
 	interface overAll {
 		Category: OmittedCategoryDataType[];
 		Price: priceCategory[];
-		Instructor: OmittedInstructorDataType[];
+		Instructors: OmittedInstructorDataType[];
 		Level: level[];
 		Review: reviewType[];
 	}
 
-	const dataClone: overAll = {
+	const filterData: overAll = {
 		Category: category?.data,
 		Review: [
 			{ title: '5', value: 0, _id: 5 },
@@ -170,12 +92,29 @@ const Course: FC = () => {
 			{ _id: 'Free', name: 'Free' },
 			{ _id: 'Paid', name: 'Paid' },
 		],
-		Instructor: instructor?.data,
+		Instructors: instructor?.data,
 		Level: [{ _id: 'All Levels', name: 'All Levels' }],
 	};
 
-	// console.log(instructor);
-	useEffect(() => {}, []);
+	useEffect(() => {
+		if (initializeRef.current) {
+			initializeRef.current = false;
+			return;
+		}
+
+		const timeout = setTimeout(() => {
+			const queryStr = formQueryStr(queryFilterState);
+			dispatch(getCoursesAction({ page: '1', limit }, queryStr));
+		}, 700);
+
+		return () => clearTimeout(timeout);
+	}, [dispatch, queryFilterState]);
+
+	// handles Pagination dispatch
+	const handelQuerySearch = (details: paginateType, queryString: string) => {
+		dispatch(getCoursesAction(details, queryString));
+	};
+
 	return (
 		<FilterStructure
 			title={'All Courses'}
@@ -192,8 +131,7 @@ const Course: FC = () => {
 			}
 			children2={
 				<>
-					{Object.entries(dataClone).map(([key, value], i) => {
-						// console.log(typeof key, value);
+					{Object.entries(filterData).map(([key, value], i) => {
 						return <FilterActionMenu header={key} values={value} key={i} />;
 					})}
 
@@ -204,6 +142,15 @@ const Course: FC = () => {
 						<p className='font-bold'>Filter</p>
 						<FaFilter className={displayFilter ? 'fill-effect-active' : ''} />
 					</div>
+				</>
+			}
+			children3={
+				<>
+					<Pagination
+						metaData={metaData}
+						handlePagination={handelQuerySearch}
+						queryString={queryFilterState}
+					/>
 				</>
 			}
 			activeLayout={activeLayout}
