@@ -1,24 +1,37 @@
-import { ChangeEvent, FC, useEffect, useState } from 'react';
-import img from '../../assets/image/card4.jpg';
+import { ChangeEvent, FC, useEffect, useRef, useState } from 'react';
 import FilterStructure from '../../components/shared/FilterStructure';
 import FilterActionMenu from '../../components/shared/FilterActionMenu';
 import BlogCard from '../../components/Blog/BlogCard';
 import { useDispatch, useSelector } from 'react-redux';
 import { setFilter } from '../../redux/actions/courseAction';
-import { RootState } from '../../redux/store';
+import { AppDispatch, RootState } from '../../redux/store';
 import { FaFilter } from 'react-icons/fa';
 import { FilterType } from '../../components/shared/type';
+import Pagination from '../../components/shared/Pagination';
+import useDebounce from '../../hooks/UseDebounce';
+import { getBlogsAction } from '../../redux/actions/blogAction';
+import { formQueryStr } from '../../util/helperFunctions/helper';
+import { paginateType } from '../../redux/sharedTypes';
 
 const Blog: FC = () => {
-	const dispatch = useDispatch();
+	const dispatch: AppDispatch = useDispatch();
+	const initializeRef = useRef(true);
+	const blog = useSelector((state: RootState) => state.blog);
 	const displayFilter = useSelector(
 		(state: RootState) => state.course.filterState
 	);
+	const blogData = blog.blog;
+	const queryFilterState = blog.queryFilter;
 
+	// TODO: CONTINUE FIXING UP THE STATES REQUIRED TO MAKE BLOG FUNCTION
 	const [activeLayout, setActiveLayout] = useState('grid');
+	const [search, setSearch] = useState('');
+	const limit = '6';
+	const debouncedSearch = useDebounce(search);
 
 	const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
-		console.log(e.target.value);
+		const value = e.target.value;
+		setSearch(value);
 	};
 
 	const handleLayoutChange = (value: string) => {
@@ -29,80 +42,90 @@ const Blog: FC = () => {
 		dispatch(setFilter());
 	};
 
-	interface cardProps {
-		img: string;
-		instructor: string;
-		articleTitle: string;
-		createdAt: string;
-		summary: string;
-		activeLayout: string;
-	}
+	useEffect(() => {
+		console.log(debouncedSearch);
+	}, [debouncedSearch]);
 
-	const articles: cardProps[] = [
-		{
-			img,
-			instructor: 'Joe Praise',
-			articleTitle: 'React and Redux master class',
-			createdAt: '1-01-2024',
-			summary:
-				'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum, ipsa! Aperiam distinctio sit consectetur dolorem, id odit aspernatur facere architecto delectus, eligendi assumenda nihil non unde. Nobis magni suscipit non eligendi natus ea, accusantium earum, delectus incidunt reiciendis asperiores qui.',
-			activeLayout,
-		},
-		{
-			img,
-			instructor: 'Joe Praise',
-			articleTitle: 'React and Redux master class',
-			createdAt: '1-01-2024',
-			summary:
-				'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum, ipsa! Aperiam distinctio sit consectetur dolorem, id odit aspernatur facere architecto delectus, eligendi assumenda nihil non unde. Nobis magni suscipit non eligendi natus ea, accusantium earum, delectus incidunt reiciendis asperiores qui.',
-			activeLayout,
-		},
-		{
-			img,
-			instructor: 'Joe Praise',
-			articleTitle: 'React and Redux master class',
-			createdAt: '1-01-2024',
-			summary:
-				'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum, ipsa! Aperiam distinctio sit consectetur dolorem, id odit aspernatur facere architecto delectus, eligendi assumenda nihil non unde. Nobis magni suscipit non eligendi natus ea, accusantium earum, delectus incidunt reiciendis asperiores qui.',
-			activeLayout,
-		},
-		{
-			img,
-			instructor: 'Joe Praise',
-			articleTitle: 'React and Redux master class',
-			createdAt: '1-01-2024',
-			summary:
-				'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum, ipsa! Aperiam distinctio sit consectetur dolorem, id odit aspernatur facere architecto delectus, eligendi assumenda nihil non unde. Nobis magni suscipit non eligendi natus ea, accusantium earum, delectus incidunt reiciendis asperiores qui.',
-			activeLayout,
-		},
-		{
-			img,
-			instructor: 'Joe Praise',
-			articleTitle: 'React and Redux master class',
-			createdAt: '1-01-2024',
-			summary:
-				'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum, ipsa! Aperiam distinctio sit consectetur dolorem, id odit aspernatur facere architecto delectus, eligendi assumenda nihil non unde. Nobis magni suscipit non eligendi natus ea, accusantium earum, delectus incidunt reiciendis asperiores qui.',
-			activeLayout,
-		},
-		{
-			img,
-			instructor: 'Joe Praise',
-			articleTitle: 'React and Redux master class',
-			createdAt: '1-01-2024',
-			summary:
-				'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum, ipsa! Aperiam distinctio sit consectetur dolorem, id odit aspernatur facere architecto delectus, eligendi assumenda nihil non unde. Nobis magni suscipit non eligendi natus ea, accusantium earum, delectus incidunt reiciendis asperiores qui.',
-			activeLayout,
-		},
-		{
-			img,
-			instructor: 'Joe Praise',
-			articleTitle: 'React and Redux master class',
-			createdAt: '1-01-2024',
-			summary:
-				'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum, ipsa! Aperiam distinctio sit consectetur dolorem, id odit aspernatur facere architecto delectus, eligendi assumenda nihil non unde. Nobis magni suscipit non eligendi natus ea, accusantium earum, delectus incidunt reiciendis asperiores qui.',
-			activeLayout,
-		},
-	];
+	useEffect(() => {
+		dispatch(getBlogsAction({ page: '1', limit }));
+		// dispatch(getCategoryAction({ page: '1', limit: '0' }));
+		// dispatch(getInstructorAction({ page: '1', limit: '0' }));
+	}, [dispatch]);
+
+	// interface cardProps {
+	// 	img: string;
+	// 	instructor: string;
+	// 	articleTitle: string;
+	// 	createdAt: string;
+	// 	summary: string;
+	// 	activeLayout: string;
+	// }
+
+	// const articles: cardProps[] = [
+	// 	{
+	// 		img,
+	// 		instructor: 'Joe Praise',
+	// 		articleTitle: 'React and Redux master class',
+	// 		createdAt: '1-01-2024',
+	// 		summary:
+	// 			'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum, ipsa! Aperiam distinctio sit consectetur dolorem, id odit aspernatur facere architecto delectus, eligendi assumenda nihil non unde. Nobis magni suscipit non eligendi natus ea, accusantium earum, delectus incidunt reiciendis asperiores qui.',
+	// 		activeLayout,
+	// 	},
+	// 	{
+	// 		img,
+	// 		instructor: 'Joe Praise',
+	// 		articleTitle: 'React and Redux master class',
+	// 		createdAt: '1-01-2024',
+	// 		summary:
+	// 			'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum, ipsa! Aperiam distinctio sit consectetur dolorem, id odit aspernatur facere architecto delectus, eligendi assumenda nihil non unde. Nobis magni suscipit non eligendi natus ea, accusantium earum, delectus incidunt reiciendis asperiores qui.',
+	// 		activeLayout,
+	// 	},
+	// 	{
+	// 		img,
+	// 		instructor: 'Joe Praise',
+	// 		articleTitle: 'React and Redux master class',
+	// 		createdAt: '1-01-2024',
+	// 		summary:
+	// 			'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum, ipsa! Aperiam distinctio sit consectetur dolorem, id odit aspernatur facere architecto delectus, eligendi assumenda nihil non unde. Nobis magni suscipit non eligendi natus ea, accusantium earum, delectus incidunt reiciendis asperiores qui.',
+	// 		activeLayout,
+	// 	},
+	// 	{
+	// 		img,
+	// 		instructor: 'Joe Praise',
+	// 		articleTitle: 'React and Redux master class',
+	// 		createdAt: '1-01-2024',
+	// 		summary:
+	// 			'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum, ipsa! Aperiam distinctio sit consectetur dolorem, id odit aspernatur facere architecto delectus, eligendi assumenda nihil non unde. Nobis magni suscipit non eligendi natus ea, accusantium earum, delectus incidunt reiciendis asperiores qui.',
+	// 		activeLayout,
+	// 	},
+	// 	{
+	// 		img,
+	// 		instructor: 'Joe Praise',
+	// 		articleTitle: 'React and Redux master class',
+	// 		createdAt: '1-01-2024',
+	// 		summary:
+	// 			'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum, ipsa! Aperiam distinctio sit consectetur dolorem, id odit aspernatur facere architecto delectus, eligendi assumenda nihil non unde. Nobis magni suscipit non eligendi natus ea, accusantium earum, delectus incidunt reiciendis asperiores qui.',
+	// 		activeLayout,
+	// 	},
+	// 	{
+	// 		img,
+	// 		instructor: 'Joe Praise',
+	// 		articleTitle: 'React and Redux master class',
+	// 		createdAt: '1-01-2024',
+	// 		summary:
+	// 			'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum, ipsa! Aperiam distinctio sit consectetur dolorem, id odit aspernatur facere architecto delectus, eligendi assumenda nihil non unde. Nobis magni suscipit non eligendi natus ea, accusantium earum, delectus incidunt reiciendis asperiores qui.',
+	// 		activeLayout,
+	// 	},
+	// 	{
+	// 		img,
+	// 		instructor: 'Joe Praise',
+	// 		articleTitle: 'React and Redux master class',
+	// 		createdAt: '1-01-2024',
+	// 		summary:
+	// 			'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum, ipsa! Aperiam distinctio sit consectetur dolorem, id odit aspernatur facere architecto delectus, eligendi assumenda nihil non unde. Nobis magni suscipit non eligendi natus ea, accusantium earum, delectus incidunt reiciendis asperiores qui.',
+	// 		activeLayout,
+	// 	},
+	// ];
 
 	type tagType = { _id: string; name: string };
 
@@ -173,6 +196,25 @@ const Blog: FC = () => {
 		Tags: [{ _id: '658aca7bf5797e2701fcbd28', name: 'Education' }],
 	};
 
+	useEffect(() => {
+		if (initializeRef.current) {
+			initializeRef.current = false;
+			return;
+		}
+
+		const timeout = setTimeout(() => {
+			const queryStr = formQueryStr(queryFilterState);
+			dispatch(getBlogsAction({ page: '1', limit }, queryStr));
+		}, 700);
+
+		return () => clearTimeout(timeout);
+	}, [dispatch, queryFilterState]);
+
+	// handles Pagination dispatch
+	const handelQuerySearch = (details: paginateType, queryString: string) => {
+		dispatch(getBlogsAction(details, queryString));
+	};
+
 	useEffect(() => {}, [activeLayout, setActiveLayout]);
 	return (
 		<FilterStructure
@@ -181,17 +223,9 @@ const Blog: FC = () => {
 			layoutFunc={handleLayoutChange}
 			children1={
 				<>
-					{articles.map((el, i) => {
+					{blogData?.data?.map((el: any) => {
 						return (
-							<BlogCard
-								key={i}
-								img={el.img}
-								articleTitle={el.articleTitle}
-								createdAt={el.createdAt}
-								summary={el.summary}
-								instructor={el.instructor}
-								activeLayout={el.activeLayout}
-							/>
+							<BlogCard key={el._id} blog={el} activeLayout={el.activeLayout} />
 						);
 					})}
 				</>
@@ -210,6 +244,15 @@ const Blog: FC = () => {
 						<p className='font-bold'>Filter</p>
 						<FaFilter className={displayFilter ? 'fill-effect-active' : ''} />
 					</div>
+				</>
+			}
+			children3={
+				<>
+					<Pagination
+						metaData={blogData.metaData}
+						handlePagination={handelQuerySearch}
+						queryString={queryFilterState}
+					/>
 				</>
 			}
 			activeLayout={activeLayout}

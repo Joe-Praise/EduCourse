@@ -35,7 +35,7 @@ export const publicRoutes = [
 
 export const protectedRoutes = [
 	{
-		path: '/courses/:slug/learn/lecture/:courseId',
+		path: '/courses/:slug/lecture/:courseId',
 		component: LectureCourse,
 	},
 	{

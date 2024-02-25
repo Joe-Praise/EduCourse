@@ -249,6 +249,7 @@ const MyLearning: FC = () => {
 							</div>
 						</>
 					}
+					children3={<>pagination will be updated!</>}
 					activeLayout={activeLayout}
 				/>
 			</main>

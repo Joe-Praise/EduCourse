@@ -4,7 +4,9 @@ import { AccordionBtnIcon } from '../../assets/Svg';
 import AccordionBtn from './AccordionBtn';
 import { accordionType } from '../../pages/Courses/courseType';
 
-const showCheckBox = [/\/courses\/lecture/].map((regex) => new RegExp(regex));
+const showCheckBoxRegex = [/\/courses\/[^/]+\/lecture\/[^/]/].map(
+	(regex) => new RegExp(regex)
+);
 
 const Accordion: FC<{ content: accordionType }> = ({ content }) => {
 	/**
@@ -15,10 +17,10 @@ const Accordion: FC<{ content: accordionType }> = ({ content }) => {
 	const location = useLocation();
 
 	useEffect(() => {
-		const showCheckbox = showCheckBox.some((regex) =>
-			regex.test(location.pathname)
-		);
-
+		const showCheckbox = showCheckBoxRegex.some((regex) => {
+			regex.test(location.pathname);
+		});
+		console.log(showCheckbox);
 		setIsMainCourse(showCheckbox);
 	}, [location.pathname]);
 

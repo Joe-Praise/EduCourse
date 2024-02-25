@@ -71,7 +71,7 @@ export const formatAmount = (amount: number) => {
 	return formattedAmount;
 };
 
-export const capitalizeFirstLetters = (str: any) => {
+export const capitalizeFirstLetters = (str: string) => {
 	let splitStr =
 		str.indexOf('-') !== -1
 			? str.toLowerCase().split('-')
@@ -86,4 +86,34 @@ export const capitalizeFirstLetters = (str: any) => {
 	}
 	result = newArr.join(' ');
 	return result;
+};
+
+export function camelCase(str: string) {
+	let splitStr =
+		str.indexOf('-') !== -1
+			? str.toLowerCase().split('-')
+			: str.toLowerCase().split(' ');
+	let newArr = [],
+		result,
+		output;
+	for (let i = 0; i < splitStr.length; i++) {
+		if (splitStr[i] !== '') {
+			let joinedStr = splitStr[i][0].toUpperCase() + splitStr[i].slice(1);
+			newArr.push(joinedStr);
+		}
+	}
+	result = newArr.join('');
+	output = result[0].toLowerCase() + result.slice(1);
+	return output;
+}
+
+export const formQueryStr = (queryObj: {}) => {
+	const queryArr: string[] = [];
+	Object.entries(queryObj).map((obj) => {
+		const key = obj[0][0].toLocaleLowerCase() + obj[0].slice(1);
+		queryArr.push(key + '=' + obj[1]);
+	});
+
+	const queryStr = '?' + queryArr.join('&');
+	return queryStr;
 };

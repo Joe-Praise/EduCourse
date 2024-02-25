@@ -2,7 +2,6 @@ import { ChangeEvent, FC, ReactNode } from 'react';
 import FilterPageHeader from './FilterPageHeader';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
-import Pagination from './Pagination';
 
 const FilterStructure: FC<{
 	title: string;
@@ -10,6 +9,7 @@ const FilterStructure: FC<{
 	layoutFunc: (_: string) => void;
 	children1: ReactNode;
 	children2: ReactNode;
+	children3: ReactNode;
 	activeLayout: string;
 }> = ({
 	title,
@@ -17,11 +17,15 @@ const FilterStructure: FC<{
 	layoutFunc,
 	children1,
 	children2,
+	children3,
 	activeLayout,
 }) => {
-	const displayFilter = useSelector(
-		(state: RootState) => state.course.filterState
-	);
+	// const handelQuerySearch = (details: )=> {
+
+	// }
+	const course = useSelector((state: RootState) => state.course);
+	const displayFilter = course.filterState;
+
 	return (
 		<section>
 			<div className='grid grid-cols-6 gap-3 xl:gap-12 mt-2  layoutWidth items-start overflow-y-auto h-[120vh]'>
@@ -56,51 +60,7 @@ const FilterStructure: FC<{
 					{children2}
 				</div>
 			</div>
-			<div className=' bottom-0'>
-				<Pagination
-					data={[
-						'lorem',
-						'lorem',
-						'lorem',
-						'lorem',
-						'lorem',
-						'lorem',
-						'lorem',
-						'lorem',
-						'lorem',
-						'lorem',
-						'lorem',
-						'lorem',
-						'lorem',
-						'lorem',
-						'lorem',
-						'lorem',
-						'lorem',
-						'lorem',
-						'lorem',
-						'lorem',
-						'lorem',
-						'lorem',
-						'lorem',
-						'lorem',
-						'lorem',
-						'lorem',
-						'lorem',
-						'lorem',
-						'lorem',
-						'lorem',
-						'lorem',
-						'lorem',
-						'lorem',
-						'lorem',
-						'lorem',
-						'lorem',
-					]}
-					// getData={(data) => {
-					// 	console.log(data);
-					// }}
-				/>
-			</div>
+			<div className=' bottom-0'>{children3}</div>
 		</section>
 	);
 };
