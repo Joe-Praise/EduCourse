@@ -1,11 +1,16 @@
 import React, { FC, useRef } from 'react';
 import Button from './Button';
+// import { AppDispatch } from '../../redux/store';
+// import { useDispatch } from 'react-redux';
 
 type func = {
 	onCommentvalue: (_: string) => void;
 };
 const Comment: FC<func> = ({ onCommentvalue }) => {
+	// const dispatch: AppDispatch = useDispatch();
+	// const initializeRef = useRef(true);
 	const commentRef = useRef<HTMLTextAreaElement>(null);
+
 	const handleComment = (event: React.FormEvent) => {
 		event.preventDefault();
 		const commentValue = commentRef.current!.value;
@@ -14,6 +19,7 @@ const Comment: FC<func> = ({ onCommentvalue }) => {
 			return;
 		}
 		onCommentvalue(commentValue);
+
 		commentRef.current!.value = '';
 	};
 
@@ -28,11 +34,7 @@ const Comment: FC<func> = ({ onCommentvalue }) => {
 					placeholder='Comment...'
 					ref={commentRef}
 				></textarea>
-				<Button
-					className={'btnStyle'}
-					value={'Post Comment'}
-					onClick={function (): void {}}
-				/>
+				<Button className={'btnStyle my-3'} value={'Post Comment'} />
 			</form>
 		</div>
 	);

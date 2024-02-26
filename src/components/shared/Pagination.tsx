@@ -10,7 +10,7 @@ interface Iprop {
 const Pagination: FC<Iprop> = (props) => {
 	const { metaData, handlePagination, queryString } = props;
 	const [pages, setPages] = useState<number[]>([]);
-	const [activePage, setActivePage] = useState(metaData.page);
+	const [activePage, setActivePage] = useState(metaData?.page || 1);
 	// const [details, setDetails] = useState<paginateType>({
 	// 	page: '',
 	// 	limit: '6',
@@ -19,7 +19,7 @@ const Pagination: FC<Iprop> = (props) => {
 
 	//saving the page count
 	// const pageCount = Math.ceil(data.length / dataPerPage);
-	const pageCount = metaData.totalPages;
+	const pageCount = metaData?.totalPages;
 
 	// this gets the total items viewed
 	// const itemsViewed = activePage * dataPerPage;
@@ -57,7 +57,8 @@ const Pagination: FC<Iprop> = (props) => {
 			page: page + '',
 			limit: '6',
 		};
-		handlePagination(details, queryString);
+
+		return handlePagination(details, queryString);
 	};
 
 	const isActive = (page: number) => (activePage === page ? 'active' : '');

@@ -11,6 +11,7 @@ export interface singleBlogType {
 	imageCover?: string;
 	description: string;
 	summary: string;
+	slug: string;
 	createdAt: string;
 	id: string;
 }
@@ -37,6 +38,37 @@ export type blogType = {
 export type blogRequestType = {
 	userId: string;
 };
+
+// BLOG COMMENT SECTION
+
+export type blogCommentResponseType = {
+	status: string;
+	metaData: metaData;
+	data: OmittedBlogCommentType[];
+};
+export interface blogCommentType {
+	_id: string;
+	userId: UserID;
+	blogId: string;
+	review: string;
+	createdAt: string;
+	__v: number;
+	id: string;
+}
+
+export interface UserID {
+	_id: string;
+	name: string;
+	email: string;
+	photo: string;
+	role: string[];
+}
+
+export interface commentRequestType {
+	review: string;
+}
+
+type OmittedBlogCommentType = Omit<blogCommentType, '__v id'>;
 
 const BASE_URL = '/api/v1/blogs';
 
@@ -83,6 +115,48 @@ export const createBlog = async (
 			`/api/v1/completed-courses`,
 			details
 		);
+		return data;
+	} catch (error) {
+		return handleApiError(error);
+	}
+};
+
+export const createBlogComment = async (
+	details: commentRequestType,
+	blogId: string
+): Promise<ApiResponse> => {
+	try {
+		const { data } = await API.post<ApiResponse>(
+			`/api/v1/blogs/${blogId}/comments`,
+			details
+		);
+		return data;
+	} catch (error) {
+		return handleApiError(error);
+	}
+};
+
+export const getBlogComments = async (
+	details: paginateType,
+	blogId: string
+): Promise<ApiResponse> => {
+	try {
+		const { page, limit } = details;
+		const url = `${BASE_URL}/${blogId}/comments?page=${page}&limit=${limit}`;
+		const { data } = await API.get<ApiResponse>(url);
+		return data;
+	} catch (error) {
+		return handleApiError(error);
+	}
+};
+
+export const deleteBlogComments = async (
+	blogId: string
+): Promise<ApiResponse> => {
+	const commenBaseUrl = `/api/v1/comments`;
+	try {
+		const url = `${commenBaseUrl}/${blogId}`;
+		const { data } = await API.delete<ApiResponse>(url);
 		return data;
 	} catch (error) {
 		return handleApiError(error);
