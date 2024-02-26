@@ -1,14 +1,27 @@
-import { FC } from 'react';
-import DataBadge from '../../components/shared/DataBadge';
+import { useEffect } from 'react';
 import { headerbadge } from '../../components/Single Course/HeaderContainer';
 import { FaRegCalendar, FaUser } from 'react-icons/fa';
 import { LiaCommentsSolid } from 'react-icons/lia';
-import img from '../../assets/image/card1.jpg';
 import Tags from '../../components/Single Blog/Tags';
-// import CommentCard from '../../components/Single Course/CommentCard';
 import Comment from '../../components/shared/Comment';
+import { useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../redux/store';
+import {
+	createBlogCommentAction,
+	getBlogCommentsAction,
+	getSingleBlogAction,
+} from '../../redux/actions/blogAction';
+import BlogHeader from '../../components/Single Blog/BlogHeader';
+import { handleDateFormat } from '../../util/helperFunctions/dateFormatter';
+import config from '../../../config';
+import useFormatText from '../../hooks/UseFormatText';
+import BlogCommentCard from '../../components/Single Blog/BlogCommentCard';
+import Pagination from '../../components/shared/Pagination';
+import { paginateType } from '../../redux/sharedTypes';
+import { blogCommentType } from '../../redux/api/blogApi';
 
-const SingleBlog: FC = () => {
+const SingleBlog = () => {
 	/**
 	 * TODO:
 	 * get single blog details
@@ -17,6 +30,18 @@ const SingleBlog: FC = () => {
 	 * display comments for blog post
 	 * dispatch action for comment generation on blog post
 	 */
+
+	const dispatch: AppDispatch = useDispatch();
+	const singleBlog = useSelector((state: RootState) => state.blog.singleBlog);
+	const blogs = useSelector((state: RootState) => state.blog);
+	const comments = blogs.comments;
+	const SingleBlog = blogs.singleBlog;
+
+	const { slug } = useParams<{ slug: string }>();
+	const slugString: string = slug || '';
+	const { formatText } = useFormatText();
+	const limit = '6';
+
 	const dataDisplay: headerbadge[] = [
 		{
 			title: 'Joe Praise',
@@ -24,7 +49,7 @@ const SingleBlog: FC = () => {
 			icon: FaUser,
 		},
 		{
-			title: new Date(Date.now()).toDateString(),
+			title: handleDateFormat(singleBlog.createdAt),
 			total: '',
 			icon: FaRegCalendar,
 		},
@@ -36,80 +61,92 @@ const SingleBlog: FC = () => {
 	];
 
 	const handleCourseComment = (commentText: string): void => {
-		console.log(commentText);
+		const details = {
+			review: commentText,
+		};
+		dispatch(createBlogCommentAction(details, SingleBlog?._id));
 	};
-	// const arr = Array.from(Array(4), () => 0);
+
+	useEffect(() => {
+		dispatch(getSingleBlogAction(slug));
+	}, [dispatch, slug]);
+
+	// gets the blog comments first page on load
+	useEffect(() => {
+		const timeout = setTimeout(() => {
+			dispatch(getBlogCommentsAction({ page: '1', limit }, SingleBlog?._id));
+		}, 1000);
+
+		return () => clearTimeout(timeout);
+	}, [SingleBlog?._id, dispatch]);
+
+	const handelQuerySearch = (details: paginateType) => {
+		dispatch(getBlogCommentsAction(details, SingleBlog?._id));
+	};
+
 	return (
 		<section className='w-11/12 sm:w-9/12 md:w-[80%] xl:w-[55%] mx-auto py-3'>
-			<div>
-				<h1>React and Redux master class</h1>
-				<div>
-					<DataBadge dataDisplay={dataDisplay} />
-				</div>
-			</div>
+			{singleBlog?._id ? (
+				<>
+					<BlogHeader dataDisplay={dataDisplay} headerTitle={slugString} />
 
-			<div className='my-6'>
-				<figure className='lg:h-[70vh] md:w-[100%] mx-auto'>
-					<img
-						src={img}
-						alt=''
-						className='w-full h-[100%] object-cover object-right-top rounded-lg'
-					/>
-				</figure>
-			</div>
+					<div className='my-6'>
+						<figure className='lg:h-[70vh] md:w-[100%] mx-auto'>
+							<img
+								src={`${config.baseUrl}/blog/${singleBlog?.imageCover}`}
+								alt={`${singleBlog?.title}'s cover image`}
+								className='w-full h-[100%] object-cover object-right-top rounded-lg'
+							/>
+						</figure>
+					</div>
 
-			<div>
-				<p className='mt-2 mb-5'>
-					Lorem ipsum dolor sit amet consectetur, adipisicing elit. Saepe
-					nesciunt laboriosam illum dolore repellat sunt dolor incidunt harum
-					doloribus repellendus tenetur aut quisquam commodi debitis vero quis
-					repudiandae reprehenderit, provident cupiditate, minima odit
-					obcaecati? Earum nemo dignissimos similique consequatur aliquam
-					officia iste! Vero at a inventore vitae error nostrum assumenda iste
-					laborum rerum expedita aperiam ducimus, quia enim harum facere cumque
-					quasi repudiandae in distinctio odit doloremque quis perferendis
-					praesentium! Asperiores magni incidunt, eligendi unde aspernatur
-					molestiae culpa eius aliquam hic, voluptate aliquid dolore autem
-					expedita laboriosam consequuntur dolor quos blanditiis excepturi? Et
-					nulla aperiam exercitationem quasi distinctio? Temporibus eum quasi
-					debitis, consequatur facilis iste illo blanditiis fuga enim quod,
-					expedita placeat fugit provident, voluptate esse eaque at eligendi
-					dignissimos iure mollitia vitae quam ipsam. Praesentium temporibus cum
-					quibusdam adipisci earum illum, obcaecati dolores odit voluptatibus
-					accusantium? Ratione quae error aliquid? Veniam in eveniet suscipit
-					sequi! Quae ex totam fugiat dolores, temporibus consectetur expedita
-					nesciunt blanditiis aliquid veniam maiores doloribus, cumque
-					veritatis, velit voluptatum! Esse exercitationem, fugiat, maiores
-					delectus distinctio molestiae error voluptas maxime quidem quibusdam
-					consequatur ab iste iusto provident incidunt. Sit sequi maxime, atque
-					temporibus, corporis sapiente, et doloribus distinctio in animi
-					voluptatibus labore! Ex, asperiores nam! Quis.
-				</p>
-				<p>
-					Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eum quaerat
-					molestiae accusamus quis voluptas. Libero ipsum possimus eum! Iste
-					quae fuga debitis reprehenderit maxime voluptatibus, magni blanditiis
-					temporibus labore excepturi omnis, nulla tenetur doloremque a? Aut
-					dolorem sint quae laudantium dolor eaque, repellendus incidunt eius
-					recusandae aspernatur dolorum natus ea!
-				</p>
-			</div>
+					<div>
+						{formatText(singleBlog?.description).map((el, index) => (
+							<p key={index} className='mt-3 text-base'>
+								{el}
+							</p>
+						))}
+					</div>
 
-			<div className='mt-10'>
-				<Tags />
-				<div className='mt-10'>
-					<h1>Comments</h1>
-					<p>50 comments</p>
-					{/* TODO:Handle comments & review upload */}
-					{/* <CommentCard />
-					<CommentCard />
-					<CommentCard /> */}
-				</div>
+					<div className='mt-10'>
+						<Tags tags={singleBlog?.tag} />
+						<div className='mt-10'>
+							<h1>Comments</h1>
+							<p>
+								{comments?.data.length > 1
+									? `${comments?.data.length} comments`
+									: `${comments?.data.length} comment`}
+							</p>
+							{/* TODO:Handle comments & review upload */}
 
-				<div className='mt-10'>
-					<Comment onCommentvalue={handleCourseComment} />
-				</div>
-			</div>
+							<div className='my-5'>
+								{comments?.data?.map((item: blogCommentType) => {
+									return (
+										<BlogCommentCard
+											key={item?._id}
+											blogCommentDetails={item}
+										/>
+									);
+								})}
+
+								<div className='my-5'>
+									<Pagination
+										handlePagination={handelQuerySearch}
+										metaData={comments.metaData}
+										queryString={''}
+									/>
+								</div>
+							</div>
+						</div>
+
+						<div className='mt-10'>
+							<Comment onCommentvalue={handleCourseComment} />
+						</div>
+					</div>
+				</>
+			) : (
+				<>Loading...</>
+			)}
 		</section>
 	);
 };

@@ -66,7 +66,7 @@ const SigninForm: FC = () => {
 						handleSubmit,
 						errors,
 						touched,
-						resetForm,
+						// resetForm,
 					} = props;
 					return (
 						<form className=''>
@@ -74,7 +74,6 @@ const SigninForm: FC = () => {
 								name='email'
 								type='email'
 								id='email'
-								// placeholder='Enter email'
 								label='Email'
 								value={values.email}
 								onChange={handleChange}
@@ -87,7 +86,6 @@ const SigninForm: FC = () => {
 								name='password'
 								type='password'
 								id='password'
-								// placeholder='Enter your password'
 								label='password'
 								value={values.password}
 								onChange={handleChange}
@@ -98,14 +96,14 @@ const SigninForm: FC = () => {
 							/>
 							<div>
 								<Button
-									value='Sign up'
+									value='Sign in'
 									className='border p-2 border-color rounded-md bg-primary-color hover:bg-effect-hover active:bg-effect-active text-white transition-all outline-none'
 									size='w-full h-14'
 									onClick={() => {
 										handleSubmit();
-										if (!errors) {
-											setTimeout(() => resetForm(), 2000);
-										}
+										// if (!errors) {
+										// 	setTimeout(() => resetForm(), 2000);
+										// }
 									}}
 									isLoading={loading}
 								/>

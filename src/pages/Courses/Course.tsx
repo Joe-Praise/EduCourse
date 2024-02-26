@@ -50,7 +50,7 @@ const Course: FC = () => {
 	};
 
 	useEffect(() => {
-		console.log(debouncedSearch);
+		console.log('The debounced search', debouncedSearch);
 	}, [debouncedSearch]);
 
 	useEffect(() => {

@@ -52,81 +52,6 @@ const Blog: FC = () => {
 		// dispatch(getInstructorAction({ page: '1', limit: '0' }));
 	}, [dispatch]);
 
-	// interface cardProps {
-	// 	img: string;
-	// 	instructor: string;
-	// 	articleTitle: string;
-	// 	createdAt: string;
-	// 	summary: string;
-	// 	activeLayout: string;
-	// }
-
-	// const articles: cardProps[] = [
-	// 	{
-	// 		img,
-	// 		instructor: 'Joe Praise',
-	// 		articleTitle: 'React and Redux master class',
-	// 		createdAt: '1-01-2024',
-	// 		summary:
-	// 			'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum, ipsa! Aperiam distinctio sit consectetur dolorem, id odit aspernatur facere architecto delectus, eligendi assumenda nihil non unde. Nobis magni suscipit non eligendi natus ea, accusantium earum, delectus incidunt reiciendis asperiores qui.',
-	// 		activeLayout,
-	// 	},
-	// 	{
-	// 		img,
-	// 		instructor: 'Joe Praise',
-	// 		articleTitle: 'React and Redux master class',
-	// 		createdAt: '1-01-2024',
-	// 		summary:
-	// 			'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum, ipsa! Aperiam distinctio sit consectetur dolorem, id odit aspernatur facere architecto delectus, eligendi assumenda nihil non unde. Nobis magni suscipit non eligendi natus ea, accusantium earum, delectus incidunt reiciendis asperiores qui.',
-	// 		activeLayout,
-	// 	},
-	// 	{
-	// 		img,
-	// 		instructor: 'Joe Praise',
-	// 		articleTitle: 'React and Redux master class',
-	// 		createdAt: '1-01-2024',
-	// 		summary:
-	// 			'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum, ipsa! Aperiam distinctio sit consectetur dolorem, id odit aspernatur facere architecto delectus, eligendi assumenda nihil non unde. Nobis magni suscipit non eligendi natus ea, accusantium earum, delectus incidunt reiciendis asperiores qui.',
-	// 		activeLayout,
-	// 	},
-	// 	{
-	// 		img,
-	// 		instructor: 'Joe Praise',
-	// 		articleTitle: 'React and Redux master class',
-	// 		createdAt: '1-01-2024',
-	// 		summary:
-	// 			'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum, ipsa! Aperiam distinctio sit consectetur dolorem, id odit aspernatur facere architecto delectus, eligendi assumenda nihil non unde. Nobis magni suscipit non eligendi natus ea, accusantium earum, delectus incidunt reiciendis asperiores qui.',
-	// 		activeLayout,
-	// 	},
-	// 	{
-	// 		img,
-	// 		instructor: 'Joe Praise',
-	// 		articleTitle: 'React and Redux master class',
-	// 		createdAt: '1-01-2024',
-	// 		summary:
-	// 			'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum, ipsa! Aperiam distinctio sit consectetur dolorem, id odit aspernatur facere architecto delectus, eligendi assumenda nihil non unde. Nobis magni suscipit non eligendi natus ea, accusantium earum, delectus incidunt reiciendis asperiores qui.',
-	// 		activeLayout,
-	// 	},
-	// 	{
-	// 		img,
-	// 		instructor: 'Joe Praise',
-	// 		articleTitle: 'React and Redux master class',
-	// 		createdAt: '1-01-2024',
-	// 		summary:
-	// 			'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum, ipsa! Aperiam distinctio sit consectetur dolorem, id odit aspernatur facere architecto delectus, eligendi assumenda nihil non unde. Nobis magni suscipit non eligendi natus ea, accusantium earum, delectus incidunt reiciendis asperiores qui.',
-	// 		activeLayout,
-	// 	},
-	// 	{
-	// 		img,
-	// 		instructor: 'Joe Praise',
-	// 		articleTitle: 'React and Redux master class',
-	// 		createdAt: '1-01-2024',
-	// 		summary:
-	// 			'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum, ipsa! Aperiam distinctio sit consectetur dolorem, id odit aspernatur facere architecto delectus, eligendi assumenda nihil non unde. Nobis magni suscipit non eligendi natus ea, accusantium earum, delectus incidunt reiciendis asperiores qui.',
-	// 		activeLayout,
-	// 	},
-	// ];
-
 	type tagType = { _id: string; name: string };
 
 	interface overAll {
@@ -225,7 +150,7 @@ const Blog: FC = () => {
 				<>
 					{blogData?.data?.map((el: any) => {
 						return (
-							<BlogCard key={el._id} blog={el} activeLayout={el.activeLayout} />
+							<BlogCard key={el._id} blog={el} activeLayout={activeLayout} />
 						);
 					})}
 				</>
@@ -233,7 +158,6 @@ const Blog: FC = () => {
 			children2={
 				<>
 					{Object.entries(dataClone).map(([key, value], i) => {
-						// console.log(key, value);
 						return <FilterActionMenu header={key} values={value} key={i} />;
 					})}
 

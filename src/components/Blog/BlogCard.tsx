@@ -14,33 +14,46 @@ const BlogCard = (props: Iprop) => {
 	const { activeLayout, blog } = props;
 	return (
 		<WhiteBackground
-			className={`rounded-b-none my-0 sm:my-3 w-full px-0 shadow-md hover:scale-105 duration-150 ${
+			className={`rounded-b-none my-0 sm:my-3 w-full px-0 shadow-md hover:scale-105 duration-150 h-full ${
 				activeLayout === 'grid' ? 'sm:my-0' : 'my-5'
 			}`}
 		>
 			<Link
-				to='/blogs/data'
+				to={`/blogs/${blog.slug}`}
 				className={`block hover:text-effect-active ${
 					activeLayout === 'grid' ? 'block' : 'flex h-[11rem]'
 				}`}
 			>
-				<figure
-					className={` ${
-						activeLayout === 'grid' ? 'h-[11rem]' : 'basis-[50%]'
+				<div
+					className={`relative ${
+						activeLayout === 'grid' ? 'pb-[12rem]' : 'pr-[14rem]'
 					}`}
 				>
-					<img
-						src={`${config.baseUrl}/blog/${blog?.imageCover}`}
-						alt=''
-						// className='rounded-t-lg h-full w-full object-cover'
-						className={`${
-							activeLayout === 'grid' ? 'rounded-t-lg' : 'rounded-l-lg'
-						} h-full w-full object-cover`}
-					/>
-				</figure>
+					<figure
+						className={` ${
+							activeLayout === 'grid' ? 'h-full' : 'basis-[50%] h-full'
+						}`}
+					>
+						<img
+							src={`${config.baseUrl}/blog/${blog?.imageCover}`}
+							alt={`${blog?.title}'s cover image`}
+							// className='rounded-t-lg h-full w-full object-cover'
+							// className={`${
+							// 	activeLayout === 'grid' ? 'rounded-t-lg' : 'rounded-l-lg'
+							// } h-full w-full object-cover`}
+							className={`absolute top-0 w-full object-cover object-bottom ${
+								activeLayout === 'grid'
+									? 'rounded-t-lg h-48'
+									: 'rounded-l-lg h-full'
+							}`}
+						/>
+					</figure>
+				</div>
 				<div
 					className={`p-3 ${
-						activeLayout === 'grid' ? 'basis-[50%]' : 'basis-full'
+						activeLayout === 'grid'
+							? 'basis-[50%]'
+							: 'basis-full flex justify-between flex-col'
 					}`}
 				>
 					<p className='text-lg font-bold my-1'>{blog.title}</p>

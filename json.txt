@@ -1,0 +1,65 @@
+	// const articles: cardProps[] = [
+	// 	{
+	// 		img,
+	// 		instructor: 'Joe Praise',
+	// 		articleTitle: 'React and Redux master class',
+	// 		createdAt: '1-01-2024',
+	// 		summary:
+	// 			'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum, ipsa! Aperiam distinctio sit consectetur dolorem, id odit aspernatur facere architecto delectus, eligendi assumenda nihil non unde. Nobis magni suscipit non eligendi natus ea, accusantium earum, delectus incidunt reiciendis asperiores qui.',
+	// 		activeLayout,
+	// 	},
+	// 	{
+	// 		img,
+	// 		instructor: 'Joe Praise',
+	// 		articleTitle: 'React and Redux master class',
+	// 		createdAt: '1-01-2024',
+	// 		summary:
+	// 			'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum, ipsa! Aperiam distinctio sit consectetur dolorem, id odit aspernatur facere architecto delectus, eligendi assumenda nihil non unde. Nobis magni suscipit non eligendi natus ea, accusantium earum, delectus incidunt reiciendis asperiores qui.',
+	// 		activeLayout,
+	// 	},
+	// 	{
+	// 		img,
+	// 		instructor: 'Joe Praise',
+	// 		articleTitle: 'React and Redux master class',
+	// 		createdAt: '1-01-2024',
+	// 		summary:
+	// 			'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum, ipsa! Aperiam distinctio sit consectetur dolorem, id odit aspernatur facere architecto delectus, eligendi assumenda nihil non unde. Nobis magni suscipit non eligendi natus ea, accusantium earum, delectus incidunt reiciendis asperiores qui.',
+	// 		activeLayout,
+	// 	},
+	// 	{
+	// 		img,
+	// 		instructor: 'Joe Praise',
+	// 		articleTitle: 'React and Redux master class',
+	// 		createdAt: '1-01-2024',
+	// 		summary:
+	// 			'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum, ipsa! Aperiam distinctio sit consectetur dolorem, id odit aspernatur facere architecto delectus, eligendi assumenda nihil non unde. Nobis magni suscipit non eligendi natus ea, accusantium earum, delectus incidunt reiciendis asperiores qui.',
+	// 		activeLayout,
+	// 	},
+	// 	{
+	// 		img,
+	// 		instructor: 'Joe Praise',
+	// 		articleTitle: 'React and Redux master class',
+	// 		createdAt: '1-01-2024',
+	// 		summary:
+	// 			'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum, ipsa! Aperiam distinctio sit consectetur dolorem, id odit aspernatur facere architecto delectus, eligendi assumenda nihil non unde. Nobis magni suscipit non eligendi natus ea, accusantium earum, delectus incidunt reiciendis asperiores qui.',
+	// 		activeLayout,
+	// 	},
+	// 	{
+	// 		img,
+	// 		instructor: 'Joe Praise',
+	// 		articleTitle: 'React and Redux master class',
+	// 		createdAt: '1-01-2024',
+	// 		summary:
+	// 			'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum, ipsa! Aperiam distinctio sit consectetur dolorem, id odit aspernatur facere architecto delectus, eligendi assumenda nihil non unde. Nobis magni suscipit non eligendi natus ea, accusantium earum, delectus incidunt reiciendis asperiores qui.',
+	// 		activeLayout,
+	// 	},
+	// 	{
+	// 		img,
+	// 		instructor: 'Joe Praise',
+	// 		articleTitle: 'React and Redux master class',
+	// 		createdAt: '1-01-2024',
+	// 		summary:
+	// 			'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum, ipsa! Aperiam distinctio sit consectetur dolorem, id odit aspernatur facere architecto delectus, eligendi assumenda nihil non unde. Nobis magni suscipit non eligendi natus ea, accusantium earum, delectus incidunt reiciendis asperiores qui.',
+	// 		activeLayout,
+	// 	},
+	// ];

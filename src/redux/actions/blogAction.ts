@@ -14,7 +14,43 @@ type GetBlogsFailAction = {
 	payload: any;
 };
 
-export type BlogActionTypes = GetBlogsSuccessAction | GetBlogsFailAction;
+type CreateBlogCommentSuccessAction = {
+	type: typeof types.CREATE_BLOG_COMMENT_SUCCESS;
+	payload: any;
+};
+type CreateBlogCommentFailAction = {
+	type: typeof types.CREATE_BLOG_COMMENT_FAIL;
+	payload: any;
+};
+type GetBlogCommentSuccessAction = {
+	type: typeof types.GET_BLOG_COMMENT_SUCCESS;
+	payload: any;
+};
+
+type GetBlogCommentFailAction = {
+	type: typeof types.GET_BLOG_COMMENT_FAIL;
+	payload: any;
+};
+
+type DeleteBlogCommentSuccessAction = {
+	type: typeof types.DELETE_BLOG_COMMENT_SUCCESS;
+	payload: any;
+};
+
+type DeleteBlogCommentFailAction = {
+	type: typeof types.DELETE_BLOG_COMMENT_FAIL;
+	payload: any;
+};
+
+export type BlogActionTypes =
+	| GetBlogsSuccessAction
+	| GetBlogsFailAction
+	| CreateBlogCommentSuccessAction
+	| CreateBlogCommentFailAction
+	| GetBlogCommentSuccessAction
+	| GetBlogCommentFailAction
+	| DeleteBlogCommentSuccessAction
+	| DeleteBlogCommentFailAction;
 
 export type AppDispatchType = AppDispatch;
 
@@ -49,6 +85,11 @@ export const getBlogsAction =
 		}
 	};
 
+/**
+ *
+ * @param slug - this is derived from the title(Backend)
+ * @returns uses the slug of the item to query a single item not the ID
+ */
 export const getSingleBlogAction =
 	(slug: any): BlogThunk =>
 	async (dispatch: AppDispatch) => {
@@ -91,6 +132,67 @@ export const createBlogAction =
 		} catch (error: any) {
 			dispatch({
 				type: types.CREATE_BLOG_FAIL,
+				payload: error,
+			});
+		}
+	};
+
+export const createBlogCommentAction =
+	(details: api.commentRequestType, blogId: string): BlogThunk =>
+	async (dispatch: AppDispatch) => {
+		// const { slug, id } = params;
+		try {
+			const response = await api.createBlogComment(details, blogId);
+			const { data } = response;
+
+			dispatch({
+				type: types.CREATE_BLOG_COMMENT_SUCCESS,
+				payload: data,
+			});
+
+			// routes to the learn course page
+			// navigate(`/courses/${slug}/lecture/${id}`);
+		} catch (error: any) {
+			dispatch({
+				type: types.CREATE_BLOG_COMMENT_FAIL,
+				payload: error,
+			});
+		}
+	};
+
+export const getBlogCommentsAction =
+	(details: paginateType, blogId: string): BlogThunk =>
+	async (dispatch: AppDispatch) => {
+		try {
+			const response = await api.getBlogComments(details, blogId);
+			const data = response;
+
+			dispatch({
+				type: types.GET_BLOG_COMMENT_SUCCESS,
+				payload: data,
+			});
+		} catch (error) {
+			dispatch({
+				type: types.GET_BLOG_COMMENT_FAIL,
+				payload: error,
+			});
+		}
+	};
+
+export const deleteBlogCommentsAction =
+	(blogId: string): BlogThunk =>
+	async (dispatch: AppDispatch) => {
+		try {
+			const response = await api.deleteBlogComments(blogId);
+			const data = response;
+
+			dispatch({
+				type: types.DELETE_BLOG_COMMENT_SUCCESS,
+				payload: data,
+			});
+		} catch (error) {
+			dispatch({
+				type: types.DELETE_BLOG_COMMENT_FAIL,
 				payload: error,
 			});
 		}
