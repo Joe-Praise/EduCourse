@@ -1,3 +1,5 @@
+// import { getLocalStorage } from '../../util/helperFunctions/helper';
+import { getLocalStorage } from '../../util/helperFunctions/helper';
 import { blogCommentResponseType, blogType } from '../api/blogApi';
 import { SingleCourseType } from '../api/courseAPI';
 import * as types from '../constants/blogConstants';
@@ -83,7 +85,7 @@ const courseSlice = (state = initialState, action: any) => {
 		case types.GET_BLOG_COMMENT_FAIL:
 			return {
 				...state,
-				comments: [],
+				comments: {},
 				blogError: payload.message,
 			};
 		case types.CREATE_BLOG_COMMENT_SUCCESS:
@@ -96,7 +98,7 @@ const courseSlice = (state = initialState, action: any) => {
 						totalDocuments: state.comments.metaData.totalDocuments + 1,
 						count: state.comments.metaData.count + 1,
 					},
-					data: [...state.comments.data, payload],
+					data: [addImageToUser(payload), ...state.comments.data],
 				},
 				blogError: '',
 			};
@@ -162,5 +164,11 @@ const removeQueryFilter = (state: any, payload: any) => {
 const deleteHandler = (state: any, payload: any) => {
 	const filteredArr = state.filter((item: any) => item._id !== payload._id);
 	return filteredArr;
+};
+
+const addImageToUser = (payload: any) => {
+	const payloadCopy = payload;
+	payloadCopy.userId = getLocalStorage('profile')?.user;
+	return payloadCopy;
 };
 export default courseSlice;

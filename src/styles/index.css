@@ -64,6 +64,10 @@
 	@apply border text-black p-2 rounded-full hover:text-effect-hover hover:border-effect-hover active:bg-effect-active active:text-white;
 }
 
+.tag {
+	@apply border border-gray-500 rounded-lg p-2 md:w-max text-center text-[13px] hover:bg-effect-hover hover:text-white  transition hover:ease-in-out hover:duration-200;
+}
+
 .position-center {
 	position: absolute;
 	top: 50%;

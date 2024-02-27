@@ -32,18 +32,22 @@ const SearchAndLayout: FC<{
 				/>
 			</form>
 			<div className='flex items-end gap-2'>
-				<IoGridSharp
-					className={`w-7 cursor-pointer ${
-						props.activeLayout === 'grid' ? 'fill-effect-active' : ''
-					}`}
-					onClick={() => props.handleLayout('grid')}
-				/>
-				<FaList
-					className={`w-7 cursor-pointer ${
-						props.activeLayout === 'list' ? 'fill-effect-active' : ''
-					}`}
-					onClick={() => props.handleLayout('list')}
-				/>
+				<button>
+					<IoGridSharp
+						className={`w-7 cursor-pointer ${
+							props.activeLayout === 'grid' ? 'fill-effect-active' : ''
+						}`}
+						onClick={() => props.handleLayout('grid')}
+					/>
+				</button>
+				<button>
+					<FaList
+						className={`w-7 cursor-pointer ${
+							props.activeLayout === 'list' ? 'fill-effect-active' : ''
+						}`}
+						onClick={() => props.handleLayout('list')}
+					/>
+				</button>
 			</div>
 			<div className='flex sm:hidden' onClick={handleDisplayFilterMenu}>
 				<p>Filter</p>

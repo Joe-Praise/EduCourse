@@ -10,6 +10,7 @@ import { useParams } from 'react-router-dom';
 import { AppDispatch, RootState } from '../../redux/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { getSingleCourseAction } from '../../redux/actions/courseAction';
+import LoadingEffect from '../../components/shared/LoadingEffect';
 
 const SingleCourse: FC = () => {
 	const dispatch: AppDispatch = useDispatch();
@@ -21,8 +22,6 @@ const SingleCourse: FC = () => {
 	// const handleCourseComment = (commentText: string): void => {
 	// 	console.log(commentText);
 	// };
-
-	console.log(singleCourse);
 
 	useEffect(() => {
 		dispatch(getSingleCourseAction(slug));
@@ -45,21 +44,11 @@ const SingleCourse: FC = () => {
 								}
 								children4={<Reviews course={singleCourse?.course} />}
 							/>
-							{/* <div className='mt-4'>
-								<Comment onCommentvalue={handleCourseComment} />
-							</div> */}
 						</div>
 					</div>
 				</>
 			) : (
-				<>Loading...</>
-				// <div className='flex justify-center items-center h-screen'>
-				// 	<div className='flex flex-row gap-2'>
-				// 		<div className='w-4 h-4 rounded-full bg-blue-700 animate-bounce'></div>
-				// 		<div className='w-4 h-4 rounded-full bg-blue-700 animate-bounce [animation-delay:-.3s]'></div>
-				// 		<div className='w-4 h-4 rounded-full bg-blue-700 animate-bounce [animation-delay:-.5s]'></div>
-				// 	</div>
-				// </div>
+				<LoadingEffect />
 			)}
 		</section>
 	);

@@ -93,10 +93,10 @@ export const createCourseReviewAction =
 	};
 
 export const getCategoryAction =
-	(details: paginateType): CategoryThunk =>
+	(details: paginateType, group: string): CategoryThunk =>
 	async (dispatch: AppDispatch) => {
 		try {
-			const response = await api.getCategories(details);
+			const response = await api.getCategories(details, group);
 			const data = response;
 			dispatch({
 				type: types.GET_CATEGORY_SUCCESS,
