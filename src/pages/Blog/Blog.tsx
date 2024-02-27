@@ -6,22 +6,28 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setFilter } from '../../redux/actions/courseAction';
 import { AppDispatch, RootState } from '../../redux/store';
 import { FaFilter } from 'react-icons/fa';
-import { FilterType } from '../../components/shared/type';
 import Pagination from '../../components/shared/Pagination';
 import useDebounce from '../../hooks/UseDebounce';
 import { getBlogsAction } from '../../redux/actions/blogAction';
 import { formQueryStr } from '../../util/helperFunctions/helper';
 import { paginateType } from '../../redux/sharedTypes';
+import { getCategoryAction } from '../../redux/actions/categoryAction';
+import { OmittedCategoryDataType } from '../../redux/api/categoryApi';
+import { getTagAction } from '../../redux/actions/tagAction';
+import { tagType } from '../../redux/api/tagApi';
 
 const Blog: FC = () => {
 	const dispatch: AppDispatch = useDispatch();
 	const initializeRef = useRef(true);
-	const blog = useSelector((state: RootState) => state.blog);
+	const blogState = useSelector((state: RootState) => state.blog);
+	const category = useSelector((state: RootState) => state.category.categories);
+	const tag = useSelector((state: RootState) => state.tag.tags);
 	const displayFilter = useSelector(
 		(state: RootState) => state.course.filterState
 	);
-	const blogData = blog.blog;
-	const queryFilterState = blog.queryFilter;
+	const blogData = blogState.blog;
+	const metaData = blogState.blog.metaData;
+	const queryFilterState = blogState.queryFilter;
 
 	// TODO: CONTINUE FIXING UP THE STATES REQUIRED TO MAKE BLOG FUNCTION
 	const [activeLayout, setActiveLayout] = useState('grid');
@@ -48,77 +54,19 @@ const Blog: FC = () => {
 
 	useEffect(() => {
 		dispatch(getBlogsAction({ page: '1', limit }));
-		// dispatch(getCategoryAction({ page: '1', limit: '0' }));
-		// dispatch(getInstructorAction({ page: '1', limit: '0' }));
+		dispatch(getCategoryAction({ page: '1', limit: '30' }, 'blog'));
+		dispatch(getTagAction({ page: '1', limit: '30' }));
 	}, [dispatch]);
 
-	type tagType = { _id: string; name: string };
-
 	interface overAll {
-		Category: FilterType[];
-		Tags: tagType[];
+		Category: OmittedCategoryDataType[];
+		// Category: FilterType[];
+		Tag: tagType[];
 	}
 
 	const dataClone: overAll = {
-		Category: [
-			{
-				_id: '658ab986d421165a9bf08666',
-				name: 'building',
-			},
-			{
-				_id: '65bccf37a4916e592cd7a757',
-				name: 'Development',
-			},
-			{
-				_id: '65bccf5ba4916e592cd7a75a',
-				name: 'Business',
-			},
-			{
-				_id: '65bccf70a4916e592cd7a75d',
-				name: 'Finance & Accounting',
-			},
-			{
-				_id: '65bccf85a4916e592cd7a760',
-				name: 'IT & Software',
-			},
-			{
-				_id: '65bccfc2a4916e592cd7a763',
-				name: 'Office Productivity',
-			},
-			{
-				_id: '65bccfdba4916e592cd7a766',
-				name: 'Personal Development',
-			},
-			{
-				_id: '65bccfe8a4916e592cd7a769',
-				name: 'Design',
-			},
-			{
-				_id: '65bccff5a4916e592cd7a76c',
-				name: 'Marketing',
-			},
-			{
-				_id: '65bcd009a4916e592cd7a76f',
-				name: 'Life Style',
-			},
-			{
-				_id: '65bcd01fa4916e592cd7a772',
-				name: 'Photography & Video',
-			},
-			{
-				_id: '65bcd02ea4916e592cd7a775',
-				name: 'Health & Fitness',
-			},
-			{
-				_id: '65bcd042a4916e592cd7a778',
-				name: 'Music',
-			},
-			{
-				_id: '65bcd057a4916e592cd7a77b',
-				name: 'Teaching & Academics',
-			},
-		],
-		Tags: [{ _id: '658aca7bf5797e2701fcbd28', name: 'Education' }],
+		Category: category?.data,
+		Tag: tag?.data,
 	};
 
 	useEffect(() => {
@@ -173,7 +121,7 @@ const Blog: FC = () => {
 			children3={
 				<>
 					<Pagination
-						metaData={blogData.metaData}
+						metaData={metaData}
 						handlePagination={handelQuerySearch}
 						queryString={queryFilterState}
 					/>

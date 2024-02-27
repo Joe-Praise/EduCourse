@@ -55,8 +55,8 @@ const Course: FC = () => {
 
 	useEffect(() => {
 		dispatch(getCoursesAction({ page: '1', limit }));
-		dispatch(getCategoryAction({ page: '1', limit: '0' }));
-		dispatch(getInstructorAction({ page: '1', limit: '0' }));
+		dispatch(getCategoryAction({ page: '1', limit: '30' }, 'course'));
+		dispatch(getInstructorAction({ page: '1', limit: '10' }));
 	}, [dispatch]);
 
 	type priceCategory = { _id: string; name: 'Free' | 'Paid' };

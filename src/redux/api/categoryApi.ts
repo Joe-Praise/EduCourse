@@ -32,12 +32,13 @@ export interface createCategoryPayloadType {
 }
 
 export const getCategories = async (
-	details: paginateType
+	details: paginateType,
+	group: string
 ): Promise<ApiResponse> => {
 	try {
 		const { page, limit } = details;
 		const { data } = await API.get<ApiResponse>(
-			`/api/v1/category?page=${page}&limit=${limit}`
+			`/api/v1/category?page=${page}&limit=${limit}&group=${group}`
 		);
 		return data;
 	} catch (error) {
@@ -62,7 +63,7 @@ export const createCategory = async (
 	payload: createCategoryPayloadType
 ): Promise<ApiResponse> => {
 	try {
-		const { data } = await API.post<ApiResponse>(`/api/v1/courses`, payload);
+		const { data } = await API.post<ApiResponse>(`/api/v1/category`, payload);
 		return data;
 	} catch (error) {
 		return handleApiError(error);
@@ -73,7 +74,7 @@ export const updateCategory = async (
 	payload: createCategoryPayloadType
 ): Promise<ApiResponse> => {
 	try {
-		const { data } = await API.patch<ApiResponse>(`/api/v1/courses`, payload);
+		const { data } = await API.patch<ApiResponse>(`/api/v1/category`, payload);
 		return data;
 	} catch (error) {
 		return handleApiError(error);
@@ -84,7 +85,7 @@ export const deleteCategory = async <T>(
 	categoryId: T
 ): Promise<ApiResponse> => {
 	try {
-		const { data } = await API.delete(`/api/v1/reviews/${categoryId}`);
+		const { data } = await API.delete(`/api/v1/category/${categoryId}`);
 		return data;
 	} catch (error) {
 		return handleApiError(error);

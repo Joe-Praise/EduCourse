@@ -1,8 +1,6 @@
 import { FC, useEffect } from 'react';
 import CardsPlaceholder from '../Home/CardsPlaceholder';
 import BlogCard from './BlogCard';
-// import img from '../../assets/image/card2.jpg';
-// import { blogCardType } from '../../pages/Home/homePageType';
 import { AppDispatch, RootState } from '../../redux/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { getBlogsAction } from '../../redux/actions/blogAction';
@@ -26,10 +24,7 @@ const Blogs: FC = () => {
 		>
 			<>
 				{blogData?.data?.map((el: singleBlogType) => {
-					console.log(el);
-					// if (id <= 5) {
 					return <BlogCard blog={el} key={el._id} activeLayout='grid' />;
-					// }
 				})}
 			</>
 		</CardsPlaceholder>

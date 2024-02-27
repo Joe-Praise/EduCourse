@@ -20,6 +20,7 @@ import BlogCommentCard from '../../components/Single Blog/BlogCommentCard';
 import Pagination from '../../components/shared/Pagination';
 import { paginateType } from '../../redux/sharedTypes';
 import { blogCommentType } from '../../redux/api/blogApi';
+import LoadingEffect from '../../components/shared/LoadingEffect';
 
 const SingleBlog = () => {
 	/**
@@ -55,7 +56,7 @@ const SingleBlog = () => {
 		},
 		{
 			title: 'Comments',
-			total: '20',
+			total: singleBlog.commentsQuantity + '' || '0',
 			icon: LiaCommentsSolid,
 		},
 	];
@@ -83,7 +84,7 @@ const SingleBlog = () => {
 	const handelQuerySearch = (details: paginateType) => {
 		dispatch(getBlogCommentsAction(details, SingleBlog?._id));
 	};
-
+	console.log(singleBlog?.commentsQuantity);
 	return (
 		<section className='w-11/12 sm:w-9/12 md:w-[80%] xl:w-[55%] mx-auto py-3'>
 			{singleBlog?._id ? (
@@ -113,9 +114,9 @@ const SingleBlog = () => {
 						<div className='mt-10'>
 							<h1>Comments</h1>
 							<p>
-								{comments?.data.length > 1
-									? `${comments?.data.length} comments`
-									: `${comments?.data.length} comment`}
+								{singleBlog?.commentsQuantity > 1
+									? `${singleBlog?.commentsQuantity} comments`
+									: `${singleBlog?.commentsQuantity} comment`}
 							</p>
 							{/* TODO:Handle comments & review upload */}
 
@@ -145,7 +146,7 @@ const SingleBlog = () => {
 					</div>
 				</>
 			) : (
-				<>Loading...</>
+				<LoadingEffect />
 			)}
 		</section>
 	);
