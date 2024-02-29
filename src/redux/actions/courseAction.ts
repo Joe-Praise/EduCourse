@@ -4,6 +4,7 @@ import * as api from '../api/courseAPI';
 import * as types from '../constants/courseConstants';
 import { AppDispatch, RootState } from '../store';
 import { obj, paginateType } from '../sharedTypes';
+import { getLocalStorage } from '../../util/helperFunctions/helper';
 
 type GetCoursesSuccessAction = {
 	type: typeof types.GET_COURSES_SUCCESS;
@@ -83,8 +84,13 @@ export const getSingleCourseAction =
 	(slug: any): CourseThunk =>
 	async (dispatch: AppDispatch) => {
 		try {
+			const userId = getLocalStorage('profile')?.user?._id;
 			let data: any = {};
-			const { data: courseData } = await api.getCourseBySlug(slug);
+			const { data: courseData, isEnrolled } = await api.getCourseBySlug(
+				slug,
+				userId
+			);
+			data.isEnrolled = isEnrolled;
 			data.course = courseData[0];
 
 			if (data?.course?._id) {

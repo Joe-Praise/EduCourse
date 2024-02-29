@@ -77,6 +77,7 @@ type OmittedCourseDataType = Omit<courseDataType, '__v'>;
 export type courseType = {
 	status: string;
 	metaData: metaData;
+	isEnrolled?: boolean;
 	data: OmittedCourseDataType[];
 };
 
@@ -86,6 +87,8 @@ interface Course {
 
 interface ApiResponse {
 	data: Course[];
+	status: string;
+	isEnrolled: boolean;
 	error: string;
 }
 
@@ -110,9 +113,14 @@ export const getCourses = async (
 	}
 };
 
-export const getCourseBySlug = async <T>(slug: T): Promise<ApiResponse> => {
+export const getCourseBySlug = async <T>(
+	slug: T,
+	userId: T
+): Promise<ApiResponse> => {
 	try {
-		const { data } = await API.get<ApiResponse>(`/api/v1/courses?slug=${slug}`);
+		const { data } = await API.get<ApiResponse>(
+			`/api/v1/courses?slug=${slug}&userId=${userId}`
+		);
 		return data;
 	} catch (error) {
 		return handleApiError(error);

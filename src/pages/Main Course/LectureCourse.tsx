@@ -20,9 +20,11 @@ import {
 } from '../../redux/actions/courseAction';
 import { getLocalStorage } from '../../util/helperFunctions/helper';
 import Accordion from '../../components/shared/Accordion';
+import LoadingEffect from '../../components/shared/LoadingEffect';
 
 const LectureCourse: FC = () => {
 	const { slug, courseId } = useParams<{ courseId: string; slug: string }>();
+
 	// ensuring courseId is always a string
 	const courseIdString: string = courseId || '';
 	const slugString: string = slug || '';
@@ -31,6 +33,9 @@ const LectureCourse: FC = () => {
 		(state: RootState) => state.course.lectureCourse
 	);
 
+	const review = useSelector((state: RootState) => state.review.review);
+
+	console.log(review);
 	useEffect(() => {
 		const details: lectureCourseType = {
 			courseId: courseIdString,
@@ -136,7 +141,7 @@ const LectureCourse: FC = () => {
 					</RenderIf>
 				</div>
 			) : (
-				<>Loading...</>
+				<LoadingEffect />
 			)}
 		</section>
 	);

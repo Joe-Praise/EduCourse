@@ -18,6 +18,7 @@ import {
 import { AppDispatch } from '../../redux/store';
 import { useDispatch } from 'react-redux';
 import { createLectureCourseAction } from '../../redux/actions/courseAction';
+import RenderIf from '../shared/RenderIf';
 
 export type headerbadge = {
 	title: string;
@@ -25,25 +26,33 @@ export type headerbadge = {
 	icon: IconType;
 };
 
-const HeaderContainer = (props: courseCardType) => {
+interface Iprop {
+	course: courseCardType;
+	isEnrolled: boolean;
+}
+
+const HeaderContainer = (props: Iprop) => {
 	const {
-		_id,
-		studentsQuantity,
-		level,
-		createdAt,
-		imageCover,
-		title,
-		price,
-		category,
-		instructors,
-		slug,
+		course: {
+			_id,
+			studentsQuantity,
+			level,
+			createdAt,
+			imageCover,
+			title,
+			price,
+			category,
+			instructors,
+			slug,
+		},
+		isEnrolled,
 	} = props;
 	const navigate = useNavigate();
 	const dispatch: AppDispatch = useDispatch();
-
+	const userId = getLocalStorage('profile')?.user?._id;
 	const handleStartCourse = () => {
 		const details = {
-			userId: getLocalStorage('profile')?.user?._id,
+			userId,
 			courseId: _id,
 		};
 
@@ -53,6 +62,10 @@ const HeaderContainer = (props: courseCardType) => {
 		};
 
 		dispatch(createLectureCourseAction(details, navigate, params));
+	};
+
+	const handleRouteToLecturePage = () => {
+		navigate(`/courses/${slug}/lecture/${_id}`);
 	};
 
 	const dataDisplay: headerbadge[] = [
@@ -128,13 +141,25 @@ const HeaderContainer = (props: courseCardType) => {
 								<span className='text-green-500'>Free</span>
 							</p>
 
-							<Button
-								className={
-									' border text-white md:text-black p-2 rounded-full hover:text-effect-hover hover:border-effect-hover active:bg-effect-active active:text-white'
-								}
-								value={'Start now'}
-								onClick={() => handleStartCourse()}
-							/>
+							<RenderIf condition={!isEnrolled}>
+								<Button
+									className={
+										' border text-white md:text-black p-2 rounded-full hover:text-effect-hover hover:border-effect-hover active:bg-effect-active active:text-white'
+									}
+									value={'Start now'}
+									onClick={() => handleStartCourse()}
+								/>
+							</RenderIf>
+
+							<RenderIf condition={isEnrolled}>
+								<Button
+									className={
+										' border text-white md:text-black p-2 rounded-full hover:text-effect-hover hover:border-effect-hover active:bg-effect-active active:text-white'
+									}
+									value={'Resume'}
+									onClick={() => handleRouteToLecturePage()}
+								/>
+							</RenderIf>
 						</figcaption>
 					</figure>
 				</div>

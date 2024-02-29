@@ -73,7 +73,7 @@ export type CategoryThunk<ReturnType = void> = ThunkAction<
 	CategoryActionTypes
 >;
 
-export const createCourseReviewAction =
+export const createCategotyAction =
 	(payload: api.createCategoryPayloadType): CategoryThunk =>
 	async (dispatch: AppDispatch) => {
 		try {

@@ -1,8 +1,10 @@
 import { ReactNode, useImperativeHandle, useRef } from 'react';
 import { forwardRef } from 'react';
 import Button from './Button';
+import { IoClose } from 'react-icons/io5';
 interface Iprop {
 	children: ReactNode;
+	className: string;
 }
 
 interface ModalRef {
@@ -11,7 +13,7 @@ interface ModalRef {
 }
 
 const Modal = forwardRef<ModalRef, Iprop>((props: Iprop, ref) => {
-	const { children } = props;
+	const { children, className } = props;
 	const dialog = useRef<HTMLDialogElement>(null);
 
 	useImperativeHandle(ref, () => {
@@ -27,16 +29,18 @@ const Modal = forwardRef<ModalRef, Iprop>((props: Iprop, ref) => {
 
 	return (
 		<dialog
-			className='backdrop:bg-black backdrop:opacity-30 w-1/2 rounded-lg p-3'
+			className={`backdrop:bg-black backdrop:opacity-30 p-3 pt-0 ${className}`}
 			ref={dialog}
-			// onClick={handleCloseDialog}
+			onClick={() => dialog.current!.close()}
 		>
-			{children}
-			<form className='flex flex-col m-2' method='dialog'>
-				<Button className='place-self-end btnStyle' size='w-20'>
-					Close
-				</Button>
-			</form>
+			<div onClick={(e) => e.stopPropagation()}>
+				<form className='flex flex-col m-2' method='dialog'>
+					<Button className='place-self-end btnStyle' size=''>
+						<IoClose />
+					</Button>
+				</form>
+				<div className='pb-5'>{children}</div>
+			</div>
 		</dialog>
 	);
 });

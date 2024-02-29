@@ -23,7 +23,6 @@ const CourseCard: FC<courseCardType> = (props) => {
 	// };
 
 	// type idk = Prettify<Nested>;
-
 	return (
 		<WhiteBackground
 			className={`rounded-b-none my-0 w-full px-0 shadow-md hover:scale-105 duration-150 h-full ${
@@ -71,7 +70,7 @@ const CourseCard: FC<courseCardType> = (props) => {
 					<small>
 						by{' '}
 						<span className='font-bold'>
-							{props?.instructors[0].userId.name}
+							{props?.instructors[0]?.userId?.name}
 						</span>
 					</small>
 					<p className='text-lg font-bold my-1'>{props?.title}</p>

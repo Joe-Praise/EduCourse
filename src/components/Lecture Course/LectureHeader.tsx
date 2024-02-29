@@ -9,10 +9,12 @@ import { useNavigate } from 'react-router-dom';
 import { IoIosReturnLeft } from 'react-icons/io';
 import useHandleModal from '../../hooks/UseHandleModal';
 import { ModalRef } from '../../pages/Main Course/LectureType';
+import { FaStar } from 'react-icons/fa6';
 import Modal from '../shared/Modal';
 import { useRef } from 'react';
 import CopyText from '../shared/CopyText';
 import { capitalizeFirstLetters } from '../../util/helperFunctions/helper';
+import ReviewCourse from './ReviewCourse';
 // import { lectureType } from '../../pages/Main Course/LectureType';
 
 interface Iprop {
@@ -22,6 +24,7 @@ interface Iprop {
 const LectureHeader = (props: Iprop) => {
 	const navigate = useNavigate();
 	const shareRef = useRef<ModalRef>(null);
+	const reviewRef = useRef<ModalRef>(null);
 	const { onWindowSize, courseTitle } = props;
 	const isTabView = onWindowSize > 600;
 	const isDesktopView = onWindowSize > 1000;
@@ -45,6 +48,10 @@ const LectureHeader = (props: Iprop) => {
 		shareRef.current!.open();
 	};
 
+	const handleReviewModal = () => {
+		reviewRef.current!.open();
+	};
+
 	return (
 		<header className='flex items-center justify-between h-14 bg-white px-4 rounded-lg shadow-md p-3'>
 			<RenderIf condition={!isTabView}>
@@ -59,7 +66,7 @@ const LectureHeader = (props: Iprop) => {
 						<LinkBtn
 							className={'border-none text-sm font-bold text-black'}
 							value={'React and Redux Complete Course'}
-							path={''}
+							path={`/courses/${courseTitle}`}
 						/>
 					</li>
 				</ul>
@@ -80,6 +87,15 @@ const LectureHeader = (props: Iprop) => {
 				</ul>
 
 				<ul className='md:basis-[30%] flex items-center justify-end gap-5'>
+					<li className='flex gap-2'>
+						<button
+							className='px-2 py-3 flex items-center gap-2 border-gray-200'
+							onClick={handleReviewModal}
+						>
+							<FaStar />
+							<span>Leave a rating</span>
+						</button>
+					</li>
 					<li>
 						<button
 							className='flex items-center gap-2 cursor-pointer'
@@ -131,13 +147,17 @@ const LectureHeader = (props: Iprop) => {
 			</RenderIf>
 
 			{/* Handles share button modal - controls attached to SHARE BTN*/}
-			<Modal ref={shareRef}>
+			<Modal ref={shareRef} className={'w-1/2 rounded-lg p-3'}>
 				<CopyText
 					title={'Share this course'}
 					value={
 						'Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus, ea?hvsjflshbdfljghbsldjfbgldsh'
 					}
 				/>
+			</Modal>
+
+			<Modal ref={reviewRef} className={'w-1/3 h-max rounded-lg p-3'}>
+				<ReviewCourse />
 			</Modal>
 		</header>
 	);

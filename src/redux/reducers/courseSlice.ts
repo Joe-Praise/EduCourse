@@ -86,15 +86,15 @@ const courseSlice = (state = initialState, action: any) => {
 			// TODO: TEST THIS TO SEE THE OUTCOME
 			return {
 				...state,
-				course: {
-					...state.course,
-					metaData: {
-						...state.course.metaData,
-						totalDocuments: state.course.metaData.totalDocuments + 1,
-						count: state.course.metaData.count + 1,
-					},
-					data: [...state.course.data, payload],
-				},
+				// course: {
+				// 	...state.course,
+				// 	metaData: {
+				// 		...state.course.metaData,
+				// 		totalDocuments: state.course.metaData.totalDocuments + 1,
+				// 		count: state.course.metaData.count + 1,
+				// 	},
+				// 	data: [...state.course.data, payload],
+				// },
 				notification: payload,
 			};
 		case types.CREATE_LECTURE_COURSE_FAIL:
