@@ -61,7 +61,6 @@ const LectureTabContainer: FC<lectureType> = (props) => {
 		<div className='min-h-[40vh] md:w-3/4 mx-auto '>
 			<ul className='flex gap-4 border-y'>
 				{Object.entries(tabHeader).map(([, value], i) => {
-					console.log(value);
 					return (
 						<li
 							key={i}

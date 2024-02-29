@@ -68,6 +68,22 @@
 	@apply border border-gray-500 rounded-lg p-2 md:w-max text-center text-[13px] hover:bg-effect-hover hover:text-white  transition hover:ease-in-out hover:duration-200;
 }
 
+.dashP {
+	position: relative;
+	width: 80%;
+	margin-left: auto;
+}
+
+.dashP::before {
+	content: '';
+	position: absolute;
+	top: 15%;
+	left: -20%;
+	width: 30px;
+	height: 2px;
+	background-color: white;
+}
+
 .position-center {
 	position: absolute;
 	top: 50%;

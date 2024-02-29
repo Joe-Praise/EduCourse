@@ -60,7 +60,6 @@ const Blog: FC = () => {
 
 	interface overAll {
 		Category: OmittedCategoryDataType[];
-		// Category: FilterType[];
 		Tag: tagType[];
 	}
 

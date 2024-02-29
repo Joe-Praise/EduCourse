@@ -31,7 +31,11 @@ const SingleCourse: FC = () => {
 		<section>
 			{singleCourse?.course?._id ? (
 				<>
-					<HeaderContainer {...singleCourse?.course} />
+					<HeaderContainer
+						{...singleCourse?.course}
+						course={singleCourse?.course}
+						isEnrolled={singleCourse?.isEnrolled}
+					/>
 					<div className='layoutWidth flex mt-9'>
 						<div className='mx-auto md:mx-0 basis-2/3'>
 							<TabContainer

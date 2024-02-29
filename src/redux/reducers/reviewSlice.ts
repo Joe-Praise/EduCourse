@@ -1,3 +1,4 @@
+import { getLocalStorage } from '../../util/helperFunctions/helper';
 import { reviewType } from '../api/reviewApi';
 import * as types from '../constants/reviewConstants';
 
@@ -57,7 +58,7 @@ const reviewSlice = (state = initialState, action: any) => {
 		case types.CREATE_COURSE_REVIEW_SUCCESS:
 			return {
 				...state,
-				review: [payload.data, ...state.review],
+				review: [addLoggedInUserDetails(payload.data), ...state.review],
 			};
 		case types.CREATE_COURSE_REVIEW_FAIL:
 			return {
@@ -69,4 +70,9 @@ const reviewSlice = (state = initialState, action: any) => {
 	}
 };
 
+const addLoggedInUserDetails = (payload: any) => {
+	const payloadCopy = payload;
+	payloadCopy.userId = getLocalStorage('profile')?.user;
+	return payloadCopy;
+};
 export default reviewSlice;

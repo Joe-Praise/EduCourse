@@ -4,7 +4,6 @@ import { MdCheckBox } from 'react-icons/md';
 import { FilterType } from './type';
 import { capitalizeFirstLetters } from '../../util/helperFunctions/helper';
 import { FaStar } from 'react-icons/fa6';
-// import useQueryString from '../../hooks/UseQueryString';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../redux/store';
 import {
@@ -48,6 +47,12 @@ const FilterActionList = (props: Iprop) => {
 
 	const arr = [1, 2, 3, 4, 5];
 
+	/**
+	 *
+	 * @param el represents the values for each filter
+	 * @returns return ui element based on different section of the filter
+	 * if more ui's are added, create a condition ofr it here
+	 */
 	const handleFilterDisplay = (el: any) => {
 		if (header === 'Review') {
 			return (
@@ -77,16 +82,28 @@ const FilterActionList = (props: Iprop) => {
 		}
 	};
 
+	/**
+	 *
+	 * @returns the section layout with diffrenet ui's for example Tags ui being different
+	 */
 	const handleLayout = () => {
 		if (header === 'Tag') {
 			return (
 				<ul className='list-none flex flex-wrap gap-1'>
-					{values?.map((el, index) => (
+					{values?.map((el) => (
 						<button
 							className='flex gap-1 md:gap-4 flex-wrap cursor-pointer hover'
-							key={index}
+							key={el?._id}
+							onClick={() => {
+								handleChange(el);
+							}}
 						>
-							<span key={el._id} className='tag'>
+							<span
+								key={el._id}
+								className={`tag  ${
+									active === el._id ? 'bg-effect-active text-white' : ''
+								}`}
+							>
 								{el.name}
 							</span>
 						</button>
@@ -119,6 +136,7 @@ const FilterActionList = (props: Iprop) => {
 			);
 		}
 	};
+
 	return <>{handleLayout()}</>;
 };
 

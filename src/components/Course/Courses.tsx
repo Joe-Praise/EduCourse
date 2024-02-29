@@ -99,7 +99,7 @@ const Courses: FC = () => {
 			className='grid-cols-1 gap-y-8 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3 '
 		>
 			<>
-				{coursesData?.data.map((el: any) => {
+				{coursesData?.data?.map((el: any) => {
 					// if (id <= 5) {
 					return <CourseCard key={el._id} activeLayout='grid' {...el} />;
 					// }

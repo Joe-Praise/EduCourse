@@ -14,6 +14,16 @@ type GetCourseReviewFailAction = {
 	payload: any;
 };
 
+type CreateCourseReviewSuccessAction = {
+	type: typeof types.CREATE_COURSE_REVIEW_SUCCESS;
+	payload: any;
+};
+
+type CreateCourseReviewFailAction = {
+	type: typeof types.CREATE_COURSE_REVIEW_FAIL;
+	payload: any;
+};
+
 type UpdateReviewSuccessAction = {
 	type: typeof types.UPDATE_REVIEWS_SUCCESS;
 	payload: any;
@@ -40,7 +50,9 @@ export type ReviewActionTypes =
 	| UpdateReviewSuccessAction
 	| UpdateReviewFailAction
 	| DeleteReviewSuccessAction
-	| DeleteReviewFailAction;
+	| DeleteReviewFailAction
+	| CreateCourseReviewSuccessAction
+	| CreateCourseReviewFailAction;
 
 export type ReviewThunk<ReturnType = void> = ThunkAction<
 	ReturnType,
@@ -75,6 +87,7 @@ export const createCourseReviewAction =
 			const response = await api.createCourseReview(payload, courseId);
 			const data = response;
 
+			console.log(data);
 			dispatch({
 				type: types.CREATE_COURSE_REVIEW_SUCCESS,
 				payload: data,

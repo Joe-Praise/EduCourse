@@ -73,7 +73,7 @@ export type TagThunk<ReturnType = void> = ThunkAction<
 	TagActionTypes
 >;
 
-export const createCourseReviewAction =
+export const createTagAction =
 	(payload: api.createTagPayloadType): TagThunk =>
 	async (dispatch: AppDispatch) => {
 		try {
