@@ -7,7 +7,7 @@ const Hamburger: FC<{
 	const isClosed = props.HamburgerState;
 
 	return (
-		<div onClick={props.toggleHamburger} className='cursor-pointer p-3'>
+		<button onClick={props.toggleHamburger} className='cursor-pointer p-3'>
 			<div
 				className={`w-7 h-[3px] bg-black duration-75 ${
 					isClosed && 'rotate-45 translate-y-[0.2rem]'
@@ -21,7 +21,7 @@ const Hamburger: FC<{
 					isClosed && '-rotate-45 -translate-y-[.0rem] '
 				}`}
 			></div>
-		</div>
+		</button>
 	);
 };
 

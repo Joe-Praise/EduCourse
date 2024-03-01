@@ -1,4 +1,3 @@
-// import img from '../../assets/image/card3.jpg';
 import { useState } from 'react';
 import RenderIf from '../shared/RenderIf';
 import { truncateValue } from '../../util/helperFunctions/helper';
@@ -6,15 +5,6 @@ import { handleDateFormat } from '../../util/helperFunctions/dateFormatter';
 import config from '../../../config';
 import { blogCommentType } from '../../redux/api/blogApi';
 
-// export interface blogCommentType {
-// 	_id: string;
-// 	userId: UserID;
-// 	blogId: string;
-// 	review: string;
-// 	createdAt: Date;
-// 	__v: number;
-// 	id: string;
-// }
 interface Iprop {
 	blogCommentDetails: blogCommentType;
 }

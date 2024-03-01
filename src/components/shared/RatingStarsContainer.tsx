@@ -51,7 +51,7 @@ const RatingStarsContainer = (props: Iprop) => {
 							</div>
 							<div className='flex basis-[35%] gap-1 md:basis-[20%] flex-wrap justify-start'>
 								<RatingStars rating={el?.title} />
-								<p>{el?.value}%</p>
+								<p>{Math.floor(el?.value)}%</p>
 							</div>
 						</div>
 					);

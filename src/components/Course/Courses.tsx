@@ -1,11 +1,9 @@
 import { FC, useEffect } from 'react';
 import CourseCard from './CourseCard';
-// import img from '../../assets/image/card3.jpg';
 import CardsPlaceholder from '../Home/CardsPlaceholder';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../redux/store';
 import { getCoursesAction } from '../../redux/actions/courseAction';
-// import { getLocalStorage } from '../../util/helperFunctions/helper';
 
 const Courses: FC = () => {
 	const dispatch: AppDispatch = useDispatch();
@@ -100,9 +98,7 @@ const Courses: FC = () => {
 		>
 			<>
 				{coursesData?.data?.map((el: any) => {
-					// if (id <= 5) {
 					return <CourseCard key={el._id} activeLayout='grid' {...el} />;
-					// }
 				})}
 			</>
 		</CardsPlaceholder>

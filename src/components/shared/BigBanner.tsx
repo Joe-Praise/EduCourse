@@ -1,4 +1,3 @@
-// import CentralizedHeaderText from './CentralizedHeaderText';
 import { FC, ReactNode } from 'react';
 interface props {
 	img: string;

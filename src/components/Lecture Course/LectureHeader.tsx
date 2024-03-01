@@ -38,18 +38,16 @@ const LectureHeader = (props: Iprop) => {
 	 * TODO:Build the archive and favourite course list and functionalities
 	 */
 
-	// const {
-	// 	modal: shareDropdown,
-	// 	handleModal: handleShareDropdown,
-	// 	// closeModal: closeDropdown,
-	// } = useHandleModal();
-
 	const handleShowModal = () => {
 		shareRef.current!.open();
 	};
 
 	const handleReviewModal = () => {
 		reviewRef.current!.open();
+	};
+
+	const handleCloseReviewModal = () => {
+		reviewRef.current!.close();
 	};
 
 	return (
@@ -157,7 +155,7 @@ const LectureHeader = (props: Iprop) => {
 			</Modal>
 
 			<Modal ref={reviewRef} className={'w-1/3 h-max rounded-lg p-3'}>
-				<ReviewCourse />
+				<ReviewCourse onCloseModal={handleCloseReviewModal} />
 			</Modal>
 		</header>
 	);

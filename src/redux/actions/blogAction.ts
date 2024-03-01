@@ -110,14 +110,10 @@ export const getSingleBlogAction =
 		}
 	};
 
+// TODO: check the type and adjust according to the expcted type
 export const createBlogAction =
-	(
-		details: api.singleBlogType
-		// navigate: NavigateFunction,
-		// params: paramsType.
-	): BlogThunk =>
+	(details: api.singleBlogType): BlogThunk =>
 	async (dispatch: AppDispatch) => {
-		// const { slug, id } = params;
 		try {
 			const response = await api.createBlog(details);
 			const { data } = response;
@@ -126,9 +122,6 @@ export const createBlogAction =
 				type: types.CREATE_BLOG_SUCCESS,
 				payload: data,
 			});
-
-			// routes to the learn course page
-			// navigate(`/courses/${slug}/lecture/${id}`);
 		} catch (error: any) {
 			dispatch({
 				type: types.CREATE_BLOG_FAIL,
@@ -140,7 +133,6 @@ export const createBlogAction =
 export const createBlogCommentAction =
 	(details: api.commentRequestType, blogId: string): BlogThunk =>
 	async (dispatch: AppDispatch) => {
-		// const { slug, id } = params;
 		try {
 			const response = await api.createBlogComment(details, blogId);
 			const { data } = response;
@@ -149,9 +141,6 @@ export const createBlogCommentAction =
 				type: types.CREATE_BLOG_COMMENT_SUCCESS,
 				payload: data,
 			});
-
-			// routes to the learn course page
-			// navigate(`/courses/${slug}/lecture/${id}`);
 		} catch (error: any) {
 			dispatch({
 				type: types.CREATE_BLOG_COMMENT_FAIL,

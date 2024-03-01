@@ -7,6 +7,8 @@ import { getCoursesReviewAction } from '../../redux/actions/reviewAction';
 import { RootState } from '../../redux/reducers';
 import { OmittedReviewDataType } from '../../redux/api/reviewApi';
 import { SingleCourseType } from '../../redux/api/courseAPI';
+import Pagination from '../shared/Pagination';
+import { paginateType } from '../../redux/sharedTypes';
 
 interface Iprop {
 	course: SingleCourseType;
@@ -15,13 +17,19 @@ interface Iprop {
 const Review = (props: Iprop) => {
 	const dispatch: AppDispatch = useDispatch();
 	const reviews = useSelector((state: RootState) => state.review.review);
-	const arr = Array.from(Array(4), () => 0);
+	const limit = '6';
+	const metaData = reviews.metaData;
 
 	const { course } = props;
 	useEffect(() => {
-		dispatch(getCoursesReviewAction({ page: '1', limit: '3' }, course?._id));
+		dispatch(getCoursesReviewAction({ page: '1', limit }, course?._id));
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	}, [dispatch]);
+
+	// handles Pagination dispatch
+	const handleReviewPaginationDispatch = (details: paginateType) => {
+		dispatch(getCoursesReviewAction(details, course?._id));
+	};
 
 	return (
 		<section>
@@ -33,18 +41,12 @@ const Review = (props: Iprop) => {
 			{reviews?.data?.map((el: OmittedReviewDataType) => {
 				return <CommentCard key={el._id} {...el} />;
 			})}
-			<ul className='flex gap-2 justify-center mt-5'>
-				{arr.map((_, i) => {
-					return (
-						<li
-							key={i}
-							className='w-9 h-9 border rounded-full flex justify-center items-center cursor-pointer duration-150 hover:bg-black hover:text-white'
-						>
-							{i + 1}
-						</li>
-					);
-				})}
-			</ul>
+
+			<Pagination
+				handlePagination={handleReviewPaginationDispatch}
+				metaData={metaData}
+				queryString={''}
+			/>
 		</section>
 	);
 };
