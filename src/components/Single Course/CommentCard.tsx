@@ -1,5 +1,4 @@
 import RatingStars from './RatingStars';
-// import img from '../../assets/image/card3.jpg';
 import { useState } from 'react';
 import RenderIf from '../shared/RenderIf';
 import { truncateValue } from '../../util/helperFunctions/helper';

@@ -29,7 +29,6 @@ const Blog: FC = () => {
 	const metaData = blogState.blog.metaData;
 	const queryFilterState = blogState.queryFilter;
 
-	// TODO: CONTINUE FIXING UP THE STATES REQUIRED TO MAKE BLOG FUNCTION
 	const [activeLayout, setActiveLayout] = useState('grid');
 	const [search, setSearch] = useState('');
 	const limit = '6';

@@ -118,9 +118,10 @@ export const getCourseBySlug = async <T>(
 	userId: T
 ): Promise<ApiResponse> => {
 	try {
-		const { data } = await API.get<ApiResponse>(
-			`/api/v1/courses?slug=${slug}&userId=${userId}`
-		);
+		const URL = userId
+			? `/api/v1/courses?slug=${slug}&userId=${userId}`
+			: `/api/v1/courses?slug=${slug}`;
+		const { data } = await API.get<ApiResponse>(URL);
 		return data;
 	} catch (error) {
 		return handleApiError(error);

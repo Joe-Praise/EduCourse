@@ -18,6 +18,9 @@ const SingleCourse: FC = () => {
 		(state: RootState) => state.course?.singleCourse
 	);
 
+	const review = useSelector((state: RootState) => state.review.review);
+	console.log('data from review', review);
+
 	const { slug } = useParams();
 	// const handleCourseComment = (commentText: string): void => {
 	// 	console.log(commentText);

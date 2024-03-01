@@ -8,7 +8,11 @@ import { getLocalStorage } from '../../util/helperFunctions/helper';
 import { createCourseReviewAction } from '../../redux/actions/reviewAction';
 
 const arr = [1, 2, 3, 4, 5];
-const ReviewCourse = () => {
+interface Iprop {
+	onCloseModal: () => void;
+}
+const ReviewCourse = (props: Iprop) => {
+	const { onCloseModal } = props;
 	const dispatch: AppDispatch = useDispatch();
 	const lectureCourse = useSelector(
 		(state: RootState) => state.course?.lectureCourse?.course?._id
@@ -32,25 +36,32 @@ const ReviewCourse = () => {
 		setActiveRating(rate);
 	};
 
-	const handleCreateReview = async () => {
+	const handleCreateReview = () => {
 		setLodaing(true);
 		const details = {
 			rating: activeRating + '',
 			review: reviewTextRef.current!.value,
 		};
 		dispatch(createCourseReviewAction(details, lectureCourse));
-		setLodaing(false);
+
+		// TODO: check if the response was successful then display message accordingnly
 		setTimeout(() => {
-			setRegards(true);
-		}, 1500);
+			setLodaing(false);
+			// setRegards(true);
+		}, 2800);
+		setTimeout(() => {
+			reviewTextRef.current!.value = '';
+			setActiveRating(3);
+			onCloseModal();
+		}, 3000);
 	};
 
 	const handleDisplayRegards = () => {
 		return (
 			<div
 				className={`${
-					regards ? 'top-0' : 'top-[200%]'
-				} h-full w-full inset-0 bg-black text-white flex flex-col justify-around items-center absolute left-0 right-0 transition-all duration-500 `}
+					regards ? 'top-0 scale-100' : 'top-[200%]'
+				} scale-0 h-full w-full inset-0 bg-black text-white flex flex-col justify-around items-center absolute left-0 right-0 transition-all duration-500`}
 			>
 				<div className=''>
 					<h1>THANK YOU!</h1>

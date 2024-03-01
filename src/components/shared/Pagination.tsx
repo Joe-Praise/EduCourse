@@ -11,26 +11,12 @@ const Pagination: FC<Iprop> = (props) => {
 	const { metaData, handlePagination, queryString } = props;
 	const [pages, setPages] = useState<number[]>([]);
 	const [activePage, setActivePage] = useState(metaData?.page || 1);
-	// const [details, setDetails] = useState<paginateType>({
-	// 	page: '',
-	// 	limit: '6',
-	// });
-	// const dataPerPage = metaData.limit;
 
-	//saving the page count
-	// const pageCount = Math.ceil(data.length / dataPerPage);
 	const pageCount = metaData?.totalPages;
-
-	// this gets the total items viewed
-	// const itemsViewed = activePage * dataPerPage;
-
-	// this uses the array method to limit the movie on dsiplay
-	// const displayData = data.slice(itemsViewed, itemsViewed + dataPerPage);
-	// console.log(displayData);
 
 	const buildPages = useCallback(() => {
 		let start = 1,
-			end = pageCount < 5 ? pageCount : 5;
+			end = pageCount < 5 ? pageCount : 1;
 
 		if (activePage > 3 && activePage < pageCount - 3) {
 			start = activePage - 2;

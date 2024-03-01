@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import angleIcon from '../../assets/icon/chevron-down.svg';
 import avi from '../../assets/image/Ellipse 1.jpg';
 import { linkType } from './navigationType';
@@ -13,6 +13,7 @@ import config from '../../../config';
 
 const LayoutHeader: FC = () => {
 	const userDetails = getLocalStorage('profile')?.user;
+	const navigate = useNavigate();
 	// const userData = useSelector((state: RootState) => state.auth);
 	// console.log(userData);
 
@@ -21,8 +22,6 @@ const LayoutHeader: FC = () => {
 		handleModal: handleToggleDropdown,
 		// closeModal: closeDropdown,
 	} = useHandleModal();
-
-	// TODO: check URL, if chnaged. retrigger handleToggleHamburger
 
 	const { modal: HamburgerState, handleModal: handleToggleHamburger } =
 		useHandleModal();
@@ -65,7 +64,7 @@ const LayoutHeader: FC = () => {
 		},
 		{
 			id: 2,
-			name: 'Register',
+			name: 'Sign Up',
 			path: '/signup',
 		},
 	];
@@ -126,80 +125,183 @@ const LayoutHeader: FC = () => {
 		},
 	];
 
-	const MobileNav: FC = () => {
-		return (
-			<div
-				className={`absolute z-40 w-[250px] h-[88%] rounded-md p-3 top-[80px] sm:hidden bg-white block ${
-					HamburgerState ? '-translate-x-[1rem]' : '-translate-x-[20rem]'
-				} `}
-			>
-				<ul className='basis-auto gap-1 sm:flex lg:gap-2'>
-					{mobileNav?.map((el) => (
+	/**
+	 *
+	 * @returns UI based on the login status i.e bottom profile btn when user is logged in and login & sign up when not logged in
+	 */
+	const handleMobileDisplayProfileBtn = () => {
+		if (!userDetails) {
+			return (
+				<>
+					{rightLinks?.map((el) => (
 						<li
 							key={el.id}
-							className='w-auto rounded-md hover:bg-secondary-dark'
+							className='hover:underline hover:underline-offset-4  uppercase'
 						>
 							<NavLink
 								to={el.path}
 								className={({ isActive }) =>
 									isActive
-										? 'block p-3 lg:p-2 bg-secondary-dark text-white rounded-md'
-										: 'p-3 lg:p-2 block hover:text-white rounded-md'
+										? 'block p-2 underline underline-offset-4 text-[30px] rounded-md'
+										: 'block p-2 rounded-md text-[30px]'
 								}
+								onClick={() => handleToggleHamburger()}
 							>
 								{el.name}
 							</NavLink>
 						</li>
 					))}
-				</ul>
+				</>
+			);
+		} else {
+			return (
+				<>
+					<li className='w-auto rounded-md '>
+						<button
+							className={
+								'block w-full text-[30px] text-left p-3 lg:p-2 rounded-md hover:underline hover:underline-offset-4 uppercase font-medium text-secondary-light'
+							}
+							onClick={() => {
+								handleToggleHamburger();
+								navigate('/signin');
+							}}
+						>
+							{'Logout'}
+						</button>
+					</li>
+					<li
+						className=' absolute top-2 left-2 w-[150px]'
+						onClick={handleToggleDropdown}
+					>
+						<Link
+							to={'/profile'}
+							className='flex items-center gap-1 cursor-pointer'
+						>
+							<figure>
+								<img
+									src={avi}
+									alt='user avi'
+									className='w-[38px] h-[38px] rounded-[48px]'
+								/>
+							</figure>
+							<p className='font-exo font-[600] text-secondary-light hover:text-secondary-dark'>
+								{userDetails ? userDetails?.name : 'Annette Black'}
+							</p>
+						</Link>
+					</li>
+				</>
+			);
+		}
+	};
 
-				<ul className='items-center sm:flex'>
-					{!userDetails ? (
-						rightLinks?.map((el) => (
-							<li key={el.id}>
-								<NavLink
-									to={el.path}
-									className={({ isActive }) =>
-										isActive
-											? 'block p-3 lg:p-2 bg-secondary-dark text-white rounded-md'
-											: 'p-3 lg:p-2 block hover:text-white rounded-md'
-									}
+	const handleDisplayProfileBtn = () => {
+		if (!userDetails) {
+			return rightLinks?.map((el) => (
+				<li key={el.id}>
+					<NavLink
+						to={el.path}
+						className={({ isActive }) =>
+							isActive
+								? 'block p-2 text-secondary-dark'
+								: 'p-2 block hover:text-secondary-dark'
+						}
+					>
+						{el.name}
+					</NavLink>
+				</li>
+			));
+		} else {
+			return (
+				<li className='relative' onClick={handleToggleDropdown}>
+					<button className='flex items-center gap-1 cursor-pointer'>
+						<figure>
+							<img
+								src={
+									userDetails
+										? `${config.baseUrl}/img/${userDetails?.photo}`
+										: avi
+								}
+								alt='user avi'
+								className='w-[38px] h-[38px] rounded-[48px]'
+							/>
+						</figure>
+						<p className='font-exo font-[600] text-secondary-light hover:text-secondary-dark'>
+							{userDetails ? userDetails?.name : 'Annette Black'}
+						</p>
+
+						<img
+							src={angleIcon}
+							alt='angle arrow depicting a closed menu'
+							className={`${
+								toggleDropdown
+									? 'rotate-180 duration-75'
+									: 'rotate-0 duration-75'
+							}`}
+						/>
+					</button>
+					{toggleDropdown && (
+						<ul className='absolute z-20 border w-[12rem] -right-4 top-[3.5rem] bg-white rounded-lg'>
+							{dropdown.map((el) => (
+								<li
+									className='px-3 hover:bg-secondary-dark  rounded-md'
+									key={el.id}
 								>
-									{el.name}
-								</NavLink>
-							</li>
-						))
-					) : (
-						<>
-							<li className='w-auto rounded-md '>
-								<button
-									className={
-										'block p-3 lg:p-2 rounded-md hover:text-white hover:bg-secondary-dark'
-									}
-								>
-									{'Logout'}
-								</button>
-							</li>
-							<li className='absolute bottom-5' onClick={handleToggleDropdown}>
-								<Link
-									to={'/profile'}
-									className='flex items-center gap-1 cursor-pointer'
-								>
-									<figure>
-										<img
-											src={avi}
-											alt='user avi'
-											className='w-[38px] h-[38px] rounded-[48px]'
-										/>
-									</figure>
-									<p className='font-exo font-[600] text-secondary-light hover:text-secondary-dark'>
-										{userDetails ? userDetails?.name : 'Annette Black'}
-									</p>
-								</Link>
-							</li>
-						</>
+									<Link to={el.path} className='block p-2 hover:text-white'>
+										{el.name}
+									</Link>
+								</li>
+							))}
+						</ul>
 					)}
-				</ul>
+				</li>
+			);
+		}
+	};
+
+	// TODO: make this slide into view
+	const MobileNav: FC = () => {
+		return (
+			<div
+				className={`${
+					HamburgerState ? 'left-0' : ' left-full'
+				} fixed z-40 w-full h-svh rounded-md p-3 top-0 bg-white block overflow-auto transition-all duration-1000 transform ease-in-out `}
+			>
+				<div className='absolute right-0'>
+					<HamburgerBtn
+						toggleHamburger={handleToggleHamburger}
+						HamburgerState={HamburgerState}
+					/>
+				</div>
+				<div className='flex flex-col w-[60%] h-[90vh] m-auto mt-[50px] justify-between'>
+					<div className='flex flex-col'>
+						<h1 className='w-full text-xs my-3 uppercase border-b-2 border-black pb-1'>
+							Navigation
+						</h1>
+						<ul className='w-full gap-1 sm:flex lg:gap-2'>
+							{mobileNav?.map((el) => (
+								<li
+									key={el.id}
+									className='w-full rounded-md hover:underline hover:underline-offset-4  uppercase'
+								>
+									<NavLink
+										to={el.path}
+										className={({ isActive }) =>
+											isActive
+												? 'block p-2 underline underline-offset-4 text-[30px] rounded-md text-black'
+												: 'block p-2 rounded-md text-[30px]'
+										}
+										onClick={() => handleToggleHamburger()}
+									>
+										{el.name}
+									</NavLink>
+								</li>
+							))}
+						</ul>
+						<ul className='items-center sm:flex'>
+							{handleMobileDisplayProfileBtn()}
+						</ul>
+					</div>
+				</div>
 			</div>
 		);
 	};
@@ -246,69 +348,7 @@ const LayoutHeader: FC = () => {
 						</ul>
 
 						<ul className='items-center sm:flex'>
-							{!userDetails ? (
-								rightLinks?.map((el) => (
-									<li key={el.id}>
-										<NavLink
-											to={el.path}
-											className={({ isActive }) =>
-												isActive
-													? 'block p-2 text-secondary-dark'
-													: 'p-2 block hover:text-secondary-dark'
-											}
-										>
-											{el.name}
-										</NavLink>
-									</li>
-								))
-							) : (
-								<li className='relative' onClick={handleToggleDropdown}>
-									<button className='flex items-center gap-1 cursor-pointer'>
-										<figure>
-											<img
-												src={
-													userDetails
-														? `${config.baseUrl}/img/${userDetails?.photo}`
-														: avi
-												}
-												alt='user avi'
-												className='w-[38px] h-[38px] rounded-[48px]'
-											/>
-										</figure>
-										<p className='font-exo font-[600] text-secondary-light hover:text-secondary-dark'>
-											{userDetails ? userDetails?.name : 'Annette Black'}
-										</p>
-
-										<img
-											src={angleIcon}
-											alt='angle arrow depicting a closed menu'
-											className={`${
-												toggleDropdown
-													? 'rotate-180 duration-75'
-													: 'rotate-0 duration-75'
-											}`}
-										/>
-									</button>
-
-									{toggleDropdown && (
-										<ul className='absolute z-20 border w-[12rem] -right-4 top-[3.5rem] bg-white rounded-lg'>
-											{dropdown.map((el) => (
-												<li
-													className='px-3 hover:bg-secondary-dark  rounded-md'
-													key={el.id}
-												>
-													<Link
-														to={el.path}
-														className='block p-2 hover:text-white'
-													>
-														{el.name}
-													</Link>
-												</li>
-											))}
-										</ul>
-									)}
-								</li>
-							)}
+							{handleDisplayProfileBtn()}
 						</ul>
 					</div>
 					<ul className='ms-auto sm:hidden'>
@@ -327,3 +367,81 @@ const LayoutHeader: FC = () => {
 };
 
 export default LayoutHeader;
+
+// const MobileNav: FC = () => {
+// 	return (
+// 		<div
+// 			className={`absolute z-40 w-[250px] h-[88%] rounded-md p-3 top-[80px] sm:hidden bg-white block ${
+// 				HamburgerState ? '-translate-x-[1rem]' : '-translate-x-[20rem]'
+// 			} `}
+// 		>
+// 			<ul className='basis-auto gap-1 sm:flex lg:gap-2'>
+// 				{mobileNav?.map((el) => (
+// 					<li
+// 						key={el.id}
+// 						className='w-auto rounded-md hover:bg-secondary-dark'
+// 					>
+// 						<NavLink
+// 							to={el.path}
+// 							className={({ isActive }) =>
+// 								isActive
+// 									? 'block p-3 lg:p-2 bg-secondary-dark text-white rounded-md'
+// 									: 'p-3 lg:p-2 block hover:text-white rounded-md'
+// 							}
+// 						>
+// 							{el.name}
+// 						</NavLink>
+// 					</li>
+// 				))}
+// 			</ul>
+
+// 			<ul className='items-center sm:flex'>
+// 				{!userDetails ? (
+// 					rightLinks?.map((el) => (
+// 						<li key={el.id}>
+// 							<NavLink
+// 								to={el.path}
+// 								className={({ isActive }) =>
+// 									isActive
+// 										? 'block p-3 lg:p-2 bg-secondary-dark text-white rounded-md'
+// 										: 'p-3 lg:p-2 block hover:text-white rounded-md'
+// 								}
+// 							>
+// 								{el.name}
+// 							</NavLink>
+// 						</li>
+// 					))
+// 				) : (
+// 					<>
+// 						<li className='w-auto rounded-md '>
+// 							<button
+// 								className={
+// 									'block p-3 lg:p-2 rounded-md hover:text-white hover:bg-secondary-dark'
+// 								}
+// 							>
+// 								{'Logout'}
+// 							</button>
+// 						</li>
+// 						<li className='absolute bottom-5' onClick={handleToggleDropdown}>
+// 							<Link
+// 								to={'/profile'}
+// 								className='flex items-center gap-1 cursor-pointer'
+// 							>
+// 								<figure>
+// 									<img
+// 										src={avi}
+// 										alt='user avi'
+// 										className='w-[38px] h-[38px] rounded-[48px]'
+// 									/>
+// 								</figure>
+// 								<p className='font-exo font-[600] text-secondary-light hover:text-secondary-dark'>
+// 									{userDetails ? userDetails?.name : 'Annette Black'}
+// 								</p>
+// 							</Link>
+// 						</li>
+// 					</>
+// 				)}
+// 			</ul>
+// 		</div>
+// 	);
+// };

@@ -2,14 +2,10 @@ import { ReactNode, useImperativeHandle, useRef } from 'react';
 import { forwardRef } from 'react';
 import Button from './Button';
 import { IoClose } from 'react-icons/io5';
+import { ModalRef } from '../../pages/Main Course/LectureType';
 interface Iprop {
 	children: ReactNode;
 	className: string;
-}
-
-interface ModalRef {
-	open(): void;
-	close(): void;
 }
 
 const Modal = forwardRef<ModalRef, Iprop>((props: Iprop, ref) => {

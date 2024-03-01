@@ -67,7 +67,7 @@ export const getCoursesReviewAction =
 		try {
 			const response = await api.getCourseReviews(details, courseId);
 			const data = response;
-
+			console.log('coming from reviewAction api call', data, courseId);
 			dispatch({
 				type: types.GET_COURSE_REVIEW_SUCCESS,
 				payload: data,

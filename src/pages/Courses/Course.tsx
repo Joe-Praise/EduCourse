@@ -1,5 +1,4 @@
 import { ChangeEvent, FC, useEffect, useRef, useState } from 'react';
-// import img from '../../assets/image/card5.jpg';
 import FilterStructure from '../../components/shared/FilterStructure';
 import FilterActionMenu from '../../components/shared/FilterActionMenu';
 import CourseCard from '../../components/Course/CourseCard';
