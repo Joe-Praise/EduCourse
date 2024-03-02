@@ -10,6 +10,10 @@ const VideoSection = () => {
 				allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
 				allowFullScreen
 			></iframe>
+			{/* <video width='320' height='240' autoPlay>
+				<source src='https://www.youtube.com/embed/favjC6EKFgw?si=GeooVdwNmT8LodxB' type='video/mp4' />
+				<source src='https://www.youtube.com/embed/favjC6EKFgw?si=GeooVdwNmT8LodxB' type='video/ogg' />
+			</video> */}
 		</div>
 	);
 };

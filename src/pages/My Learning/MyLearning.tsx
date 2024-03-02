@@ -221,13 +221,9 @@ const MyLearning: FC = () => {
 					layoutFunc={handleLayoutChange}
 					children1={
 						<>
-							{courses.map((el: any) => {
+							{courses.map((el: any, idx) => {
 								return (
-									<CourseCard
-										key={el._id}
-										activeLayout={activeLayout}
-										{...el}
-									/>
+									<CourseCard key={idx} activeLayout={activeLayout} {...el} />
 								);
 							})}
 						</>
