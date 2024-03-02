@@ -28,7 +28,7 @@ const FilterStructure: FC<{
 
 	return (
 		<section>
-			<div className='grid grid-cols-6 gap-3 xl:gap-12 mt-2  layoutWidth items-start overflow-y-auto h-[120vh]'>
+			<div className='grid grid-cols-6 gap-3 xl:gap-12 mt-2 layoutWidth items-start sm:overflow-y-auto '>
 				<div className='col-start-1 col-span-6 sm:col-span-4 '>
 					<FilterPageHeader
 						title={title}
@@ -42,18 +42,17 @@ const FilterStructure: FC<{
 							activeLayout === 'grid'
 								? 'grid grid-cols-1 sm:grid-cols-2 gap-4'
 								: 'gap-2'
-						} my-2 p-2`}
+						} gap-y-6 p-2`}
 					>
 						{children1}
 					</div>
 				</div>
 				<div
 					className={`col-span-2 
-			 sm:translate-x-0 sm:sticky sm:top-4 z-20 w-10/12 mx-auto duration-150 overflow-auto 
 			 ${
 					displayFilter
-						? 'translate-x-[0] fixed z-30 inset-0 h-[100svh] bg-white w-full my-2'
-						: '-translate-x-[150%]'
+						? 'block translate-x-[0] fixed z-30 inset-0 h-[100svh] bg-white w-full my-2'
+						: '-translate-x-[150%] hidden sm:block sticky  sm:translate-x-[0] sm:h-full sm:max-h-[70svh]'
 				}
 			`}
 				>
@@ -66,3 +65,16 @@ const FilterStructure: FC<{
 };
 
 export default FilterStructure;
+
+{
+	/* <div
+					className={`col-span-2 
+			 sm:translate-x-0  sm:top-4 z-20 w-10/12 mx-auto duration-150 overflow-auto 
+			 ${
+					displayFilter
+						? 'translate-x-[0] fixed z-30 inset-0 h-[100svh] bg-white w-full my-2'
+						: '-translate-x-[150%]'
+				}
+			`}
+				></div> */
+}

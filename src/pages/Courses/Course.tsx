@@ -15,6 +15,7 @@ import useDebounce from '../../hooks/UseDebounce';
 import { formQueryStr } from '../../util/helperFunctions/helper';
 import Pagination from '../../components/shared/Pagination';
 import { paginateType } from '../../redux/sharedTypes';
+import LoadingEffect from '../../components/shared/LoadingEffect';
 
 const Course: FC = () => {
 	const dispatch: AppDispatch = useDispatch();
@@ -114,20 +115,30 @@ const Course: FC = () => {
 		dispatch(getCoursesAction(details, queryString));
 	};
 
+	const handleCourseDisplay = () => {
+		if (coursesData.data.length < 1) {
+			return (
+				<div>
+					<LoadingEffect />
+				</div>
+			);
+		} else {
+			return (
+				<>
+					{coursesData?.data?.map((el: any) => {
+						return <CourseCard key={el._id} activeLayout='grid' {...el} />;
+					})}
+				</>
+			);
+		}
+	};
+
 	return (
 		<FilterStructure
 			title={'All Courses'}
 			searchFunc={handleSearch}
 			layoutFunc={handleLayoutChange}
-			children1={
-				<>
-					{coursesData?.data?.map((el: any) => {
-						return (
-							<CourseCard key={el._id} activeLayout={activeLayout} {...el} />
-						);
-					})}
-				</>
-			}
+			children1={<>{handleCourseDisplay()}</>}
 			children2={
 				<>
 					{Object.entries(filterData).map(([key, value], i) => {
