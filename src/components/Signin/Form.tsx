@@ -4,9 +4,10 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 import InputField from '../shared/InputField';
 import { AppDispatchType, signInAction } from '../../redux/actions/authAction';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { RootState } from '../../redux/store';
 
 const initialValues = {
 	email: '',
@@ -28,6 +29,7 @@ const SigninForm: FC = () => {
 	const dispatch: AppDispatchType = useDispatch();
 	const [loading, setLodaing] = useState(false);
 	const navigate = useNavigate();
+	const errorMsg = useSelector((state: RootState) => state.auth.signInError);
 
 	const onSubmit = async (values: InitialValues) => {
 		setLodaing(true);
@@ -44,6 +46,8 @@ const SigninForm: FC = () => {
 		touched: PropTypes.object.isRequired,
 		resetForm: PropTypes.func.isRequired,
 	};
+
+	console.log('Signin error message', errorMsg);
 
 	return (
 		<section className='w-10/12 lg:w-1/2'>

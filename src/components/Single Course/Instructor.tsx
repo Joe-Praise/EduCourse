@@ -4,6 +4,7 @@ import { FaFile } from 'react-icons/fa6';
 import { FC } from 'react';
 import config from '../../../config';
 import useFormatText from '../../hooks/UseFormatText';
+import SocialMedia from '../../widgets/LayoutFooter/SocialMedia';
 
 export interface InstructorType {
 	_id: string;
@@ -49,7 +50,7 @@ const Instructor: FC<{ instructors: InstructorType[] }> = ({ instructors }) => {
 									{el}
 								</p>
 							))}
-							{/* <p>{el?.description}</p> */}
+
 							<div className='flex items-center gap-1'>
 								<FaGraduationCap />
 								<span>150 students</span>
@@ -60,8 +61,9 @@ const Instructor: FC<{ instructors: InstructorType[] }> = ({ instructors }) => {
 							</div>
 						</div>
 					</div>
-					{/* TODO: Handle links on backend to be actual links */}
-					{/* <div className='flex items-center mt-2'>
+
+					{/* SOCIAL MEDIA LINKS */}
+					<div className='flex items-center mt-2'>
 						<h2>Follow:</h2>
 						<ul>
 							<li className='flex gap-2 py-1'>
@@ -76,7 +78,7 @@ const Instructor: FC<{ instructors: InstructorType[] }> = ({ instructors }) => {
 								})}
 							</li>
 						</ul>
-					</div> */}
+					</div>
 				</div>
 			))}
 		</div>

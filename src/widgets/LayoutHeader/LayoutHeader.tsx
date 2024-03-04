@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, Fragment } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import angleIcon from '../../assets/icon/chevron-down.svg';
 import avi from '../../assets/image/Ellipse 1.jpg';
@@ -8,12 +8,16 @@ import HamburgerBtn from '../../components/shared/HamburgerBtn';
 import Logo from '../../components/shared/Logo';
 import { getLocalStorage } from '../../util/helperFunctions/helper';
 import config from '../../../config';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../../redux/store';
+import { logoutAction } from '../../redux/actions/authAction';
 // import { useSelector } from 'react-redux';
 // import { RootState } from '../../redux/store';
 
 const LayoutHeader: FC = () => {
 	const userDetails = getLocalStorage('profile')?.user;
 	const navigate = useNavigate();
+	const dispatch: AppDispatch = useDispatch();
 	// const userData = useSelector((state: RootState) => state.auth);
 	// console.log(userData);
 
@@ -125,6 +129,10 @@ const LayoutHeader: FC = () => {
 		},
 	];
 
+	const handleLogoutFunctionality = () => {
+		dispatch(logoutAction(navigate));
+	};
+
 	/**
 	 *
 	 * @returns UI based on the login status i.e bottom profile btn when user is logged in and login & sign up when not logged in
@@ -162,8 +170,8 @@ const LayoutHeader: FC = () => {
 								'block w-full text-[30px] text-left p-3 lg:p-2 rounded-md hover:underline hover:underline-offset-4 uppercase font-medium text-secondary-light'
 							}
 							onClick={() => {
+								handleLogoutFunctionality();
 								handleToggleHamburger();
-								navigate('/signin');
 							}}
 						>
 							{'Logout'}
@@ -242,14 +250,29 @@ const LayoutHeader: FC = () => {
 					{toggleDropdown && (
 						<ul className='absolute z-20 border w-[12rem] -right-4 top-[3.5rem] bg-white rounded-lg'>
 							{dropdown.map((el) => (
-								<li
-									className='px-3 hover:bg-secondary-dark  rounded-md'
-									key={el.id}
-								>
-									<Link to={el.path} className='block p-2 hover:text-white'>
-										{el.name}
-									</Link>
-								</li>
+								<Fragment key={el.id}>
+									{el.name === 'Logout' ? (
+										<li className='w-auto rounded-md '>
+											<button
+												className={
+													'p-2 px-6 font-semibold bg hover:bg-secondary-dark rounded-md text-secondary-light hover:text-white w-full text-left'
+												}
+												onClick={() => {
+													handleLogoutFunctionality();
+													// handleToggleHamburger();
+												}}
+											>
+												{'Logout'}
+											</button>
+										</li>
+									) : (
+										<li className='px-3 hover:bg-secondary-dark rounded-md'>
+											<Link to={el.path} className='block p-2 hover:text-white'>
+												{el.name}
+											</Link>
+										</li>
+									)}
+								</Fragment>
 							))}
 						</ul>
 					)}

@@ -37,6 +37,7 @@ const BlogCard = (props: Iprop) => {
 						<img
 							src={`${config.baseUrl}/blog/${blog?.imageCover}`}
 							alt={`${blog?.title}'s cover image`}
+							loading='lazy'
 							className={`absolute top-0 w-full object-cover object-bottom ${
 								activeLayout === 'grid'
 									? 'rounded-t-lg h-48'

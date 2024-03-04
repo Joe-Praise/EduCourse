@@ -9,7 +9,8 @@ export type signInType = {
 export const signIn = async (details: signInType) => {
 	try {
 		const { data } = await API.post('api/v1/users/login', details);
-		return { error: null, data };
+		console.log('from the signin Action function', data);
+		return data;
 	} catch (error) {
 		return handleApiError(error);
 	}

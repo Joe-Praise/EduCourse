@@ -1,5 +1,6 @@
 import { NavigateFunction } from 'react-router-dom';
 import {
+	getLocalStorage,
 	removeLocalStorage,
 	saveLocalStorage,
 } from '../../util/helperFunctions/helper';
@@ -84,11 +85,12 @@ export const signInAction =
 		try {
 			const response = await api.signIn(details);
 			const { error, data } = response;
-			if (error) {
-				dispatch({
-					type: types.SIGNIN_FAIL,
-					payload: error,
-				});
+
+			console.log('response', error);
+			if (error.length) {
+				// TODO: Have notification reducer to handle all notifications
+				console.log('from signin error block', error);
+				throw new Error(error);
 			} else {
 				const { data: user, token, status } = data;
 				const profile = {
@@ -104,53 +106,62 @@ export const signInAction =
 				});
 				navigate('/');
 			}
-		} catch (error) {
+		} catch (error: any) {
 			await dispatch({
 				type: types.SIGNIN_FAIL,
-				payload: types.ERROR_MESSAGE,
+				payload: error.message || types.ERROR_MESSAGE,
 			});
-			navigate('/signin');
 		}
 	};
 
-export const isLoggedIn = (): AuthThunk => async (dispatch: AppDispatch) => {
-	try {
-		const response = await api.checkToken();
-		const { error, data } = response;
-		if (error) {
-			// done in order to hide the loading page as we have unprotected routes
-			dispatch({
-				type: types.REFRESH_TOKEN_FAIL,
-				payload: error,
-			});
-		} else {
-			const { data: user, token, status } = data;
-			const profile = {
-				user: user?.user,
-				token,
-				status,
-			};
+export const isLoggedIn =
+	(navigate: NavigateFunction): AuthThunk =>
+	async (dispatch: AppDispatch) => {
+		try {
+			const response = await api.checkToken();
+			const { error, data } = response;
+			if (error.length) {
+				// done in order to hide the loading page as we have unprotected routes
+				navigate('/signin');
+				removeLocalStorage('profile');
+				dispatch({
+					type: types.REFRESH_TOKEN_FAIL,
+					payload: error,
+				});
+			} else {
+				const { data: user, token, status } = data;
+				const profile = {
+					user: user?.user,
+					token,
+					status,
+				};
 
-			saveLocalStorage(profile, 'profile');
+				saveLocalStorage(profile, 'profile');
+				dispatch({
+					type: types.SIGNIN_SUCCESS,
+					payload: profile,
+				});
+			}
+		} catch (error) {
 			dispatch({
-				type: types.SIGNIN_SUCCESS,
-				payload: profile,
+				type: types.SIGNIN_FAIL,
+				payload: types.ERROR_MESSAGE,
 			});
 		}
-	} catch (error) {
-		dispatch({
-			type: types.SIGNIN_FAIL,
-			payload: types.ERROR_MESSAGE,
-		});
-	}
-};
+	};
 
-export const logoutAction = () => {
+export const logoutAction = (navigate: NavigateFunction) => {
 	try {
-		//   const { data } = await api.logout();
 		removeLocalStorage('profile');
+
+		if (getLocalStorage('profile') === null) {
+			navigate('/signin');
+		} else {
+			throw new Error('Somthing went wrong!');
+		}
 		return { type: types.LOGOUT };
-	} catch (error) {
+	} catch (error: any) {
+		console.log(error.message);
 		return { type: types.LOGOUT, payload: types.ERROR_MESSAGE };
 	}
 };

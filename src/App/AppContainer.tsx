@@ -6,9 +6,11 @@ import Loading from '../pages/Loading';
 import { isLoggedIn } from '../redux/actions/authAction';
 import { AppDispatch } from '../redux/store';
 import * as types from '../redux/constants/authConstants';
+import { useNavigate } from 'react-router-dom';
 
 const AppContainer: FC = () => {
 	const dispatch: AppDispatch = useDispatch();
+	const navigate = useNavigate();
 	const authdata = useSelector((state: RootState) => state.auth);
 	const isLoading = authdata?.isLoading;
 	const token = authdata?.token;
@@ -16,7 +18,7 @@ const AppContainer: FC = () => {
 	useEffect(() => {
 		const Validatetoken = async () => {
 			if (token) {
-				dispatch(isLoggedIn());
+				dispatch(isLoggedIn(navigate));
 			} else {
 				setTimeout(() => {
 					dispatch({
@@ -30,13 +32,7 @@ const AppContainer: FC = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	console.log(isLoading);
-
-	return (
-		// <Provider store={store}>
-		isLoading ? <Loading /> : <App />
-		// </Provider>
-	);
+	return isLoading ? <Loading /> : <App />;
 };
 
 export default AppContainer;

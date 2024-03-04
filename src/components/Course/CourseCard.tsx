@@ -51,7 +51,8 @@ const CourseCard: FC<courseCardType> = (props) => {
 					>
 						<img
 							src={`${config.baseUrl}/course/${props?.imageCover}`}
-							alt=''
+							alt={`${props?.title}'s cover image`}
+							loading='lazy'
 							className={`absolute top-0 w-full object-cover object-bottom ${
 								props?.activeLayout === 'grid'
 									? 'rounded-t-lg h-48'
