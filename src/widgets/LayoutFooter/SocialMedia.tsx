@@ -1,15 +1,16 @@
 import { FC } from 'react';
 import { Link } from 'react-router-dom';
-import { socialMediaLinksIcons, socialMediaProp } from './LayoutFooterModels';
 import { FaFacebookF, FaYoutube } from 'react-icons/fa';
 import { FaXTwitter } from 'react-icons/fa6';
 import { FaPinterestP } from 'react-icons/fa';
 import { AiFillInstagram } from 'react-icons/ai';
-// import { IconType } from 'react-icons';
-// import { IconType } from 'react-icons';
-type Iprop = socialMediaProp & socialMediaLinksIcons;
 
-const SocialMedia: FC<Iprop> = (props) => {
+export interface socialMediaType {
+	platform: string;
+	url: string;
+}
+
+const SocialMedia: FC<socialMediaType> = (props) => {
 	let Icon;
 	switch (props.platform) {
 		case 'Facebook':

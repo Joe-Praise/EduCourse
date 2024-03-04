@@ -3,11 +3,7 @@ import LinksList from './UnorderedLinksList';
 import { linkType } from '../LayoutHeader/navigationType';
 import Logo from '../../components/shared/Logo';
 import { contactUs } from './LayoutFooterModels';
-// import { FaFacebookF, FaYoutube } from 'react-icons/fa';
-// import { FaXTwitter } from 'react-icons/fa6';
-// import { FaPinterestP } from 'react-icons/fa';
-// import { AiFillInstagram } from 'react-icons/ai';
-// import SocialMedia from './SocialMedia';
+import SocialMedia, { socialMediaType } from './SocialMedia';
 
 const link1: linkType[] = [
 	{
@@ -50,33 +46,28 @@ const link2: linkType[] = [
 	},
 ];
 
-// const socials: socialMediaLinksIcons[] = [
-// 	{
-// 		id: 1,
-// 		path: '/facebook',
-// 		Icon: FaFacebookF,
-// 	},
-// 	{
-// 		id: 2,
-// 		path: '/twitter',
-// 		Icon: FaXTwitter,
-// 	},
-// 	{
-// 		id: 3,
-// 		path: '/pintrest',
-// 		Icon: FaPinterestP,
-// 	},
-// 	{
-// 		id: 4,
-// 		path: '/instagram',
-// 		Icon: AiFillInstagram,
-// 	},
-// 	{
-// 		id: 5,
-// 		path: '/youTube',
-// 		Icon: FaYoutube,
-// 	},
-// ];
+const socials: socialMediaType[] = [
+	{
+		platform: 'Facebook',
+		url: 'www.facebook.com',
+	},
+	{
+		platform: 'X',
+		url: 'www.twitter.com',
+	},
+	{
+		platform: 'Pintrest',
+		url: 'www.pintrest.com',
+	},
+	{
+		platform: 'Instagram',
+		url: 'www.instgram.com',
+	},
+	{
+		platform: 'YouTube',
+		url: 'www.instsgram.com',
+	},
+];
 
 const contacUsDetails: contactUs[] = [
 	{
@@ -125,12 +116,12 @@ const LayoutFooter: FC = () => {
 								{el.title}: {el.description}
 							</li>
 						))}
-						{/* TODO: fix footer social medialinks */}
-						{/* <li className='flex gap-2 py-1'>
-							{socials?.map((el) => (
-								<SocialMedia Icon={el.Icon} path={el.path} key={el.id} />
+
+						<li className='flex gap-2 py-1'>
+							{socials?.map((el, index) => (
+								<SocialMedia key={index} platform={el.platform} url={el.url} />
 							))}
-						</li> */}
+						</li>
 					</ul>
 				</div>
 			</div>

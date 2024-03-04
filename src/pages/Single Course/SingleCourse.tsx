@@ -1,5 +1,4 @@
 import { FC, useEffect } from 'react';
-// import Comment from '../../components/shared/Comment';
 import Curriculum from '../../components/Single Course/Curriculum';
 import HeaderContainer from '../../components/Single Course/HeaderContainer';
 import Instructor from '../../components/Single Course/Instructor';
@@ -18,13 +17,7 @@ const SingleCourse: FC = () => {
 		(state: RootState) => state.course?.singleCourse
 	);
 
-	const review = useSelector((state: RootState) => state.review.review);
-	console.log('data from review', review);
-
 	const { slug } = useParams();
-	// const handleCourseComment = (commentText: string): void => {
-	// 	console.log(commentText);
-	// };
 
 	useEffect(() => {
 		dispatch(getSingleCourseAction(slug));

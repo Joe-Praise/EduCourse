@@ -35,9 +35,10 @@ export const checkToken = (key: string) => {
 
 export const handleApiError = async (error: any) => {
 	try {
+		console.log('handleApiError', error);
 		const errorMessage =
 			error.response?.data?.message || 'An unexpected error occurred.';
-		return errorMessage;
+		return { error: errorMessage, data: null };
 	} catch (err) {
 		throw new Error('An unexpected error occurred.');
 	}
