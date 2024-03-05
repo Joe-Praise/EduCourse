@@ -16,6 +16,6 @@ export type paginateType = {
 };
 
 export interface ApiResponse {
-	data: obj[];
+	data: obj[] | null;
 	error: string;
 }

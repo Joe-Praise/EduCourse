@@ -40,7 +40,7 @@ const initialState: blogState = {
 	notification: [],
 };
 
-const courseSlice = (state = initialState, action: any) => {
+const blogSlice = (state = initialState, action: any) => {
 	const { type, payload } = action;
 	switch (type) {
 		case types.SET_FILTER:
@@ -86,7 +86,7 @@ const courseSlice = (state = initialState, action: any) => {
 			return {
 				...state,
 				comments: {},
-				blogError: payload.message,
+				blogError: payload,
 			};
 		case types.CREATE_BLOG_COMMENT_SUCCESS:
 			return {
@@ -105,7 +105,7 @@ const courseSlice = (state = initialState, action: any) => {
 		case types.CREATE_BLOG_COMMENT_FAIL:
 			return {
 				...state,
-				blogError: payload.message,
+				blogError: payload,
 			};
 		case types.DELETE_BLOG_COMMENT_SUCCESS:
 			return {
@@ -116,7 +116,7 @@ const courseSlice = (state = initialState, action: any) => {
 		case types.DELETE_BLOG_COMMENT_FAIL:
 			return {
 				...state,
-				blogError: payload.message,
+				blogError: payload,
 			};
 
 		// TODO: TEST THIS OUT
@@ -129,7 +129,7 @@ const courseSlice = (state = initialState, action: any) => {
 		case types.CREATE_BLOG_FAIL:
 			return {
 				...state,
-				blogError: payload.message,
+				blogError: payload,
 			};
 
 		case types.SET_QUERY_FILTER:
@@ -167,8 +167,9 @@ const deleteHandler = (state: any, payload: any) => {
 };
 
 const addImageToUser = (payload: any) => {
+	console.log('payload', payload);
 	const payloadCopy = payload;
 	payloadCopy.userId = getLocalStorage('profile')?.user;
 	return payloadCopy;
 };
-export default courseSlice;
+export default blogSlice;

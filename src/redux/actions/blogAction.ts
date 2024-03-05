@@ -71,16 +71,22 @@ export const getBlogsAction =
 	async (dispatch: AppDispatch) => {
 		try {
 			const response = await api.getBlogs(details, queryString);
-			const data = response;
+			const { error } = response;
+
+			if (error) {
+				// TODO: Have notification reducer to handle all notifications
+				console.log(error);
+				throw new Error(error);
+			}
 
 			dispatch({
 				type: types.GET_BLOGS_SUCCESS,
-				payload: data,
+				payload: response,
 			});
-		} catch (error) {
+		} catch (error: any) {
 			dispatch({
 				type: types.GET_BLOGS_FAIL,
-				payload: error,
+				payload: error.message,
 			});
 		}
 	};
@@ -95,17 +101,23 @@ export const getSingleBlogAction =
 	async (dispatch: AppDispatch) => {
 		try {
 			let data: any = {};
-			const { data: courseData } = await api.getBlogBySlug(slug);
-			data = courseData[0];
+			const { error, data: blogData } = await api.getBlogBySlug(slug);
+
+			if (error) {
+				// TODO: Have notification reducer to handle all notifications
+				throw new Error(error);
+			}
+
+			data = blogData?.[0] ?? {};
 
 			dispatch({
 				type: types.GET_SINGLE_BLOG_SUCCESS,
 				payload: data,
 			});
-		} catch (error) {
+		} catch (error: any) {
 			dispatch({
 				type: types.GET_SINGLE_BLOG_FAIL,
-				payload: error,
+				payload: error.message,
 			});
 		}
 	};
@@ -116,16 +128,21 @@ export const createBlogAction =
 	async (dispatch: AppDispatch) => {
 		try {
 			const response = await api.createBlog(details);
-			const { data } = response;
+			const { error } = response;
+
+			if (error) {
+				// TODO: Have notification reducer to handle all notifications
+				throw new Error(error);
+			}
 
 			dispatch({
 				type: types.CREATE_BLOG_SUCCESS,
-				payload: data,
+				payload: response,
 			});
 		} catch (error: any) {
 			dispatch({
 				type: types.CREATE_BLOG_FAIL,
-				payload: error,
+				payload: error.message,
 			});
 		}
 	};
@@ -135,8 +152,14 @@ export const createBlogCommentAction =
 	async (dispatch: AppDispatch) => {
 		try {
 			const response = await api.createBlogComment(details, blogId);
-			const { data } = response;
+			const { error, data } = response;
 
+			if (error) {
+				// TODO: Have notification reducer to handle all notifications
+				// console.log(error);
+				throw new Error(error);
+			}
+			// console.log('createBlogCommentAction', response);
 			dispatch({
 				type: types.CREATE_BLOG_COMMENT_SUCCESS,
 				payload: data,
@@ -144,7 +167,7 @@ export const createBlogCommentAction =
 		} catch (error: any) {
 			dispatch({
 				type: types.CREATE_BLOG_COMMENT_FAIL,
-				payload: error,
+				payload: error.message,
 			});
 		}
 	};
@@ -154,16 +177,22 @@ export const getBlogCommentsAction =
 	async (dispatch: AppDispatch) => {
 		try {
 			const response = await api.getBlogComments(details, blogId);
-			const data = response;
+
+			const { error } = response;
+
+			if (error) {
+				// TODO: Have notification reducer to handle all notifications
+				throw new Error(error);
+			}
 
 			dispatch({
 				type: types.GET_BLOG_COMMENT_SUCCESS,
-				payload: data,
+				payload: response,
 			});
-		} catch (error) {
+		} catch (error: any) {
 			dispatch({
 				type: types.GET_BLOG_COMMENT_FAIL,
-				payload: error,
+				payload: error.message,
 			});
 		}
 	};
@@ -172,17 +201,20 @@ export const deleteBlogCommentsAction =
 	(blogId: string): BlogThunk =>
 	async (dispatch: AppDispatch) => {
 		try {
-			const response = await api.deleteBlogComments(blogId);
-			const data = response;
+			const { error, data } = await api.deleteBlogComments(blogId);
 
+			if (error) {
+				// TODO: Have notification reducer to handle all notifications
+				throw new Error(error);
+			}
 			dispatch({
 				type: types.DELETE_BLOG_COMMENT_SUCCESS,
 				payload: data,
 			});
-		} catch (error) {
+		} catch (error: any) {
 			dispatch({
 				type: types.DELETE_BLOG_COMMENT_FAIL,
-				payload: error,
+				payload: error.message,
 			});
 		}
 	};

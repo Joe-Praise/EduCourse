@@ -1,5 +1,5 @@
 import { handleApiError } from '../../util/helperFunctions/helper';
-import { metaData, paginateType } from '../sharedTypes';
+import { ApiResponse, metaData, paginateType } from '../sharedTypes';
 import { axiosInstance as API } from './utils';
 
 export interface categoryType {
@@ -17,14 +17,14 @@ export type categoryDatatype = {
 	data: OmittedCategoryDataType[];
 };
 
-interface Review {
-	[key: string]: unknown;
-}
+// interface Review {
+// 	[key: string]: unknown;
+// }
 
-interface ApiResponse {
-	data: Review[];
-	error: string;
-}
+// interface ApiResponse {
+// 	data: Review[];
+// 	error: string;
+// }
 
 export interface createCategoryPayloadType {
 	name: string;
