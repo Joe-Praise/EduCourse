@@ -86,7 +86,7 @@ interface Course {
 }
 
 interface ApiResponse {
-	data: Course[] | null;
+	data: Course[];
 	status?: string;
 	isEnrolled?: boolean;
 	error: string;
