@@ -66,16 +66,20 @@ export const getCoursesAction =
 	async (dispatch: AppDispatch) => {
 		try {
 			const response = await api.getCourses(details, queryString);
-			const data = response;
+			const { error } = response;
+			if (error) {
+				// TODO: Have notification reducer to handle all notifications
+				throw new Error(error);
+			}
 
 			dispatch({
 				type: types.GET_COURSES_SUCCESS,
-				payload: data,
+				payload: response,
 			});
-		} catch (error) {
+		} catch (error: any) {
 			dispatch({
 				type: types.GET_COURSES_FAIL,
-				payload: error,
+				payload: error.message,
 			});
 		}
 	};
@@ -86,12 +90,19 @@ export const getSingleCourseAction =
 		try {
 			const userId = getLocalStorage('profile')?.user?._id;
 			let data: any = {};
-			const { data: courseData, isEnrolled } = await api.getCourseBySlug(
-				slug,
-				userId
-			);
+			const {
+				error,
+				data: courseData,
+				isEnrolled,
+			} = await api.getCourseBySlug(slug, userId);
+
+			if (error) {
+				// TODO: Have notification reducer to handle all notifications
+				throw new Error(error);
+			}
+
 			data.isEnrolled = isEnrolled;
-			data.course = courseData[0];
+			data.course = courseData?.[0] ?? {};
 
 			if (data?.course?._id) {
 				const courseId = data?.course?._id;
@@ -103,10 +114,10 @@ export const getSingleCourseAction =
 				type: types.GET_SINGLE_COURSE_SUCCESS,
 				payload: data,
 			});
-		} catch (error) {
+		} catch (error: any) {
 			dispatch({
 				type: types.GET_SINGLE_COURSE_FAIL,
-				payload: error,
+				payload: error.message,
 			});
 		}
 	};
@@ -116,8 +127,15 @@ export const getLectureCourseAction =
 	async (dispatch: AppDispatch) => {
 		try {
 			let data: any = {};
-			const { data: courseData } = await api.getLectureCourse(details);
-			data.course = courseData[0];
+			const response = await api.getLectureCourse(details);
+			const { error, data: courseData } = response;
+
+			if (error) {
+				// TODO: Have notification reducer to handle all notifications
+				throw new Error(error);
+			}
+
+			data.course = courseData?.[0] ?? {};
 
 			if (data?.course?._id) {
 				const courseId = data?.course?._id;
@@ -129,10 +147,10 @@ export const getLectureCourseAction =
 				type: types.GET_LECTURE_COURSE_SUCCESS,
 				payload: data,
 			});
-		} catch (error) {
+		} catch (error: any) {
 			dispatch({
 				type: types.GET_LECTURE_COURSE_FAIL,
-				payload: error,
+				payload: error.message,
 			});
 		}
 	};
@@ -146,8 +164,12 @@ export const createLectureCourseAction =
 	async (dispatch: AppDispatch) => {
 		const { slug, id } = params;
 		try {
-			const response = await api.createLectureCourse(details);
-			const { data } = response;
+			const { error, data } = await api.createLectureCourse(details);
+
+			if (error) {
+				// TODO: Have notification reducer to handle all notifications
+				throw new Error(error);
+			}
 
 			dispatch({
 				type: types.CREATE_LECTURE_COURSE_SUCCESS,
@@ -159,7 +181,7 @@ export const createLectureCourseAction =
 		} catch (error: any) {
 			dispatch({
 				type: types.CREATE_LECTURE_COURSE_FAIL,
-				payload: error,
+				payload: error.message,
 			});
 		}
 	};

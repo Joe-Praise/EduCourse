@@ -90,7 +90,7 @@ const Courses: FC = () => {
 	// ];
 
 	const handleCourseDisplay = () => {
-		if (coursesData.data.length < 1) {
+		if (coursesData?.data?.length < 1) {
 			return (
 				<div>
 					<LoadingEffect />

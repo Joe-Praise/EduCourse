@@ -60,10 +60,7 @@ export const signUpAction =
 			const response = await api.signUp(details);
 			const { error } = response;
 			if (error) {
-				dispatch({
-					type: types.SIGNUP_FAIL,
-					payload: error,
-				});
+				throw new Error(error);
 			} else {
 				dispatch({
 					type: types.SIGNUP_SUCCESS,
@@ -71,10 +68,10 @@ export const signUpAction =
 				});
 				navigate('/signin');
 			}
-		} catch (error) {
+		} catch (error: any) {
 			dispatch({
 				type: types.SIGNUP_FAIL,
-				payload: types.ERROR_MESSAGE,
+				payload: error.message || types.ERROR_MESSAGE,
 			});
 		}
 	};
@@ -84,28 +81,28 @@ export const signInAction =
 	async (dispatch: AppDispatch) => {
 		try {
 			const response = await api.signIn(details);
-			const { error, data } = response;
+			const { error } = response;
 
-			console.log('response', error);
-			if (error.length) {
+			if (error) {
 				// TODO: Have notification reducer to handle all notifications
 				console.log('from signin error block', error);
 				throw new Error(error);
-			} else {
-				const { data: user, token, status } = data;
-				const profile = {
-					user: user?.user,
-					token,
-					status,
-				};
-
-				saveLocalStorage(profile, 'profile');
-				dispatch({
-					type: types.SIGNIN_SUCCESS,
-					payload: profile,
-				});
-				navigate('/');
 			}
+
+			const { data: user, token, status } = response;
+
+			const profile = {
+				user: user?.user,
+				token,
+				status,
+			};
+
+			saveLocalStorage(profile, 'profile');
+			dispatch({
+				type: types.SIGNIN_SUCCESS,
+				payload: profile,
+			});
+			navigate('/');
 		} catch (error: any) {
 			await dispatch({
 				type: types.SIGNIN_FAIL,
@@ -119,8 +116,8 @@ export const isLoggedIn =
 	async (dispatch: AppDispatch) => {
 		try {
 			const response = await api.checkToken();
-			const { error, data } = response;
-			if (error.length) {
+			const { error } = response;
+			if (error) {
 				// done in order to hide the loading page as we have unprotected routes
 				navigate('/signin');
 				removeLocalStorage('profile');
@@ -128,24 +125,23 @@ export const isLoggedIn =
 					type: types.REFRESH_TOKEN_FAIL,
 					payload: error,
 				});
-			} else {
-				const { data: user, token, status } = data;
-				const profile = {
-					user: user?.user,
-					token,
-					status,
-				};
-
-				saveLocalStorage(profile, 'profile');
-				dispatch({
-					type: types.SIGNIN_SUCCESS,
-					payload: profile,
-				});
 			}
-		} catch (error) {
+			const { data: user, token, status } = response;
+			const profile = {
+				user: user?.user,
+				token,
+				status,
+			};
+
+			saveLocalStorage(profile, 'profile');
+			dispatch({
+				type: types.SIGNIN_SUCCESS,
+				payload: profile,
+			});
+		} catch (error: any) {
 			dispatch({
 				type: types.SIGNIN_FAIL,
-				payload: types.ERROR_MESSAGE,
+				payload: error.message || types.ERROR_MESSAGE,
 			});
 		}
 	};

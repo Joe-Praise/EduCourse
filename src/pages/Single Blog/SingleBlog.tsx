@@ -37,6 +37,7 @@ const SingleBlog = () => {
 	const blogs = useSelector((state: RootState) => state.blog);
 	const comments = blogs.comments;
 	const SingleBlog = blogs.singleBlog;
+	console.log('Blog Comment Page', comments);
 
 	const { slug } = useParams<{ slug: string }>();
 	const slugString: string = slug || '';
@@ -84,7 +85,7 @@ const SingleBlog = () => {
 	const handelQuerySearch = (details: paginateType) => {
 		dispatch(getBlogCommentsAction(details, SingleBlog?._id));
 	};
-	console.log(singleBlog?.commentsQuantity);
+
 	return (
 		<section className='w-11/12 sm:w-9/12 md:w-[80%] xl:w-[55%] mx-auto py-3'>
 			{singleBlog?._id ? (

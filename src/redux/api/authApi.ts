@@ -9,7 +9,6 @@ export type signInType = {
 export const signIn = async (details: signInType) => {
 	try {
 		const { data } = await API.post('api/v1/users/login', details);
-		console.log('from the signin Action function', data);
 		return data;
 	} catch (error) {
 		return handleApiError(error);
@@ -26,7 +25,7 @@ export type signUpType = {
 export const signUp = async (details: signUpType) => {
 	try {
 		const { data } = await API.post('api/v1/users/signup', details);
-		return { error: null, data };
+		return data;
 	} catch (error) {
 		return handleApiError(error);
 	}
@@ -35,7 +34,7 @@ export const signUp = async (details: signUpType) => {
 export const checkToken = async () => {
 	try {
 		const { data } = await API.get('api/v1/users/checkToken');
-		return { error: null, data };
+		return data;
 	} catch (error) {
 		return handleApiError(error);
 	}

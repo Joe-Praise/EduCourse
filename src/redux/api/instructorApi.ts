@@ -1,5 +1,5 @@
 import { handleApiError } from '../../util/helperFunctions/helper';
-import { metaData, paginateType } from '../sharedTypes';
+import { ApiResponse, metaData, paginateType } from '../sharedTypes';
 import { axiosInstance as API } from './utils';
 
 export interface InstructorType {
@@ -33,14 +33,14 @@ export type instructorDataType = {
 	data: OmittedInstructorDataType[];
 };
 
-interface Instructor {
-	[key: string]: unknown;
-}
+// interface Instructor {
+// 	[key: string]: unknown;
+// }
 
-interface ApiResponse {
-	data: Instructor[];
-	error: string;
-}
+// interface ApiResponse {
+// 	data: Instructor[] | null;
+// 	error: string;
+// }
 
 export interface createInstructorPayloadType {
 	userId: string;
