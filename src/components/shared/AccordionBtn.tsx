@@ -1,12 +1,16 @@
-import { FC, useState } from 'react';
+import { useState } from 'react';
 import RenderIf from './RenderIf';
 import { MdCheckBox, MdCheckBoxOutlineBlank } from 'react-icons/md';
 import { FaLock } from 'react-icons/fa6';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../../redux/store';
+import { setVideoId } from '../../redux/actions/courseAction';
 
 type items = {
 	title: string;
 	duration: string;
 	lessonIndex: string;
+	url: string;
 };
 
 interface Iprop {
@@ -14,13 +18,18 @@ interface Iprop {
 	isMainCourse: boolean;
 }
 
-const AccordionBtn: FC<Iprop> = (props) => {
+const AccordionBtn = (props: Iprop) => {
+	const dispatch: AppDispatch = useDispatch();
 	const { item, isMainCourse } = props;
 	const [isChecked, setIsChecked] = useState(false);
 
 	const handleChange = (item: items) => {
 		setIsChecked((prevState) => !prevState);
 		console.log(item);
+		const videoId = item.url;
+
+		// carry out the dispatch here
+		dispatch(setVideoId(videoId));
 	};
 
 	return (

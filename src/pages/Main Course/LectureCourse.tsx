@@ -35,7 +35,6 @@ const LectureCourse: FC = () => {
 
 	// const review = useSelector((state: RootState) => state.review.review);
 
-	// console.log(review);
 	useEffect(() => {
 		const details: lectureCourseType = {
 			courseId: courseIdString,

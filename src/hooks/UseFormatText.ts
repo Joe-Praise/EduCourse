@@ -1,6 +1,6 @@
 export default function useFormatText() {
 	const formatText = (value: string): string[] => {
-		let check = '\n';
+		let check = '/n';
 		if (check.length >= value.length) {
 			return [''];
 		}
