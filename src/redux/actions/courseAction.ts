@@ -205,3 +205,16 @@ export const removeQueryFilterAction = (filter: obj) => {
 		payload: filter,
 	};
 };
+
+export const setVideoId = (videoId: string) => {
+	return {
+		type: types.SET_VIDEO_ID,
+		payload: videoId,
+	};
+};
+
+export const removeVideoId = () => {
+	return {
+		type: types.REMOVE_VIDEO_ID,
+	};
+};

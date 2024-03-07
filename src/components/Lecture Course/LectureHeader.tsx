@@ -11,20 +11,32 @@ import useHandleModal from '../../hooks/UseHandleModal';
 import { ModalRef } from '../../pages/Main Course/LectureType';
 import { FaStar } from 'react-icons/fa6';
 import Modal from '../shared/Modal';
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import CopyText from '../shared/CopyText';
 import { capitalizeFirstLetters } from '../../util/helperFunctions/helper';
 import ReviewCourse from './ReviewCourse';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../redux/reducers';
+import { ModuleType } from '../../redux/actions/courseAction';
 // import { lectureType } from '../../pages/Main Course/LectureType';
 
 interface Iprop {
 	onWindowSize: number;
 	courseTitle: string;
 }
+
+interface summary {
+	total: number;
+	completed: number;
+}
 const LectureHeader = (props: Iprop) => {
 	const navigate = useNavigate();
 	const shareRef = useRef<ModalRef>(null);
 	const reviewRef = useRef<ModalRef>(null);
+	const lectureCourse = useSelector(
+		(state: RootState) => state.course.lectureCourse
+	);
+	const modules = lectureCourse?.modules;
 	const { onWindowSize, courseTitle } = props;
 	const isTabView = onWindowSize > 600;
 	const isDesktopView = onWindowSize > 1000;
@@ -33,6 +45,10 @@ const LectureHeader = (props: Iprop) => {
 		handleModal: handleToggleDropdown,
 		// closeModal: closeDropdown,
 	} = useHandleModal();
+	const [lessonSummary, setLessonSummary] = useState<summary>({
+		total: 0,
+		completed: 0,
+	});
 
 	/**
 	 * TODO:Build the archive and favourite course list and functionalities
@@ -49,6 +65,28 @@ const LectureHeader = (props: Iprop) => {
 	const handleCloseReviewModal = () => {
 		reviewRef.current!.close();
 	};
+
+	// TODO: handle the summary from the backend
+	useEffect(() => {
+		if (modules?.length > 0) {
+			const TotalNoOfModules = (modules: ModuleType[]) => {
+				const lessonsCopy: any = [];
+
+				for (let i = 0; i < modules.length; i++) {
+					lessonsCopy.push(modules[i].lessons);
+				}
+
+				const reveal = lessonsCopy.flatMap((el: any) => el);
+				setLessonSummary({
+					total: reveal?.length,
+					completed: Math.round(reveal?.length / 2),
+				});
+			};
+			TotalNoOfModules(modules);
+		}
+	}, [modules]);
+
+	const percentage = (lessonSummary?.completed / lessonSummary?.total) * 100;
 
 	return (
 		<header className='flex items-center justify-between h-14 bg-white px-4 rounded-lg shadow-md p-3'>
@@ -101,7 +139,7 @@ const LectureHeader = (props: Iprop) => {
 						>
 							<div className='w-9 relative'>
 								<Circle
-									percent={60}
+									percent={percentage}
 									strokeWidth={13}
 									strokeColor='#49A8D9'
 									trailWidth={13}
@@ -123,7 +161,9 @@ const LectureHeader = (props: Iprop) => {
 
 						<RenderIf condition={toggleDropdown}>
 							<div className='absolute z-20  border w-[14rem] right-28 text-center top-[3.5rem] bg-white rounded-lg px-1 py-3 shadow-lg shadow-gray-300'>
-								<p className='font-semibold text-sm'>202 of 229 complete.</p>
+								<p className='font-semibold text-sm'>
+									{lessonSummary.completed} of {lessonSummary.total} complete.
+								</p>
 								<p className='text-sm'>Finish course to get your certificate</p>
 							</div>
 						</RenderIf>

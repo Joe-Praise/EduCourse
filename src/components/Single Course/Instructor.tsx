@@ -34,51 +34,90 @@ const Instructor: FC<{ instructors: InstructorType[] }> = ({ instructors }) => {
 	return (
 		<div>
 			{instructors?.map((el) => (
-				<div key={el._id} className='mb-5'>
-					<div className='md:flex gap-3 '>
-						<figure className='w-full md:w-[150px] h-40'>
-							<img
-								src={`${config?.baseUrl}/img/${el?.userId?.photo}`}
-								alt={`${el?.userId?.name}'s display image`}
-								className='h-full w-full rounded-lg object-cover'
-							/>
-						</figure>
+				<div key={el._id} className='mb-0'>
+					<div className='md:flex gap-3'>
+						<div>
+							<figure className='w-full  h-[300px] md:w-full md:h-[200px]'>
+								<img
+									src={`${config?.baseUrl}/img/${el?.userId?.photo}`}
+									alt={`${el?.userId?.name}'s display image`}
+									className='h-full w-full rounded-lg object-cover'
+								/>
+							</figure>
+
+							<div className='hidden md:block'>
+								<div className='my-3'>
+									<div className='flex items-center gap-1'>
+										<FaGraduationCap />
+										<span>150 students</span>
+									</div>
+									<div className='flex items-center gap-1'>
+										<FaFile />
+										<span>20 courses</span>
+									</div>
+								</div>
+
+								<div className='flex items-center mt-0'>
+									<h2>Follow:</h2>
+									<ul>
+										<li className='flex gap-2 py-1'>
+											{el?.links?.map((socials) => {
+												return (
+													<SocialMedia
+														platform={socials.platform}
+														url={socials.url}
+														key={socials._id}
+													/>
+												);
+											})}
+										</li>
+									</ul>
+								</div>
+							</div>
+						</div>
 						<div className='my-2 md:my-0'>
 							<h1>{el?.userId?.name}</h1>
 							{formatText(el?.description).map((el, index) => (
-								<p key={index} className='mt-3'>
-									{el}
-								</p>
+								<>
+									<p key={index} className='mt-3'>
+										{el}
+									</p>
+								</>
 							))}
 
-							<div className='flex items-center gap-1'>
-								<FaGraduationCap />
-								<span>150 students</span>
-							</div>
-							<div className='flex items-center gap-1'>
-								<FaFile />
-								<span>20 courses</span>
+							<div className='block md:hidden'>
+								<div className='my-3'>
+									<div className='flex items-center gap-1'>
+										<FaGraduationCap />
+										<span>150 students</span>
+									</div>
+									<div className='flex items-center gap-1'>
+										<FaFile />
+										<span>20 courses</span>
+									</div>
+								</div>
+
+								<div className='flex items-center mt-0'>
+									<h2>Follow:</h2>
+									<ul>
+										<li className='flex gap-2 py-1'>
+											{el?.links?.map((socials) => {
+												return (
+													<SocialMedia
+														platform={socials.platform}
+														url={socials.url}
+														key={socials._id}
+													/>
+												);
+											})}
+										</li>
+									</ul>
+								</div>
 							</div>
 						</div>
 					</div>
 
 					{/* SOCIAL MEDIA LINKS */}
-					<div className='flex items-center mt-2'>
-						<h2>Follow:</h2>
-						<ul>
-							<li className='flex gap-2 py-1'>
-								{el?.links?.map((socials) => {
-									return (
-										<SocialMedia
-											platform={socials.platform}
-											url={socials.url}
-											key={socials._id}
-										/>
-									);
-								})}
-							</li>
-						</ul>
-					</div>
 				</div>
 			))}
 		</div>

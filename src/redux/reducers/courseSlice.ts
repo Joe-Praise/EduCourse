@@ -6,6 +6,7 @@ export type courseState = {
 	course: courseType;
 	singleCourse: SingleCourseType[];
 	lectureCourse: SingleCourseType[];
+	videoId: string;
 	courseError: string;
 	notification: [];
 	queryFilter: {};
@@ -33,6 +34,7 @@ const initialState: courseState = {
 	courseError: '',
 	lectureCourse: [],
 	notification: [],
+	videoId: '',
 };
 
 const courseSlice = (state = initialState, action: any) => {
@@ -76,6 +78,7 @@ const courseSlice = (state = initialState, action: any) => {
 			return {
 				...state,
 				lectureCourse: payload,
+				videoId: handleVideoId(payload.modules),
 			};
 		case types.GET_LECTURE_COURSE_FAIL:
 			return {
@@ -115,7 +118,16 @@ const courseSlice = (state = initialState, action: any) => {
 				...state,
 				queryFilter: removeQueryFilter(state.queryFilter, payload),
 			};
-
+		case types.SET_VIDEO_ID:
+			return {
+				...state,
+				videoId: payload,
+			};
+		case types.REMOVE_VIDEO_ID:
+			return {
+				...state,
+				videoId: '',
+			};
 		default:
 			return state;
 	}
@@ -129,5 +141,12 @@ const removeQueryFilter = (state: any, payload: any) => {
 			return newObj;
 		}, {});
 	return details;
+};
+
+const handleVideoId = (modules: any) => {
+	const videoId = modules[0]?.lessons[0]?.url;
+
+	// TODO: write algorithm to find the last video played and play the next one after it
+	return videoId;
 };
 export default courseSlice;
