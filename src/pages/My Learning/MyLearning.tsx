@@ -1,220 +1,166 @@
-import { ChangeEvent, FC, useEffect, useState } from 'react';
+import { ChangeEvent, FC, useEffect, useRef, useState } from 'react';
 import LayoutHeader from '../../widgets/LayoutHeader/LayoutHeader';
 import LayoutFooter from '../../widgets/LayoutFooter/LayoutFooter';
-import FilterStructure from '../../components/shared/FilterStructure';
-import img from '../../assets/image/card5.jpg';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/reducers';
-import { setFilter } from '../../redux/actions/courseAction';
+import { getCoursesAction } from '../../redux/actions/courseAction';
+import { AppDispatch } from '../../redux/store';
+import { OmittedCategoryDataType } from '../../redux/api/categoryApi';
+import { OmittedInstructorDataType } from '../../redux/api/instructorApi';
+import { getCategoryAction } from '../../redux/actions/categoryAction';
+import { getInstructorAction } from '../../redux/actions/instructorAction';
+import DropDown from '../../components/shared/DropDown';
+import { formQueryStr } from '../../util/helperFunctions/helper';
 import CourseCard from '../../components/Course/CourseCard';
-import FilterActionMenu from '../../components/shared/FilterActionMenu';
-import { FaFilter } from 'react-icons/fa6';
-import { FilterType } from '../../components/shared/type';
+import Pagination from '../../components/shared/Pagination';
+import { paginateType } from '../../redux/sharedTypes';
+
+interface progressType {
+	completed: 'in progress' | 'completed';
+	_id: string;
+}
+
+export interface dropDownTypes {
+	tag: string;
+	items:
+		| OmittedCategoryDataType[]
+		| OmittedInstructorDataType[]
+		| progressType[];
+}
 
 const MyLearning: FC = () => {
-	const dispatch = useDispatch();
-	const displayFilter = useSelector(
-		(state: RootState) => state.course.filterState
+	const dispatch: AppDispatch = useDispatch();
+	const initializeRef = useRef(true);
+	// const displayFilter = useSelector(
+	// 	(state: RootState) => state.course.filterState
+	// );
+	const category = useSelector((state: RootState) => state.category.categories);
+	const instructor = useSelector(
+		(state: RootState) => state.instructor.instructors
 	);
+	const courseState = useSelector((state: RootState) => state.course);
+	const metaData = courseState.course.metaData;
+	const queryFilterState = courseState.queryFilter;
+	const courses = courseState.course;
+
 	const [activeLayout, setActiveLayout] = useState('grid');
 
 	const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
 		console.log(e.target.value);
 	};
 
-	const handleLayoutChange = (value: string) => {
-		setActiveLayout(value);
-	};
+	const limit = '50';
 
-	const handleCloseFilterOnMobile = () => {
-		dispatch(setFilter());
-	};
+	// const handleLayoutChange = (value: string) => {
+	// 	setActiveLayout(value);
+	// };
 
-	interface cardProps {
-		img: string;
-		instructor: string;
-		coureTitle: string;
-		createdAt: string;
-		noOfStudents: string;
-		price: string;
-		category: string;
-		activeLayout: string;
-	}
+	// const handleCloseFilterOnMobile = () => {
+	// 	dispatch(setFilter());
+	// };
 
-	const courses: cardProps[] = [
+	useEffect(() => {}, [activeLayout, setActiveLayout]);
+
+	useEffect(() => {
+		if (initializeRef.current) {
+			console.log('is this reading?');
+			dispatch(getCoursesAction({ page: '1', limit: '8' }));
+			dispatch(getCategoryAction({ page: '1', limit }, 'course'));
+			dispatch(getInstructorAction({ page: '1', limit }));
+			initializeRef.current = false;
+			return;
+		}
+
+		// setting query comes from dropdown, this triggers the post request to filter for courses
+		if (queryFilterState) {
+			const handelQuerySearch = () => {
+				const queryStr = formQueryStr(queryFilterState);
+				dispatch(getCoursesAction({ page: '1', limit }, queryStr));
+			};
+			handelQuerySearch();
+		}
+	}, [dispatch, queryFilterState]);
+
+	const dropDown: dropDownTypes[] = [
 		{
-			img,
-			instructor: 'Joe Praise',
-			coureTitle: 'React and Redux master class',
-			createdAt: '1-01-2024',
-			noOfStudents: '1',
-			price: '45',
-			category: 'Programming',
-			activeLayout,
+			tag: 'category',
+			items: category?.data,
 		},
 		{
-			img,
-			instructor: 'Joe Praise',
-			coureTitle: 'React and Redux master class',
-			createdAt: '12-01-2024',
-			noOfStudents: '50',
-			price: '45',
-			category: 'Programming',
-			activeLayout,
+			tag: 'instructors',
+			items: instructor?.data,
 		},
 		{
-			img,
-			instructor: 'Joe Praise',
-			coureTitle: 'React and Redux master class',
-			createdAt: '12-01-2024',
-			noOfStudents: '50',
-			price: '45',
-			category: 'Programming',
-			activeLayout,
-		},
-		{
-			img,
-			instructor: 'Joe Praise',
-			coureTitle: 'React and Redux master class',
-			createdAt: '12-01-2024',
-			noOfStudents: '50',
-			price: '45',
-			category: 'Programming',
-			activeLayout,
-		},
-		{
-			img,
-			instructor: 'Joe Praise',
-			coureTitle: 'React and Redux master class',
-			createdAt: '12-01-2024',
-			noOfStudents: '50',
-			price: '45',
-			category: 'Programming',
-			activeLayout,
-		},
-		{
-			img,
-			instructor: 'Joe Praise',
-			coureTitle: 'React and Redux master class',
-			createdAt: '12-01-2024',
-			noOfStudents: '50',
-			price: '45',
-			category: 'Programming',
-			activeLayout,
-		},
-		{
-			img,
-			instructor: 'Joe Praise',
-			coureTitle: 'React and Redux master class',
-			createdAt: '12-01-2024',
-			noOfStudents: '50',
-			price: '45',
-			category: 'Programming',
-			activeLayout,
+			tag: 'progress',
+			items: [
+				{
+					name: 'in progress',
+					_id: 'false',
+				},
+				{
+					name: 'completed',
+					_id: 'true',
+				},
+			],
 		},
 	];
 
-	type priceCategory = { _id: string; name: 'Free' | 'Paid' };
-
-	type level = { _id: string; name: string };
-
-	type instructorType = {
-		_id: string;
-		name: string;
+	const handelQuerySearch = (details: paginateType, queryString: string) => {
+		dispatch(getCoursesAction(details, queryString));
 	};
 
-	interface overAll {
-		Category: FilterType[];
-		Price: priceCategory[];
-		Instructor: instructorType[];
-		Level: level[];
-	}
-
-	const dataClone: overAll = {
-		Category: [
-			{
-				_id: '658ab986d421165a9bf08666',
-				name: 'building',
-			},
-			{
-				_id: '65bccf37a4916e592cd7a757',
-				name: 'Development',
-			},
-			{
-				_id: '65bccf5ba4916e592cd7a75a',
-				name: 'Business',
-			},
-			{
-				_id: '65bccf70a4916e592cd7a75d',
-				name: 'Finance & Accounting',
-			},
-			{
-				_id: '65bccf85a4916e592cd7a760',
-				name: 'IT & Software',
-			},
-			{
-				_id: '65bccfc2a4916e592cd7a763',
-				name: 'Office Productivity',
-			},
-			{
-				_id: '65bccfdba4916e592cd7a766',
-				name: 'Personal Development',
-			},
-			{
-				_id: '65bccfe8a4916e592cd7a769',
-				name: 'Design',
-			},
-			{
-				_id: '65bccff5a4916e592cd7a76c',
-				name: 'Marketing',
-			},
-			{
-				_id: '65bcd009a4916e592cd7a76f',
-				name: 'Life Style',
-			},
-			{
-				_id: '65bcd01fa4916e592cd7a772',
-				name: 'Photography & Video',
-			},
-			{
-				_id: '65bcd02ea4916e592cd7a775',
-				name: 'Health & Fitness',
-			},
-			{
-				_id: '65bcd042a4916e592cd7a778',
-				name: 'Music',
-			},
-			{
-				_id: '65bcd057a4916e592cd7a77b',
-				name: 'Teaching & Academics',
-			},
-		],
-		Price: [
-			{ _id: 'Free', name: 'Free' },
-			{ _id: 'Paid', name: 'Paid' },
-		],
-		Instructor: [
-			{
-				_id: '6588bd1f4b2862fbec0ace9c',
-				name: 'Tosin',
-			},
-			{
-				_id: '6588bd1f4b2862fbec0ace9b',
-				name: 'Tosin',
-			},
-			{
-				_id: '6588bd1f4b2862fbec0ace9a',
-				name: 'Tosin',
-			},
-		],
-		Level: [{ _id: 'All Levels', name: 'All Levels' }],
-	};
-	// const arr2 = Array.from(Array(5), () => 0);
-	useEffect(() => {}, [activeLayout, setActiveLayout]);
 	return (
-		<>
+		<section className='layoutHightWithGrid'>
 			<LayoutHeader />
-			<main className='min-h-[65.1vh] py-5'>
+			<div className='mt-5 w-[90%] mx-auto'>
+				<h1>My Learning</h1>
+				<div className='m-2 flex flex-col flex-wrap md:flex-row gap-6 items-baseline'>
+					<div className='order-2 md:order-1 flex gap-5'>
+						{dropDown.map((item, index, arr) => {
+							return (
+								<DropDown
+									{...item}
+									key={index}
+									// handleQuerySearch={handelQuerySearch}
+									index={index}
+									arrLength={arr.length}
+								/>
+							);
+						})}
+					</div>
+
+					<div className='order-1 md:order-2 bg-red-500'>
+						<form>
+							<input
+								type='search'
+								name='search'
+								id='headerSearch'
+								placeholder='Search'
+								className='searchInput'
+								onChange={(e) => handleSearch(e)}
+							/>
+						</form>
+					</div>
+				</div>
+				<div className='grid grid-cols-1 sm:grid-cols-4 gap-4 my-16'>
+					{courses?.data.map((el: any, idx: number) => {
+						return (
+							<div key={idx} className='basis-[24%]'>
+								<CourseCard activeLayout={activeLayout} {...el} />
+							</div>
+						);
+					})}
+				</div>
+
+				<div className='my-3'>
+					<Pagination
+						metaData={metaData}
+						handlePagination={handelQuerySearch}
+						queryString={queryFilterState}
+					/>
+				</div>
+			</div>
+			{/* <main className='min-h-[65.1vh] py-5'>
 				<FilterStructure
 					title={'My Learning'}
 					searchFunc={handleSearch}
@@ -248,9 +194,9 @@ const MyLearning: FC = () => {
 					children3={<>pagination will be updated!</>}
 					activeLayout={activeLayout}
 				/>
-			</main>
+			</main> */}
 			<LayoutFooter />
-		</>
+		</section>
 	);
 };
 
