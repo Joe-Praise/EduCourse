@@ -1,4 +1,8 @@
-import { SingleCourseType, courseType } from '../api/courseAPI';
+import {
+	SingleCourseType,
+	autocompleteType,
+	courseType,
+} from '../api/courseAPI';
 import * as types from '../constants/courseConstants';
 
 export type courseState = {
@@ -6,6 +10,8 @@ export type courseState = {
 	course: courseType;
 	singleCourse: SingleCourseType[];
 	lectureCourse: SingleCourseType[];
+	myLearning: courseType[];
+	autoComplete: autocompleteType[];
 	videoId: string;
 	courseError: string;
 	notification: [];
@@ -33,6 +39,8 @@ const initialState: courseState = {
 	singleCourse: [],
 	courseError: '',
 	lectureCourse: [],
+	myLearning: [],
+	autoComplete: [],
 	notification: [],
 	videoId: '',
 };
@@ -85,6 +93,17 @@ const courseSlice = (state = initialState, action: any) => {
 				...state,
 				lectureCourse: [],
 			};
+		case types.GET_MY_LEARNING_COURSE_SUCCESS:
+			return {
+				...state,
+				myLearning: payload,
+			};
+		case types.GET_MY_LEARNING_COURSE_FAIL:
+			return {
+				...state,
+				myLearning: [],
+				notification: payload,
+			};
 		case types.CREATE_LECTURE_COURSE_SUCCESS:
 			// TODO: TEST THIS TO SEE THE OUTCOME
 			return {
@@ -104,6 +123,16 @@ const courseSlice = (state = initialState, action: any) => {
 			return {
 				...state,
 				notification: payload,
+			};
+		case types.GET_AUTO_COMPLETE_ALL_COURSE_SUCCESS:
+			return {
+				...state,
+				autoComplete: payload,
+			};
+		case types.GET_AUTO_COMPLETE_ALL_COURSE_FAIL:
+			return {
+				...state,
+				autoComplete: [],
 			};
 		case types.SET_QUERY_FILTER:
 			return {

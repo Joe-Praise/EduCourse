@@ -186,6 +186,82 @@ export const createLectureCourseAction =
 		}
 	};
 
+export const getMyLearningCourseAction =
+	(userId: string, queryString: string = ''): CourseThunk =>
+	async (dispatch: AppDispatch) => {
+		try {
+			// let query: any = {};
+			const response = await api.getMyLectureCourse(userId, queryString);
+			const { error } = response;
+
+			if (error) {
+				// TODO: Have notification reducer to handle all notifications
+				throw new Error(error);
+			}
+
+			// query.course = courseData?.[0] ?? {};
+
+			// if (data?.course?._id) {
+			// 	const courseId = data?.course?._id;
+			// 	const { data: moduleData } = await api.getCourseModules(courseId);
+			// 	data.modules = moduleData;
+			// }
+
+			// console.log('coming from api function', response);
+
+			dispatch({
+				type: types.GET_MY_LEARNING_COURSE_SUCCESS,
+				payload: response,
+			});
+		} catch (error: any) {
+			dispatch({
+				type: types.GET_MY_LEARNING_COURSE_FAIL,
+				payload: error.message,
+			});
+		}
+	};
+
+export const getAutoCompleteAllCourseAction =
+	(queryString: string): CourseThunk =>
+	async (dispatch: AppDispatch) => {
+		try {
+			// let query: any = {};
+			const response = await api.getAutoCompleteAllCourse(queryString);
+			const { error, data } = response;
+
+			if (error) {
+				// TODO: Have notification reducer to handle all notifications
+				throw new Error(error);
+			}
+
+			// query.course = courseData?.[0] ?? {};
+
+			// if (data?.course?._id) {
+			// 	const courseId = data?.course?._id;
+			// 	const { data: moduleData } = await api.getCourseModules(courseId);
+			// 	data.modules = moduleData;
+			// }
+
+			// console.log('coming from api function', response);
+
+			dispatch({
+				type: types.GET_AUTO_COMPLETE_ALL_COURSE_SUCCESS,
+				payload: data,
+			});
+		} catch (error: any) {
+			dispatch({
+				type: types.GET_AUTO_COMPLETE_ALL_COURSE_FAIL,
+				payload: error.message,
+			});
+		}
+	};
+
+export const resetAutoCompleteAction = () => {
+	return {
+		type: types.GET_AUTO_COMPLETE_ALL_COURSE_FAIL,
+	};
+};
+
 export const setFilter = () => {
 	return {
 		type: types.SET_FILTER,

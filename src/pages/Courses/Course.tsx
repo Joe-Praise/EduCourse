@@ -4,11 +4,16 @@ import FilterActionMenu from '../../components/shared/FilterActionMenu';
 import CourseCard from '../../components/Course/CourseCard';
 import { FaFilter } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
-import { getCoursesAction, setFilter } from '../../redux/actions/courseAction';
+import {
+	getAutoCompleteAllCourseAction,
+	getCoursesAction,
+	resetAutoCompleteAction,
+	setFilter,
+} from '../../redux/actions/courseAction';
 import { AppDispatch, RootState } from '../../redux/store';
 import { getCategoryAction } from '../../redux/actions/categoryAction';
 import { OmittedCategoryDataType } from '../../redux/api/categoryApi';
-import { ratingSummaryType } from '../../redux/api/courseAPI';
+import { autocompleteType, ratingSummaryType } from '../../redux/api/courseAPI';
 import { getInstructorAction } from '../../redux/actions/instructorAction';
 import { OmittedInstructorDataType } from '../../redux/api/instructorApi';
 import useDebounce from '../../hooks/UseDebounce';
@@ -16,9 +21,12 @@ import { formQueryStr } from '../../util/helperFunctions/helper';
 import Pagination from '../../components/shared/Pagination';
 import { paginateType } from '../../redux/sharedTypes';
 import LoadingEffect from '../../components/shared/LoadingEffect';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const Course: FC = () => {
 	const dispatch: AppDispatch = useDispatch();
+	const navigate = useNavigate();
+	const location = useLocation();
 	const initializeRef = useRef(true);
 	const courseState = useSelector((state: RootState) => state.course);
 	const category = useSelector((state: RootState) => state.category.categories);
@@ -30,6 +38,7 @@ const Course: FC = () => {
 	const queryFilterState = courseState.queryFilter;
 	const displayFilter = courseState.filterState;
 	const coursesData = courseState.course;
+	const autocomplete = courseState.autoComplete;
 
 	const [activeLayout, setActiveLayout] = useState('grid');
 	const [search, setSearch] = useState('');
@@ -50,8 +59,13 @@ const Course: FC = () => {
 	};
 
 	useEffect(() => {
-		console.log('The debounced search', debouncedSearch);
-	}, [debouncedSearch]);
+		if (debouncedSearch.length <= 2) {
+			dispatch(resetAutoCompleteAction());
+			return;
+		}
+
+		dispatch(getAutoCompleteAllCourseAction(debouncedSearch));
+	}, [dispatch, debouncedSearch]);
 
 	useEffect(() => {
 		dispatch(getCoursesAction({ page: '1', limit }));
@@ -115,6 +129,11 @@ const Course: FC = () => {
 		dispatch(getCoursesAction(details, queryString));
 	};
 
+	const handleRedirectFunc = (course: autocompleteType) => {
+		const slug = course?.slug;
+		navigate(`${location.pathname}/${slug}`);
+	};
+
 	const handleCourseDisplay = () => {
 		if (coursesData.data.length < 1) {
 			return (
@@ -126,7 +145,9 @@ const Course: FC = () => {
 			return (
 				<>
 					{coursesData?.data?.map((el: any) => {
-						return <CourseCard key={el._id} activeLayout='grid' {...el} />;
+						return (
+							<CourseCard key={el._id} activeLayout={activeLayout} {...el} />
+						);
 					})}
 				</>
 			);
@@ -137,6 +158,8 @@ const Course: FC = () => {
 		<FilterStructure
 			title={'All Courses'}
 			searchFunc={handleSearch}
+			autocomplete={autocomplete}
+			redirectFunc={handleRedirectFunc}
 			layoutFunc={handleLayoutChange}
 			children1={<>{handleCourseDisplay()}</>}
 			children2={

@@ -23,6 +23,7 @@ const CourseCard: FC<courseCardType> = (props) => {
 	// };
 
 	// type idk = Prettify<Nested>;
+
 	return (
 		<WhiteBackground
 			className={`rounded-b-none my-0 w-full px-0 shadow-md hover:scale-105 duration-150 h-full ${
@@ -32,9 +33,7 @@ const CourseCard: FC<courseCardType> = (props) => {
 			<Link
 				to={`/courses/${props.slug}`}
 				className={`flex hover:text-effect-active relative ${
-					props?.activeLayout === 'grid'
-						? ' flex-col'
-						: 'flex-row  md:h-[11rem]'
+					props?.activeLayout === 'grid' ? ' flex-col' : 'flex-row md:h-[11rem]'
 				}`}
 			>
 				<div

@@ -2,6 +2,7 @@ import { ChangeEvent, FC, ReactNode } from 'react';
 import FilterPageHeader from './FilterPageHeader';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
+import { autocompleteType } from '../../redux/api/courseAPI';
 
 const FilterStructure: FC<{
 	title: string;
@@ -11,6 +12,8 @@ const FilterStructure: FC<{
 	children2: ReactNode;
 	children3: ReactNode;
 	activeLayout: string;
+	autocomplete: autocompleteType[];
+	redirectFunc: (_: autocompleteType) => void;
 }> = ({
 	title,
 	searchFunc,
@@ -19,6 +22,8 @@ const FilterStructure: FC<{
 	children2,
 	children3,
 	activeLayout,
+	autocomplete,
+	redirectFunc,
 }) => {
 	// const handelQuerySearch = (details: )=> {
 
@@ -35,6 +40,8 @@ const FilterStructure: FC<{
 						searchFunc={searchFunc}
 						layoutFunc={layoutFunc}
 						activeLayout={activeLayout}
+						autocomplete={autocomplete}
+						redirectFunc={redirectFunc}
 					/>
 
 					<div
@@ -51,7 +58,7 @@ const FilterStructure: FC<{
 					className={`col-span-2 
 			 ${
 					displayFilter
-						? 'block translate-x-[0] fixed z-30 inset-0 h-[100svh] bg-white w-full my-2'
+						? 'block translate-x-[0] -top-3 fixed z-30 inset-0 h-[100svh] overflow-auto bg-white w-full my-2'
 						: '-translate-x-[150%] hidden sm:block sticky  sm:translate-x-[0] sm:h-full sm:max-h-[70svh]'
 				}
 			`}
