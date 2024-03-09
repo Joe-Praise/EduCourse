@@ -92,6 +92,14 @@ interface ApiResponse {
 	error: string;
 }
 
+export interface autocompleteType {
+	_id: string;
+	title: string;
+	slug: string;
+	score: number;
+	imageCover: string;
+}
+
 export interface LectureCourseType {
 	userId: string | undefined;
 	courseId: string;
@@ -165,19 +173,6 @@ export const getCourseModules = async <T>(
 	}
 };
 
-// export const getLectureModules = async <T>(
-// 	courseId: T
-// ): Promise<ApiResponse> => {
-// 	try {
-// 		const { data } = await API.get<ApiResponse>(
-// 			`/api/v1/modules/lecture?courseId=${courseId}`
-// 		);
-// 		return data;
-// 	} catch (error) {
-// 		return handleApiError(error);
-// 	}
-// };
-
 export const createLectureCourse = async (
 	details: LectureCourseType
 ): Promise<ApiResponse> => {
@@ -192,6 +187,23 @@ export const createLectureCourse = async (
 	}
 };
 
+export const getMyLectureCourse = async (
+	userId: string,
+	queryString: Partial<string>
+): Promise<ApiResponse> => {
+	try {
+		//courses/mylearning/65b4de836fcd27162cae1815
+		const url = queryString.length
+			? `/api/v1/courses/mylearning/${userId}${queryString}`
+			: `/api/v1/courses/mylearning/${userId}`;
+		const { data } = await API.get<ApiResponse>(url);
+
+		return data;
+	} catch (error) {
+		return handleApiError(error);
+	}
+};
+
 export const checkIsActiveCourse = async (
 	details: LectureCourseType
 ): Promise<ApiResponse> => {
@@ -199,6 +211,19 @@ export const checkIsActiveCourse = async (
 	try {
 		const { data } = await API.get<ApiResponse>(
 			`/api/v1/completed-courses/active/course?courseId=${courseId}&userId=${userId}`
+		);
+		return data;
+	} catch (error) {
+		return handleApiError(error);
+	}
+};
+
+export const getAutoCompleteAllCourse = async (
+	queryString: Partial<string>
+): Promise<ApiResponse> => {
+	try {
+		const { data } = await API.get<ApiResponse>(
+			`/api/v1/courses/autocomplete?query=${queryString}`
 		);
 		return data;
 	} catch (error) {
@@ -220,3 +245,16 @@ export const checkIsActiveCourse = async (
 // (
 // 	`/api/v1/completed-courses/active/course?${}`,
 // )
+
+// export const getLectureModules = async <T>(
+// 	courseId: T
+// ): Promise<ApiResponse> => {
+// 	try {
+// 		const { data } = await API.get<ApiResponse>(
+// 			`/api/v1/modules/lecture?courseId=${courseId}`
+// 		);
+// 		return data;
+// 	} catch (error) {
+// 		return handleApiError(error);
+// 	}
+// };

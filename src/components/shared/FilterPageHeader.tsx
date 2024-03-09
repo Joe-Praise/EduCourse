@@ -1,11 +1,14 @@
 import { ChangeEvent, FC } from 'react';
 import SearchAndLayout from './SearchAndLayout';
+import { autocompleteType } from '../../redux/api/courseAPI';
 
 interface headerType {
 	title: string;
 	searchFunc: (_: ChangeEvent<HTMLInputElement>) => void;
 	layoutFunc: (_: string) => void;
 	activeLayout: string;
+	autocomplete: autocompleteType[];
+	redirectFunc: (_: autocompleteType) => void;
 }
 
 const FilterPageHeader: FC<headerType> = (props) => {
@@ -16,6 +19,8 @@ const FilterPageHeader: FC<headerType> = (props) => {
 				handleSearch={props.searchFunc}
 				handleLayout={props.layoutFunc}
 				activeLayout={props.activeLayout}
+				autocomplete={props.autocomplete}
+				redirectFunc={props.redirectFunc}
 			/>
 		</div>
 	);

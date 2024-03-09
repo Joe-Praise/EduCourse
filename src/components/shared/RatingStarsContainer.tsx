@@ -42,14 +42,14 @@ const RatingStarsContainer = (props: Iprop) => {
 							className='flex items-center justify-between gap-2 md:gap-3'
 							key={idx}
 						>
-							<div className={`basis-[65%] md:basis-10/12`}>
+							<div className={`basis-[65%] md:basis-9/12`}>
 								<Line
 									percent={el?.value}
 									strokeWidth={1}
 									strokeColor='#fb923c'
 								/>
 							</div>
-							<div className='flex basis-[35%] gap-1 md:basis-[20%] flex-wrap justify-start'>
+							<div className='flex basis-[35%] gap-1 md:basis-[30%] flex-wrap justify-start'>
 								<RatingStars rating={el?.title} />
 								<p>{Math.floor(el?.value)}%</p>
 							</div>
