@@ -1,9 +1,6 @@
-import {
-	SingleCourseType,
-	autocompleteType,
-	courseType,
-} from '../api/courseAPI';
+import { SingleCourseType, courseType } from '../api/courseAPI';
 import * as types from '../constants/courseConstants';
+import { autocompleteType } from '../sharedTypes';
 
 export type courseState = {
 	filterState: boolean;

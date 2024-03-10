@@ -25,7 +25,6 @@ const AccordionBtn = (props: Iprop) => {
 
 	const handleChange = (item: items) => {
 		setIsChecked((prevState) => !prevState);
-		console.log(item);
 		const videoId = item.url;
 
 		// carry out the dispatch here

@@ -75,7 +75,6 @@ export const getBlogsAction =
 
 			if (error) {
 				// TODO: Have notification reducer to handle all notifications
-				console.log(error);
 				throw new Error(error);
 			}
 
@@ -142,6 +141,30 @@ export const createBlogAction =
 		} catch (error: any) {
 			dispatch({
 				type: types.CREATE_BLOG_FAIL,
+				payload: error.message,
+			});
+		}
+	};
+
+export const getAutoCompleteAllBlogAction =
+	(queryString: string): BlogThunk =>
+	async (dispatch: AppDispatch) => {
+		try {
+			const response = await api.getAutoCompleteAllBlog(queryString);
+			const { error, data } = response;
+
+			if (error) {
+				// TODO: Have notification reducer to handle all notifications
+				throw new Error(error);
+			}
+
+			dispatch({
+				type: types.GET_AUTO_COMPLETE_ALL_BLOG_SUCCESS,
+				payload: data,
+			});
+		} catch (error: any) {
+			dispatch({
+				type: types.GET_AUTO_COMPLETE_ALL_BLOG_FAIL,
 				payload: error.message,
 			});
 		}
@@ -218,6 +241,12 @@ export const deleteBlogCommentsAction =
 			});
 		}
 	};
+
+export const resetAutoCompleteAction = () => {
+	return {
+		type: types.GET_AUTO_COMPLETE_ALL_BLOG_FAIL,
+	};
+};
 
 export const setQueryFilterAction = (filter: obj) => {
 	return {

@@ -1,6 +1,6 @@
 import { ChangeEvent, FC } from 'react';
 import SearchAndLayout from './SearchAndLayout';
-import { autocompleteType } from '../../redux/api/courseAPI';
+import { autocompleteType } from '../../redux/sharedTypes';
 
 interface headerType {
 	title: string;

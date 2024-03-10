@@ -37,7 +37,6 @@ const SingleBlog = () => {
 	const blogs = useSelector((state: RootState) => state.blog);
 	const comments = blogs.comments;
 	const SingleBlog = blogs.singleBlog;
-	console.log('Blog Comment Page', comments);
 
 	const { slug } = useParams<{ slug: string }>();
 	const slugString: string = slug || '';

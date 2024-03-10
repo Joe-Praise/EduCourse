@@ -3,12 +3,14 @@ import { getLocalStorage } from '../../util/helperFunctions/helper';
 import { blogCommentResponseType, blogType } from '../api/blogApi';
 import { SingleCourseType } from '../api/courseAPI';
 import * as types from '../constants/blogConstants';
+import { autocompleteType } from '../sharedTypes';
 
 export type blogState = {
 	filterState: boolean;
 	blog: blogType;
 	comments: blogCommentResponseType;
 	singleBlog: SingleCourseType[];
+	autoComplete: autocompleteType[];
 	blogError: string;
 	notification: [];
 	queryFilter: {};
@@ -36,6 +38,7 @@ const initialState: blogState = {
 	blog: initialValue,
 	comments: initialValue,
 	singleBlog: [],
+	autoComplete: [],
 	blogError: '',
 	notification: [],
 };
@@ -87,6 +90,16 @@ const blogSlice = (state = initialState, action: any) => {
 				...state,
 				comments: {},
 				blogError: payload,
+			};
+		case types.GET_AUTO_COMPLETE_ALL_BLOG_SUCCESS:
+			return {
+				...state,
+				autoComplete: payload,
+			};
+		case types.GET_AUTO_COMPLETE_ALL_BLOG_FAIL:
+			return {
+				...state,
+				autoComplete: [],
 			};
 		case types.CREATE_BLOG_COMMENT_SUCCESS:
 			return {
@@ -167,7 +180,6 @@ const deleteHandler = (state: any, payload: any) => {
 };
 
 const addImageToUser = (payload: any) => {
-	console.log('payload', payload);
 	const payloadCopy = payload;
 	payloadCopy.userId = getLocalStorage('profile')?.user;
 	return payloadCopy;
