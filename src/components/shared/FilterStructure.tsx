@@ -2,7 +2,7 @@ import { ChangeEvent, FC, ReactNode } from 'react';
 import FilterPageHeader from './FilterPageHeader';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
-import { autocompleteType } from '../../redux/api/courseAPI';
+import { autocompleteType } from '../../redux/sharedTypes';
 
 const FilterStructure: FC<{
 	title: string;

@@ -85,7 +85,6 @@ export const signInAction =
 
 			if (error) {
 				// TODO: Have notification reducer to handle all notifications
-				console.log('from signin error block', error);
 				throw new Error(error);
 			}
 

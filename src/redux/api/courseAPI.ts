@@ -92,13 +92,11 @@ interface ApiResponse {
 	error: string;
 }
 
-export interface autocompleteType {
-	_id: string;
-	title: string;
-	slug: string;
-	score: number;
-	imageCover: string;
-}
+// export interface autocompleteType {
+// 	_id: string;
+// 	title: string;
+// 	slug: string;
+// }
 
 export interface LectureCourseType {
 	userId: string | undefined;

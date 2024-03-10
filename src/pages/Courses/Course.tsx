@@ -13,13 +13,13 @@ import {
 import { AppDispatch, RootState } from '../../redux/store';
 import { getCategoryAction } from '../../redux/actions/categoryAction';
 import { OmittedCategoryDataType } from '../../redux/api/categoryApi';
-import { autocompleteType, ratingSummaryType } from '../../redux/api/courseAPI';
+import { ratingSummaryType } from '../../redux/api/courseAPI';
 import { getInstructorAction } from '../../redux/actions/instructorAction';
 import { OmittedInstructorDataType } from '../../redux/api/instructorApi';
 import useDebounce from '../../hooks/UseDebounce';
 import { formQueryStr } from '../../util/helperFunctions/helper';
 import Pagination from '../../components/shared/Pagination';
-import { paginateType } from '../../redux/sharedTypes';
+import { autocompleteType, paginateType } from '../../redux/sharedTypes';
 import LoadingEffect from '../../components/shared/LoadingEffect';
 import { useLocation, useNavigate } from 'react-router-dom';
 

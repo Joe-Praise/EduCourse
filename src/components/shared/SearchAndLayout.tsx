@@ -3,11 +3,9 @@ import { IoGridSharp } from 'react-icons/io5';
 import { FaList } from 'react-icons/fa';
 import { FaFilter } from 'react-icons/fa';
 import { useDispatch } from 'react-redux';
-// import { setFilter } from '../redux/reducers/courseSlice';
 import { setFilter } from '../../redux/actions/courseAction';
-import { autocompleteType } from '../../redux/api/courseAPI';
+import { autocompleteType } from '../../redux/sharedTypes';
 
-// import { stateBoolean } from '../pages/Courses/types/courseType';
 interface Iprop {
 	handleSearch: (_: ChangeEvent<HTMLInputElement>) => void;
 	handleLayout: (_: string) => void;

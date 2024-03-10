@@ -234,16 +234,6 @@ export const getAutoCompleteAllCourseAction =
 				throw new Error(error);
 			}
 
-			// query.course = courseData?.[0] ?? {};
-
-			// if (data?.course?._id) {
-			// 	const courseId = data?.course?._id;
-			// 	const { data: moduleData } = await api.getCourseModules(courseId);
-			// 	data.modules = moduleData;
-			// }
-
-			// console.log('coming from api function', response);
-
 			dispatch({
 				type: types.GET_AUTO_COMPLETE_ALL_COURSE_SUCCESS,
 				payload: data,

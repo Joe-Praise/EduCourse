@@ -70,6 +70,12 @@ export interface commentRequestType {
 
 type OmittedBlogCommentType = Omit<blogCommentType, '__v id'>;
 
+// export interface blogAutoCompleteType {
+// 	_id: string;
+// 	title: string;
+// 	slug: string;
+// }
+
 const BASE_URL = '/api/v1/blogs';
 
 export const getBlogs = async (
@@ -157,6 +163,19 @@ export const deleteBlogComments = async (
 	try {
 		const url = `${commenBaseUrl}/${blogId}`;
 		const { data } = await API.delete<ApiResponse>(url);
+		return data;
+	} catch (error) {
+		return handleApiError(error);
+	}
+};
+
+export const getAutoCompleteAllBlog = async (
+	queryString: Partial<string>
+): Promise<ApiResponse> => {
+	try {
+		const { data } = await API.get<ApiResponse>(
+			`/api/v1/blogs/autocomplete?query=${queryString}`
+		);
 		return data;
 	} catch (error) {
 		return handleApiError(error);

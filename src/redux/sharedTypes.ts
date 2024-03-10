@@ -19,3 +19,9 @@ export interface ApiResponse {
 	data: obj[] | null;
 	error: string;
 }
+
+export interface autocompleteType {
+	_id: string;
+	title: string;
+	slug: string;
+}

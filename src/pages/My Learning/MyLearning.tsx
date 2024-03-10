@@ -68,7 +68,6 @@ const MyLearning: FC = () => {
 
 	useEffect(() => {
 		if (initializeRef.current) {
-			console.log('is this reading?');
 			dispatch(getMyLearningCourseAction(userId));
 			dispatch(getCategoryAction({ page: '1', limit }, 'course'));
 			dispatch(getInstructorAction({ page: '1', limit }));

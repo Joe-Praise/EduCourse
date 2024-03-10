@@ -8,16 +8,23 @@ import { AppDispatch, RootState } from '../../redux/store';
 import { FaFilter } from 'react-icons/fa';
 import Pagination from '../../components/shared/Pagination';
 import useDebounce from '../../hooks/UseDebounce';
-import { getBlogsAction } from '../../redux/actions/blogAction';
+import {
+	getAutoCompleteAllBlogAction,
+	getBlogsAction,
+	resetAutoCompleteAction,
+} from '../../redux/actions/blogAction';
 import { formQueryStr } from '../../util/helperFunctions/helper';
-import { paginateType } from '../../redux/sharedTypes';
+import { autocompleteType, paginateType } from '../../redux/sharedTypes';
 import { getCategoryAction } from '../../redux/actions/categoryAction';
 import { OmittedCategoryDataType } from '../../redux/api/categoryApi';
 import { getTagAction } from '../../redux/actions/tagAction';
 import { tagType } from '../../redux/api/tagApi';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const Blog: FC = () => {
 	const dispatch: AppDispatch = useDispatch();
+	const navigate = useNavigate();
+	const location = useLocation();
 	const initializeRef = useRef(true);
 	const blogState = useSelector((state: RootState) => state.blog);
 	const category = useSelector((state: RootState) => state.category.categories);
@@ -28,6 +35,7 @@ const Blog: FC = () => {
 	const blogData = blogState.blog;
 	const metaData = blogState.blog.metaData;
 	const queryFilterState = blogState.queryFilter;
+	const autocomplete = blogState.autoComplete;
 
 	const [activeLayout, setActiveLayout] = useState('grid');
 	const [search, setSearch] = useState('');
@@ -48,8 +56,13 @@ const Blog: FC = () => {
 	};
 
 	useEffect(() => {
-		console.log(debouncedSearch);
-	}, [debouncedSearch]);
+		if (debouncedSearch.length <= 2) {
+			dispatch(resetAutoCompleteAction());
+			return;
+		}
+
+		dispatch(getAutoCompleteAllBlogAction(debouncedSearch));
+	}, [dispatch, debouncedSearch]);
 
 	useEffect(() => {
 		dispatch(getBlogsAction({ page: '1', limit }));
@@ -86,11 +99,18 @@ const Blog: FC = () => {
 		dispatch(getBlogsAction(details, queryString));
 	};
 
+	const handleRedirectFunc = (blog: autocompleteType) => {
+		const slug = blog?.slug;
+		navigate(`${location.pathname}/${slug}`);
+	};
+
 	useEffect(() => {}, [activeLayout, setActiveLayout]);
 	return (
 		<FilterStructure
 			title={'Articles'}
 			searchFunc={handleSearch}
+			autocomplete={autocomplete}
+			redirectFunc={handleRedirectFunc}
 			layoutFunc={handleLayoutChange}
 			children1={
 				<>
