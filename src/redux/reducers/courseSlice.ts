@@ -7,7 +7,7 @@ export type courseState = {
 	course: courseType;
 	singleCourse: SingleCourseType[];
 	lectureCourse: SingleCourseType[];
-	myLearning: courseType[];
+	myLearning: courseType;
 	autoComplete: autocompleteType[];
 	videoId: string;
 	courseError: string;
@@ -36,7 +36,17 @@ const initialState: courseState = {
 	singleCourse: [],
 	courseError: '',
 	lectureCourse: [],
-	myLearning: [],
+	myLearning: {
+		status: '',
+		metaData: {
+			totalPages: 0,
+			totalDocuments: 0,
+			page: 0,
+			count: 0,
+			limit: 0,
+		},
+		data: [],
+	},
 	autoComplete: [],
 	notification: [],
 	videoId: '',

@@ -185,15 +185,17 @@ export const createLectureCourse = async (
 	}
 };
 
-export const getMyLectureCourse = async (
+export const getMyLearningCourse = async (
+	details: paginateType,
 	userId: string,
 	queryString: Partial<string>
 ): Promise<ApiResponse> => {
 	try {
 		//courses/mylearning/65b4de836fcd27162cae1815
+		const { page, limit } = details;
 		const url = queryString.length
-			? `/api/v1/courses/mylearning/${userId}${queryString}`
-			: `/api/v1/courses/mylearning/${userId}`;
+			? `/api/v1/courses/mylearning/${userId}${queryString}&page=${page}&limit=${limit}`
+			: `/api/v1/courses/mylearning/${userId}?page=${page}&limit=${limit}`;
 		const { data } = await API.get<ApiResponse>(url);
 
 		return data;

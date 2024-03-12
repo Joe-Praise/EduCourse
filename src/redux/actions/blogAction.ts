@@ -3,6 +3,11 @@ import * as api from '../api/blogApi';
 import * as types from '../constants/blogConstants';
 import { AppDispatch, RootState } from '../store';
 import { obj, paginateType } from '../sharedTypes';
+import {
+	dispatchErrorHandler,
+	dispatchSuccessHandler,
+	throwErrorHandler,
+} from '../../util/helperFunctions/helper';
 
 type GetBlogsSuccessAction = {
 	type: typeof types.GET_BLOGS_SUCCESS;
@@ -73,20 +78,18 @@ export const getBlogsAction =
 			const response = await api.getBlogs(details, queryString);
 			const { error } = response;
 
-			if (error) {
-				// TODO: Have notification reducer to handle all notifications
-				throw new Error(error);
-			}
+			throwErrorHandler(error);
 
 			dispatch({
 				type: types.GET_BLOGS_SUCCESS,
 				payload: response,
 			});
 		} catch (error: any) {
-			dispatch({
-				type: types.GET_BLOGS_FAIL,
-				payload: error.message,
-			});
+			dispatchErrorHandler(dispatch, error.message);
+			// dispatch({
+			// 	type: types.GET_BLOGS_FAIL,
+			// 	payload: error.message,
+			// });
 		}
 	};
 
@@ -102,10 +105,7 @@ export const getSingleBlogAction =
 			let data: any = {};
 			const { error, data: blogData } = await api.getBlogBySlug(slug);
 
-			if (error) {
-				// TODO: Have notification reducer to handle all notifications
-				throw new Error(error);
-			}
+			throwErrorHandler(error);
 
 			data = blogData?.[0] ?? {};
 
@@ -114,10 +114,11 @@ export const getSingleBlogAction =
 				payload: data,
 			});
 		} catch (error: any) {
-			dispatch({
-				type: types.GET_SINGLE_BLOG_FAIL,
-				payload: error.message,
-			});
+			dispatchErrorHandler(dispatch, error.message);
+			// dispatch({
+			// 	type: types.GET_SINGLE_BLOG_FAIL,
+			// 	payload: error.message,
+			// });
 		}
 	};
 
@@ -129,20 +130,19 @@ export const createBlogAction =
 			const response = await api.createBlog(details);
 			const { error } = response;
 
-			if (error) {
-				// TODO: Have notification reducer to handle all notifications
-				throw new Error(error);
-			}
+			throwErrorHandler(error);
 
 			dispatch({
 				type: types.CREATE_BLOG_SUCCESS,
 				payload: response,
 			});
+			dispatchSuccessHandler(dispatch, 'Successfully Created!');
 		} catch (error: any) {
-			dispatch({
-				type: types.CREATE_BLOG_FAIL,
-				payload: error.message,
-			});
+			dispatchErrorHandler(dispatch, error.message);
+			// dispatch({
+			// 	type: types.CREATE_BLOG_FAIL,
+			// 	payload: error.message,
+			// });
 		}
 	};
 
@@ -153,20 +153,18 @@ export const getAutoCompleteAllBlogAction =
 			const response = await api.getAutoCompleteAllBlog(queryString);
 			const { error, data } = response;
 
-			if (error) {
-				// TODO: Have notification reducer to handle all notifications
-				throw new Error(error);
-			}
+			throwErrorHandler(error);
 
 			dispatch({
 				type: types.GET_AUTO_COMPLETE_ALL_BLOG_SUCCESS,
 				payload: data,
 			});
 		} catch (error: any) {
-			dispatch({
-				type: types.GET_AUTO_COMPLETE_ALL_BLOG_FAIL,
-				payload: error.message,
-			});
+			dispatchErrorHandler(dispatch, error.message);
+			// dispatch({
+			// 	type: types.GET_AUTO_COMPLETE_ALL_BLOG_FAIL,
+			// 	payload: error.message,
+			// });
 		}
 	};
 
@@ -187,11 +185,14 @@ export const createBlogCommentAction =
 				type: types.CREATE_BLOG_COMMENT_SUCCESS,
 				payload: data,
 			});
+
+			dispatchSuccessHandler(dispatch, 'Successfully Created!');
 		} catch (error: any) {
-			dispatch({
-				type: types.CREATE_BLOG_COMMENT_FAIL,
-				payload: error.message,
-			});
+			dispatchErrorHandler(dispatch, error.message);
+			// dispatch({
+			// 	type: types.CREATE_BLOG_COMMENT_FAIL,
+			// 	payload: error.message,
+			// });
 		}
 	};
 
@@ -203,20 +204,18 @@ export const getBlogCommentsAction =
 
 			const { error } = response;
 
-			if (error) {
-				// TODO: Have notification reducer to handle all notifications
-				throw new Error(error);
-			}
+			throwErrorHandler(error);
 
 			dispatch({
 				type: types.GET_BLOG_COMMENT_SUCCESS,
 				payload: response,
 			});
 		} catch (error: any) {
-			dispatch({
-				type: types.GET_BLOG_COMMENT_FAIL,
-				payload: error.message,
-			});
+			dispatchErrorHandler(dispatch, error.message);
+			// dispatch({
+			// 	type: types.GET_BLOG_COMMENT_FAIL,
+			// 	payload: error.message,
+			// });
 		}
 	};
 
@@ -226,19 +225,19 @@ export const deleteBlogCommentsAction =
 		try {
 			const { error, data } = await api.deleteBlogComments(blogId);
 
-			if (error) {
-				// TODO: Have notification reducer to handle all notifications
-				throw new Error(error);
-			}
+			throwErrorHandler(error);
 			dispatch({
 				type: types.DELETE_BLOG_COMMENT_SUCCESS,
 				payload: data,
 			});
+
+			dispatchSuccessHandler(dispatch, 'Successfully Deleted!');
 		} catch (error: any) {
-			dispatch({
-				type: types.DELETE_BLOG_COMMENT_FAIL,
-				payload: error.message,
-			});
+			dispatchErrorHandler(dispatch, error.message);
+			// dispatch({
+			// 	type: types.DELETE_BLOG_COMMENT_FAIL,
+			// 	payload: error.message,
+			// });
 		}
 	};
 

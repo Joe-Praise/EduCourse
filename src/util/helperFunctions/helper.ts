@@ -1,3 +1,10 @@
+import {
+	addNotification,
+	notificationType,
+} from '../../redux/actions/notification';
+import { user } from '../../redux/api/userApi';
+import { AppDispatch } from '../../redux/store';
+
 export const getLocalStorage = (key: string) => {
 	try {
 		const jsonData = localStorage.getItem(key);
@@ -117,4 +124,30 @@ export const formQueryStr = (queryObj: {}) => {
 
 	const queryStr = '?' + queryArr.join('&');
 	return queryStr;
+};
+
+export const dispatchErrorHandler = (
+	dispatch: AppDispatch,
+	message: string
+) => {
+	dispatch(addNotification({ message, type: 'error' }));
+};
+
+export const dispatchSuccessHandler = (
+	dispatch: AppDispatch,
+	message: string,
+	type: notificationType['type'] = 'success'
+) => {
+	dispatch(addNotification({ message, type }));
+};
+
+export const throwErrorHandler = (error: string) => {
+	if (error) {
+		throw new Error(error);
+	}
+};
+
+export const welcomeGreeting = (user: user) => {
+	const greeting = user.name ? `Welcome Back ${user.name}!` : `Welcome Back!`;
+	return greeting;
 };

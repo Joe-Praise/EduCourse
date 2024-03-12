@@ -1,8 +1,12 @@
 import { NavigateFunction } from 'react-router-dom';
 import {
+	dispatchErrorHandler,
+	dispatchSuccessHandler,
 	getLocalStorage,
 	removeLocalStorage,
 	saveLocalStorage,
+	throwErrorHandler,
+	welcomeGreeting,
 } from '../../util/helperFunctions/helper';
 import * as api from '../api/authApi';
 import * as types from '../constants/authConstants';
@@ -59,20 +63,22 @@ export const signUpAction =
 			localStorage.removeItem('profile');
 			const response = await api.signUp(details);
 			const { error } = response;
-			if (error) {
-				throw new Error(error);
-			} else {
-				dispatch({
-					type: types.SIGNUP_SUCCESS,
-					payload: types.SIGNUP_SUCCESS_MESSAGE,
-				});
-				navigate('/signin');
-			}
-		} catch (error: any) {
+
+			throwErrorHandler(error);
+
 			dispatch({
-				type: types.SIGNUP_FAIL,
-				payload: error.message || types.ERROR_MESSAGE,
+				type: types.SIGNUP_SUCCESS,
+				payload: types.SIGNUP_SUCCESS_MESSAGE,
 			});
+
+			dispatchSuccessHandler(dispatch, 'Account Created!');
+			navigate('/signin');
+		} catch (error: any) {
+			dispatchErrorHandler(dispatch, error.message);
+			// dispatch({
+			// 	type: types.SIGNUP_FAIL,
+			// 	payload: error.message || types.ERROR_MESSAGE,
+			// });
 		}
 	};
 
@@ -83,10 +89,7 @@ export const signInAction =
 			const response = await api.signIn(details);
 			const { error } = response;
 
-			if (error) {
-				// TODO: Have notification reducer to handle all notifications
-				throw new Error(error);
-			}
+			throwErrorHandler(error);
 
 			const { data: user, token, status } = response;
 
@@ -101,12 +104,17 @@ export const signInAction =
 				type: types.SIGNIN_SUCCESS,
 				payload: profile,
 			});
+
+			// dispatchSuccessHandler(dispatch, `Welcome Back ${user.user.name}!`);
+			dispatchSuccessHandler(dispatch, welcomeGreeting(user?.user));
+
 			navigate('/');
 		} catch (error: any) {
-			await dispatch({
-				type: types.SIGNIN_FAIL,
-				payload: error.message || types.ERROR_MESSAGE,
-			});
+			dispatchErrorHandler(dispatch, error.message);
+			// await dispatch({
+			// 	type: types.SIGNIN_FAIL,
+			// 	payload: error.message || types.ERROR_MESSAGE,
+			// });
 		}
 	};
 
@@ -138,10 +146,11 @@ export const isLoggedIn =
 				payload: profile,
 			});
 		} catch (error: any) {
-			dispatch({
-				type: types.SIGNIN_FAIL,
-				payload: error.message || types.ERROR_MESSAGE,
-			});
+			dispatchErrorHandler(dispatch, error.message);
+			// dispatch({
+			// 	type: types.SIGNIN_FAIL,
+			// 	payload: error.message || types.ERROR_MESSAGE,
+			// });
 		}
 	};
 

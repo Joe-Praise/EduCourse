@@ -5,7 +5,7 @@ import { LiaTrophySolid } from 'react-icons/lia';
 import Logo from '../shared/Logo';
 import LinkBtn from '../shared/LinkBtn';
 import RenderIf from '../shared/RenderIf';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { IoIosReturnLeft } from 'react-icons/io';
 import useHandleModal from '../../hooks/UseHandleModal';
 import { ModalRef } from '../../pages/Main Course/LectureType';
@@ -18,6 +18,7 @@ import ReviewCourse from './ReviewCourse';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/reducers';
 import { ModuleType } from '../../redux/actions/courseAction';
+import config from '../../../config';
 // import { lectureType } from '../../pages/Main Course/LectureType';
 
 interface Iprop {
@@ -31,6 +32,7 @@ interface summary {
 }
 const LectureHeader = (props: Iprop) => {
 	const navigate = useNavigate();
+	const location = useLocation();
 	const shareRef = useRef<ModalRef>(null);
 	const reviewRef = useRef<ModalRef>(null);
 	const lectureCourse = useSelector(
@@ -101,7 +103,7 @@ const LectureHeader = (props: Iprop) => {
 					<li className='mb-2'>
 						<LinkBtn
 							className={'border-none text-sm font-bold text-black'}
-							value={'React and Redux Complete Course'}
+							value={capitalizeFirstLetters(courseTitle)}
 							path={`/courses/${courseTitle}`}
 						/>
 					</li>
@@ -117,7 +119,7 @@ const LectureHeader = (props: Iprop) => {
 						<LinkBtn
 							className={'border-none text-xl font-bold text-black'}
 							value={capitalizeFirstLetters(courseTitle)}
-							path={''}
+							path={`/courses/${courseTitle}`}
 						/>
 					</li>
 				</ul>
@@ -188,9 +190,7 @@ const LectureHeader = (props: Iprop) => {
 			<Modal ref={shareRef} className={'w-1/2 rounded-lg p-3'}>
 				<CopyText
 					title={'Share this course'}
-					value={
-						'Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus, ea?hvsjflshbdfljghbsldjfbgldsh'
-					}
+					value={`${config.urlPath}${location.pathname}`}
 				/>
 			</Modal>
 

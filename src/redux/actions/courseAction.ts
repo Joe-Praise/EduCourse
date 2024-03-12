@@ -4,7 +4,12 @@ import * as api from '../api/courseAPI';
 import * as types from '../constants/courseConstants';
 import { AppDispatch, RootState } from '../store';
 import { obj, paginateType } from '../sharedTypes';
-import { getLocalStorage } from '../../util/helperFunctions/helper';
+import {
+	dispatchErrorHandler,
+	dispatchSuccessHandler,
+	getLocalStorage,
+	throwErrorHandler,
+} from '../../util/helperFunctions/helper';
 
 type GetCoursesSuccessAction = {
 	type: typeof types.GET_COURSES_SUCCESS;
@@ -67,20 +72,19 @@ export const getCoursesAction =
 		try {
 			const response = await api.getCourses(details, queryString);
 			const { error } = response;
-			if (error) {
-				// TODO: Have notification reducer to handle all notifications
-				throw new Error(error);
-			}
+			throwErrorHandler(error);
 
 			dispatch({
 				type: types.GET_COURSES_SUCCESS,
 				payload: response,
 			});
 		} catch (error: any) {
-			dispatch({
-				type: types.GET_COURSES_FAIL,
-				payload: error.message,
-			});
+			dispatchErrorHandler(dispatch, error.message);
+
+			// dispatch({
+			// 	type: types.GET_COURSES_FAIL,
+			// 	payload: error.message,
+			// });
 		}
 	};
 
@@ -96,10 +100,7 @@ export const getSingleCourseAction =
 				isEnrolled,
 			} = await api.getCourseBySlug(slug, userId);
 
-			if (error) {
-				// TODO: Have notification reducer to handle all notifications
-				throw new Error(error);
-			}
+			throwErrorHandler(error);
 
 			data.isEnrolled = isEnrolled;
 			data.course = courseData?.[0] ?? {};
@@ -115,10 +116,12 @@ export const getSingleCourseAction =
 				payload: data,
 			});
 		} catch (error: any) {
-			dispatch({
-				type: types.GET_SINGLE_COURSE_FAIL,
-				payload: error.message,
-			});
+			dispatchErrorHandler(dispatch, error.message);
+
+			// dispatch({
+			// 	type: types.GET_SINGLE_COURSE_FAIL,
+			// 	payload: error.message,
+			// });
 		}
 	};
 
@@ -130,10 +133,7 @@ export const getLectureCourseAction =
 			const response = await api.getLectureCourse(details);
 			const { error, data: courseData } = response;
 
-			if (error) {
-				// TODO: Have notification reducer to handle all notifications
-				throw new Error(error);
-			}
+			throwErrorHandler(error);
 
 			data.course = courseData?.[0] ?? {};
 
@@ -148,10 +148,12 @@ export const getLectureCourseAction =
 				payload: data,
 			});
 		} catch (error: any) {
-			dispatch({
-				type: types.GET_LECTURE_COURSE_FAIL,
-				payload: error.message,
-			});
+			dispatchErrorHandler(dispatch, error.message);
+
+			// dispatch({
+			// 	type: types.GET_LECTURE_COURSE_FAIL,
+			// 	payload: error.message,
+			// });
 		}
 	};
 
@@ -166,38 +168,44 @@ export const createLectureCourseAction =
 		try {
 			const { error, data } = await api.createLectureCourse(details);
 
-			if (error) {
-				// TODO: Have notification reducer to handle all notifications
-				throw new Error(error);
-			}
+			throwErrorHandler(error);
 
 			dispatch({
 				type: types.CREATE_LECTURE_COURSE_SUCCESS,
 				payload: data,
 			});
 
+			dispatchSuccessHandler(dispatch, 'Successful Enrollment!');
+
 			// routes to the learn course page
 			navigate(`/courses/${slug}/lecture/${id}`);
 		} catch (error: any) {
-			dispatch({
-				type: types.CREATE_LECTURE_COURSE_FAIL,
-				payload: error.message,
-			});
+			dispatchErrorHandler(dispatch, error.message);
+			navigate(`/signup`);
+			// dispatch({
+			// 	type: types.CREATE_LECTURE_COURSE_FAIL,
+			// 	payload: error.message,
+			// });
 		}
 	};
 
 export const getMyLearningCourseAction =
-	(userId: string, queryString: string = ''): CourseThunk =>
+	(
+		details: paginateType,
+		userId: string,
+		queryString: string = ''
+	): CourseThunk =>
 	async (dispatch: AppDispatch) => {
 		try {
 			// let query: any = {};
-			const response = await api.getMyLectureCourse(userId, queryString);
+			const response = await api.getMyLearningCourse(
+				details,
+				userId,
+				queryString
+			);
 			const { error } = response;
 
-			if (error) {
-				// TODO: Have notification reducer to handle all notifications
-				throw new Error(error);
-			}
+			throwErrorHandler(error);
 
 			// query.course = courseData?.[0] ?? {};
 
@@ -214,10 +222,13 @@ export const getMyLearningCourseAction =
 				payload: response,
 			});
 		} catch (error: any) {
-			dispatch({
-				type: types.GET_MY_LEARNING_COURSE_FAIL,
-				payload: error.message,
-			});
+			// console.log('error');
+			// handleError(error.message, dispatch);
+			dispatchErrorHandler(dispatch, error.message);
+			// dispatch({
+			// 	type: types.GET_MY_LEARNING_COURSE_FAIL,
+			// 	payload: error.message,
+			// });
 		}
 	};
 
@@ -229,10 +240,7 @@ export const getAutoCompleteAllCourseAction =
 			const response = await api.getAutoCompleteAllCourse(queryString);
 			const { error, data } = response;
 
-			if (error) {
-				// TODO: Have notification reducer to handle all notifications
-				throw new Error(error);
-			}
+			throwErrorHandler(error);
 
 			dispatch({
 				type: types.GET_AUTO_COMPLETE_ALL_COURSE_SUCCESS,

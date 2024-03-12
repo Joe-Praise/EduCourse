@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import { courseCardType } from '../../pages/Home/homePageType';
 import { handleDateFormat } from '../../util/helperFunctions/dateFormatter';
 import config from '../../../config';
-import { formatAmount } from '../../util/helperFunctions/helper';
+import { formatAmount, truncateValue } from '../../util/helperFunctions/helper';
 
 const CourseCard: FC<courseCardType> = (props) => {
 	// type test = {
@@ -73,7 +73,9 @@ const CourseCard: FC<courseCardType> = (props) => {
 							{props?.instructors[0]?.userId?.name}
 						</span>
 					</small>
-					<p className='text-lg font-bold my-1'>{props?.title}</p>
+					<p className='text-lg font-bold my-1'>
+						{truncateValue(props?.title, true, 29)}
+					</p>
 
 					<div
 						className={`items-center gap-3 text-sm ${

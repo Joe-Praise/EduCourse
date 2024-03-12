@@ -3,6 +3,11 @@ import * as api from '../api/instructorApi';
 import * as types from '../constants/instructorConstants';
 import { AppDispatch, RootState } from '../store';
 import { paginateType } from '../sharedTypes';
+import {
+	dispatchErrorHandler,
+	dispatchSuccessHandler,
+	throwErrorHandler,
+} from '../../util/helperFunctions/helper';
 
 type CreateInstructorSuccessAction = {
 	type: typeof types.CREATE_INSTRUCTOR_SUCCESS;
@@ -78,17 +83,22 @@ export const createInstructorAction =
 	async (dispatch: AppDispatch) => {
 		try {
 			const response = await api.createInstructor(payload);
-			const data = response;
+			const { error } = response;
+
+			throwErrorHandler(error);
 
 			dispatch({
 				type: types.CREATE_INSTRUCTOR_SUCCESS,
-				payload: data,
+				payload: response,
 			});
-		} catch (error) {
-			dispatch({
-				type: types.CREATE_INSTRUCTOR_FAIL,
-				payload: error,
-			});
+
+			dispatchSuccessHandler(dispatch, 'Instructor Successfully Created!');
+		} catch (error: any) {
+			dispatchErrorHandler(dispatch, error.message);
+			// dispatch({
+			// 	type: types.CREATE_INSTRUCTOR_FAIL,
+			// 	payload: error,
+			// });
 		}
 	};
 
@@ -97,16 +107,19 @@ export const getInstructorAction =
 	async (dispatch: AppDispatch) => {
 		try {
 			const response = await api.getInstructors(details);
-			const data = response;
+			const { error } = response;
+
+			throwErrorHandler(error);
 			dispatch({
 				type: types.GET_INSTRUCTORS_SUCCESS,
-				payload: data,
+				payload: response,
 			});
-		} catch (error) {
-			dispatch({
-				type: types.GET_INSTRUCTORS_FAIL,
-				payload: error,
-			});
+		} catch (error: any) {
+			dispatchErrorHandler(dispatch, error.message);
+			// dispatch({
+			// 	type: types.GET_INSTRUCTORS_FAIL,
+			// 	payload: error,
+			// });
 		}
 	};
 
@@ -115,17 +128,20 @@ export const getSingleInstructorAction =
 	async (dispatch: AppDispatch) => {
 		try {
 			const response = await api.getSingleInstructor(instructorId);
-			const data = response;
+			const { error } = response;
+
+			throwErrorHandler(error);
 
 			dispatch({
 				type: types.GET_SINGLE_INSTRUCTOR_SUCCESS,
-				payload: data,
+				payload: response,
 			});
-		} catch (error) {
-			dispatch({
-				type: types.GET_SINGLE_INSTRUCTOR_FAIL,
-				payload: error,
-			});
+		} catch (error: any) {
+			dispatchErrorHandler(dispatch, error.message);
+			// dispatch({
+			// 	type: types.GET_SINGLE_INSTRUCTOR_FAIL,
+			// 	payload: error,
+			// });
 		}
 	};
 
@@ -134,17 +150,20 @@ export const updateInstructorAction =
 	async (dispatch: AppDispatch) => {
 		try {
 			const response = await api.getSingleInstructor(payload);
-			const data = response;
+			const { error } = response;
+
+			throwErrorHandler(error);
 
 			dispatch({
 				type: types.GET_SINGLE_INSTRUCTOR_SUCCESS,
-				payload: data,
+				payload: response,
 			});
-		} catch (error) {
-			dispatch({
-				type: types.GET_SINGLE_INSTRUCTOR_FAIL,
-				payload: error,
-			});
+		} catch (error: any) {
+			dispatchErrorHandler(dispatch, error.message);
+			// dispatch({
+			// 	type: types.GET_SINGLE_INSTRUCTOR_FAIL,
+			// 	payload: error,
+			// });
 		}
 	};
 
@@ -153,16 +172,19 @@ export const deleteInstructorAction =
 	async (dispatch: AppDispatch) => {
 		try {
 			const response = await api.deleteInstructor(instructorId);
-			const data = response;
+			const { error } = response;
+
+			throwErrorHandler(error);
 
 			dispatch({
 				type: types.DELETE_INSTRUCTOR_SUCCESS,
-				payload: data,
+				payload: response,
 			});
-		} catch (error) {
-			dispatch({
-				type: types.DELETE_INSTRUCTOR_SUCCESS,
-				payload: error,
-			});
+		} catch (error: any) {
+			dispatchErrorHandler(dispatch, error.message);
+			// dispatch({
+			// 	type: types.DELETE_INSTRUCTOR_SUCCESS,
+			// 	payload: error,
+			// });
 		}
 	};

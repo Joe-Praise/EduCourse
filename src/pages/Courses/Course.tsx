@@ -20,8 +20,10 @@ import useDebounce from '../../hooks/UseDebounce';
 import { formQueryStr } from '../../util/helperFunctions/helper';
 import Pagination from '../../components/shared/Pagination';
 import { autocompleteType, paginateType } from '../../redux/sharedTypes';
-import LoadingEffect from '../../components/shared/LoadingEffect';
+// import LoadingEffect from '../../components/shared/LoadingEffect';
 import { useLocation, useNavigate } from 'react-router-dom';
+import LoadingPulse from '../../components/shared/LoadingPulse';
+import CourseCardLoading from '../../components/Course/CourseCardLoading';
 
 const Course: FC = () => {
 	const dispatch: AppDispatch = useDispatch();
@@ -134,12 +136,18 @@ const Course: FC = () => {
 		navigate(`${location.pathname}/${slug}`);
 	};
 
+	// const arr = array.from
+	const arr = Array.from({ length: 5 }, (_v, i) => i);
 	const handleCourseDisplay = () => {
 		if (coursesData.data.length < 1) {
 			return (
-				<div>
-					<LoadingEffect />
-				</div>
+				<>
+					{arr.map((_el, index) => (
+						<LoadingPulse key={index}>
+							<CourseCardLoading />
+						</LoadingPulse>
+					))}
+				</>
 			);
 		} else {
 			return (

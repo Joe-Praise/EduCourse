@@ -3,6 +3,11 @@ import * as api from '../api/categoryApi';
 import * as types from '../constants/categoryConstants';
 import { AppDispatch, RootState } from '../store';
 import { paginateType } from '../sharedTypes';
+import {
+	dispatchErrorHandler,
+	dispatchSuccessHandler,
+	throwErrorHandler,
+} from '../../util/helperFunctions/helper';
 
 type CreateCategorySuccessAction = {
 	type: typeof types.CREATE_CATEGORY_SUCCESS;
@@ -78,17 +83,22 @@ export const createCategotyAction =
 	async (dispatch: AppDispatch) => {
 		try {
 			const response = await api.createCategory(payload);
-			const data = response;
+			const { error } = response;
+
+			throwErrorHandler(error);
 
 			dispatch({
 				type: types.CREATE_CATEGORY_SUCCESS,
-				payload: data,
+				payload: response,
 			});
-		} catch (error) {
-			dispatch({
-				type: types.CREATE_CATEGORY_FAIL,
-				payload: error,
-			});
+
+			dispatchSuccessHandler(dispatch, 'Successfully Created!');
+		} catch (error: any) {
+			dispatchErrorHandler(dispatch, error.message);
+			// dispatch({
+			// 	type: types.CREATE_CATEGORY_FAIL,
+			// 	payload: error.message,
+			// });
 		}
 	};
 
@@ -97,16 +107,20 @@ export const getCategoryAction =
 	async (dispatch: AppDispatch) => {
 		try {
 			const response = await api.getCategories(details, group);
-			const data = response;
+			const { error } = response;
+
+			throwErrorHandler(error);
+
 			dispatch({
 				type: types.GET_CATEGORY_SUCCESS,
-				payload: data,
+				payload: response,
 			});
-		} catch (error) {
-			dispatch({
-				type: types.GET_CATEGORY_FAIL,
-				payload: error,
-			});
+		} catch (error: any) {
+			dispatchErrorHandler(dispatch, error.message);
+			// dispatch({
+			// 	type: types.GET_CATEGORY_FAIL,
+			// 	payload: error.message,
+			// });
 		}
 	};
 
@@ -115,17 +129,20 @@ export const getSingleCategoryAction =
 	async (dispatch: AppDispatch) => {
 		try {
 			const response = await api.getSingleCategory(categoryId);
-			const data = response;
+			const { error } = response;
+
+			throwErrorHandler(error);
 
 			dispatch({
 				type: types.GET_SINGLE_CATEGORY_SUCCESS,
-				payload: data,
+				payload: response,
 			});
-		} catch (error) {
-			dispatch({
-				type: types.GET_SINGLE_CATEGORY_FAIL,
-				payload: error,
-			});
+		} catch (error: any) {
+			dispatchErrorHandler(dispatch, error.message);
+			// dispatch({
+			// 	type: types.GET_SINGLE_CATEGORY_FAIL,
+			// 	payload: error,
+			// });
 		}
 	};
 
@@ -134,17 +151,21 @@ export const updateCategory =
 	async (dispatch: AppDispatch) => {
 		try {
 			const response = await api.getSingleCategory(payload);
-			const data = response;
+			const { error } = response;
+
+			throwErrorHandler(error);
 
 			dispatch({
 				type: types.GET_SINGLE_CATEGORY_SUCCESS,
-				payload: data,
+				payload: response,
 			});
-		} catch (error) {
-			dispatch({
-				type: types.GET_SINGLE_CATEGORY_FAIL,
-				payload: error,
-			});
+			dispatchSuccessHandler(dispatch, 'Update Successful!');
+		} catch (error: any) {
+			dispatchErrorHandler(dispatch, error.message);
+			// dispatch({
+			// 	type: types.GET_SINGLE_CATEGORY_FAIL,
+			// 	payload: error,
+			// });
 		}
 	};
 
@@ -153,16 +174,21 @@ export const deleteCategoryAction =
 	async (dispatch: AppDispatch) => {
 		try {
 			const response = await api.deleteCategory(categoryId);
-			const data = response;
+			const { error } = response;
+
+			throwErrorHandler(error);
 
 			dispatch({
 				type: types.DELETE_CATEGORY_SUCCESS,
-				payload: data,
+				payload: response,
 			});
-		} catch (error) {
-			dispatch({
-				type: types.DELETE_CATEGORY_SUCCESS,
-				payload: error,
-			});
+
+			dispatchSuccessHandler(dispatch, 'Successfully Deleted!');
+		} catch (error: any) {
+			dispatchErrorHandler(dispatch, error.message);
+			// dispatch({
+			// 	type: types.DELETE_CATEGORY_SUCCESS,
+			// 	payload: error,
+			// });
 		}
 	};
