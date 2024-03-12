@@ -24,6 +24,11 @@ export default {
 			exo: ['"Exo", "sans-serif"'],
 			jost: ['"Jost", "sans-serif"'],
 		},
+		keyframes: {
+			shimmer: {
+				'100%': { transform: 'translateX(100%)' },
+			},
+		},
 	},
 	plugins: [],
 };

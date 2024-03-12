@@ -4,7 +4,8 @@ import CardsPlaceholder from '../Home/CardsPlaceholder';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../redux/store';
 import { getCoursesAction } from '../../redux/actions/courseAction';
-import LoadingEffect from '../shared/LoadingEffect';
+import LoadingPulse from '../shared/LoadingPulse';
+import CourseCardLoading from './CourseCardLoading';
 
 const Courses: FC = () => {
 	const dispatch: AppDispatch = useDispatch();
@@ -89,33 +90,41 @@ const Courses: FC = () => {
 	// 	},
 	// ];
 
+	const arr = Array.from({ length: 6 }, (_v, i) => i);
+
 	const handleCourseDisplay = () => {
 		if (coursesData?.data?.length < 1) {
 			return (
-				<div>
-					<LoadingEffect />
-				</div>
+				<>
+					{arr.map((_el, index) => (
+						<LoadingPulse key={index}>
+							<CourseCardLoading />
+						</LoadingPulse>
+					))}
+				</>
 			);
 		} else {
 			return (
-				<CardsPlaceholder
-					title='Courses'
-					description='Explore our Popular Courses'
-					path='/courses'
-					btnValue='All Courses'
-					className='grid-cols-1 gap-y-8 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3'
-				>
-					<>
-						{coursesData?.data?.map((el: any) => {
-							return <CourseCard key={el._id} activeLayout='grid' {...el} />;
-						})}
-					</>
-				</CardsPlaceholder>
+				<>
+					{coursesData?.data?.map((el: any) => {
+						return <CourseCard key={el._id} activeLayout='grid' {...el} />;
+					})}
+				</>
 			);
 		}
 	};
 
-	return <div>{handleCourseDisplay()}</div>;
+	return (
+		<CardsPlaceholder
+			title='Courses'
+			description='Explore our Popular Courses'
+			path='/courses'
+			btnValue='All Courses'
+			className='grid-cols-1 gap-y-8 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3'
+		>
+			{handleCourseDisplay()}
+		</CardsPlaceholder>
+	);
 };
 
 export default Courses;

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { IoMdArrowDown } from 'react-icons/io';
 import { capitalizeFirstLetters } from '../../util/helperFunctions/helper';
 import { useDispatch } from 'react-redux';
@@ -20,6 +20,7 @@ interface Iprop {
 function DropDown(props: Iprop) {
 	const { tag, items, index, arrLength } = props;
 	const dispatch: AppDispatch = useDispatch();
+	const dropDownRef = useRef<HTMLButtonElement>(null);
 
 	const [selectValue, setSelectvalue] = useState({
 		[tag]: '',
@@ -29,6 +30,7 @@ function DropDown(props: Iprop) {
 	});
 
 	const [active, setActive] = useState('');
+
 	const showMenuHandler = (tag: string) => {
 		setShow((prevState) => {
 			return {
@@ -59,6 +61,7 @@ function DropDown(props: Iprop) {
 			});
 			dispatch(removeQueryFilterAction(obj));
 		} else {
+			console.log(data);
 			dispatch(setQueryFilterAction(obj));
 			setActive(data?._id);
 		}
@@ -85,6 +88,20 @@ function DropDown(props: Iprop) {
 
 		handleChange(value);
 	};
+
+	useEffect(() => {
+		if (!show[tag]) return;
+		const handleClose = () => {
+			window.addEventListener('click', (e) => {
+				if (show[tag] && dropDownRef.current !== e.target) {
+					setShow((prevState) => ({
+						[tag]: !prevState,
+					}));
+				}
+			});
+		};
+		handleClose();
+	}, [show, tag]);
 
 	const dropDownItem = (values: any) => {
 		return (
@@ -113,18 +130,18 @@ function DropDown(props: Iprop) {
 
 	return (
 		<>
-			<div className='relative border-2 p-3 rounded-sm md:basis-[90] md:p-2  '>
-				<p
-					className='flex justify-between items-center'
+			<div className='relative '>
+				<button
+					className='flex justify-between items-center border-2 p-3 rounded-sm md:basis-[90] md:p-2 cursor-pointer'
+					ref={dropDownRef}
 					onClick={() => showMenuHandler(tag)}
 				>
 					{selectValue[tag] === ''
 						? capitalizeFirstLetters(tag)
 						: capitalizeFirstLetters(selectValue[tag])}
-					<span className='dropicon'>
-						<IoMdArrowDown className='animate-bounce' />
-					</span>
-				</p>
+
+					<IoMdArrowDown className='animate-bounce' />
+				</button>
 				{show[tag] ? dropDownItem(items) : <></>}
 			</div>
 		</>

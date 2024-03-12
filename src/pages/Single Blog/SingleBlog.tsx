@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { FC, useEffect } from 'react';
 import { headerbadge } from '../../components/Single Course/HeaderContainer';
 import { FaRegCalendar, FaUser } from 'react-icons/fa';
 import { LiaCommentsSolid } from 'react-icons/lia';
@@ -22,7 +22,7 @@ import { paginateType } from '../../redux/sharedTypes';
 import { blogCommentType } from '../../redux/api/blogApi';
 import LoadingEffect from '../../components/shared/LoadingEffect';
 
-const SingleBlog = () => {
+const SingleBlog: FC = () => {
 	/**
 	 * TODO:
 	 * get single blog details
@@ -74,11 +74,11 @@ const SingleBlog = () => {
 
 	// gets the blog comments first page on load
 	useEffect(() => {
-		const timeout = setTimeout(() => {
+		if (SingleBlog?._id) {
+			// const timeout = setTimeout(() => {
 			dispatch(getBlogCommentsAction({ page: '1', limit }, SingleBlog?._id));
-		}, 1000);
-
-		return () => clearTimeout(timeout);
+			// }, 1000);
+		}
 	}, [SingleBlog?._id, dispatch]);
 
 	const handelQuerySearch = (details: paginateType) => {

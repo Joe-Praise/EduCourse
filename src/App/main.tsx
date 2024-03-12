@@ -6,13 +6,18 @@ import { Provider } from 'react-redux';
 // import createAppStore from '../redux/store.ts';
 // import { store } from '@/store/store.ts';
 import { store } from '../redux/store.ts';
+// import Toastify from '../components/shared/Toastify.tsx';
+import NotificationProvider from './NotificationProvider.tsx';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
 	// <React.StrictMode>
 	<Provider store={store}>
-		<BrowserRouter>
-			<AppContainer />
-		</BrowserRouter>
+		<NotificationProvider>
+			<BrowserRouter>
+				<AppContainer />
+			</BrowserRouter>
+			{/* <Toastify /> */}
+		</NotificationProvider>
 	</Provider>
 	// </React.StrictMode>
 );

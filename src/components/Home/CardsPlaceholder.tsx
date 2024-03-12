@@ -12,7 +12,7 @@ interface sectionProps {
 
 const CardsPlaceholder: FC<sectionProps> = (props) => {
 	return (
-		<div className='my-[5rem]'>
+		<section className='my-[5rem]'>
 			<div className='flex justify-between items-center my-4'>
 				<div>
 					<h1>{props.title}</h1>
@@ -25,7 +25,7 @@ const CardsPlaceholder: FC<sectionProps> = (props) => {
 				/>
 			</div>
 			<div className={`grid my-3 ${props.className}`}>{props.children}</div>
-		</div>
+		</section>
 	);
 };
 

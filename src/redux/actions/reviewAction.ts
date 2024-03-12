@@ -3,6 +3,11 @@ import * as api from '../api/reviewApi';
 import * as types from '../constants/reviewConstants';
 import { AppDispatch, RootState } from '../store';
 import { paginateType } from '../sharedTypes';
+import {
+	dispatchErrorHandler,
+	dispatchSuccessHandler,
+	throwErrorHandler,
+} from '../../util/helperFunctions/helper';
 
 type GetCourseReviewSuccessAction = {
 	type: typeof types.GET_COURSE_REVIEW_SUCCESS;
@@ -66,17 +71,21 @@ export const getCoursesReviewAction =
 	async (dispatch: AppDispatch) => {
 		try {
 			const response = await api.getCourseReviews(details, courseId);
-			const data = response;
-			// console.log('coming from reviewAction api call', data, courseId);
+			const { error, data } = response;
+
+			throwErrorHandler(error);
+
 			dispatch({
 				type: types.GET_COURSE_REVIEW_SUCCESS,
 				payload: data,
 			});
-		} catch (error) {
-			dispatch({
-				type: types.GET_COURSE_REVIEW_FAIL,
-				payload: error,
-			});
+		} catch (error: any) {
+			dispatchErrorHandler(dispatch, error.message);
+
+			// dispatch({
+			// 	type: types.GET_COURSE_REVIEW_FAIL,
+			// 	payload: error.message,
+			// });
 		}
 	};
 
@@ -85,17 +94,23 @@ export const createCourseReviewAction =
 	async (dispatch: AppDispatch) => {
 		try {
 			const response = await api.createCourseReview(payload, courseId);
-			const data = response;
+			const { error, data } = response;
+
+			throwErrorHandler(error);
 
 			dispatch({
 				type: types.CREATE_COURSE_REVIEW_SUCCESS,
 				payload: data,
 			});
-		} catch (error) {
-			dispatch({
-				type: types.CREATE_COURSE_REVIEW_FAIL,
-				payload: error,
-			});
+
+			dispatchSuccessHandler(dispatch, 'Thank you for your feedback!');
+		} catch (error: any) {
+			dispatchErrorHandler(dispatch, error.message);
+
+			// dispatch({
+			// 	type: types.CREATE_COURSE_REVIEW_FAIL,
+			// 	payload: error.message,
+			// });
 		}
 	};
 
@@ -104,16 +119,21 @@ export const deleteReviewAction =
 	async (dispatch: AppDispatch) => {
 		try {
 			const response = await api.deleteReview(reviewId);
-			const data = response;
+			const { error, data } = response;
+
+			throwErrorHandler(error);
 
 			dispatch({
 				type: types.DELETE_REVIEW_SUCCESS,
 				payload: data,
 			});
-		} catch (error) {
-			dispatch({
-				type: types.DELETE_REVIEW_FAIL,
-				payload: error,
-			});
+
+			dispatchSuccessHandler(dispatch, 'Delete Successful!');
+		} catch (error: any) {
+			dispatchErrorHandler(dispatch, error.message);
+			// dispatch({
+			// 	type: types.DELETE_REVIEW_FAIL,
+			// 	payload: error.message,
+			// });
 		}
 	};

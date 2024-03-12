@@ -3,10 +3,7 @@ import LayoutHeader from '../../widgets/LayoutHeader/LayoutHeader';
 import LayoutFooter from '../../widgets/LayoutFooter/LayoutFooter';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/reducers';
-import {
-	getCoursesAction,
-	getMyLearningCourseAction,
-} from '../../redux/actions/courseAction';
+import { getMyLearningCourseAction } from '../../redux/actions/courseAction';
 import { AppDispatch } from '../../redux/store';
 import { OmittedCategoryDataType } from '../../redux/api/categoryApi';
 import { OmittedInstructorDataType } from '../../redux/api/instructorApi';
@@ -20,6 +17,8 @@ import {
 import CourseCard from '../../components/Course/CourseCard';
 import Pagination from '../../components/shared/Pagination';
 import { paginateType } from '../../redux/sharedTypes';
+import CourseCardLoading from '../../components/Course/CourseCardLoading';
+import LoadingPulse from '../../components/shared/LoadingPulse';
 
 interface progressType {
 	completed: 'in progress' | 'completed';
@@ -42,7 +41,7 @@ const MyLearning: FC = () => {
 		(state: RootState) => state.instructor.instructors
 	);
 	const courseState = useSelector((state: RootState) => state.course);
-	const metaData = courseState.course.metaData;
+	const metaData = courseState.myLearning.metaData;
 	const queryFilterState = courseState.queryFilter;
 	const myLearningCourses = courseState.myLearning;
 
@@ -66,9 +65,14 @@ const MyLearning: FC = () => {
 
 	useEffect(() => {}, [activeLayout, setActiveLayout]);
 
+	const handelQuerySearch = (details: paginateType) => {
+		const queryStr = formQueryStr(queryFilterState);
+		dispatch(getMyLearningCourseAction(details, userId, queryStr));
+	};
+
 	useEffect(() => {
 		if (initializeRef.current) {
-			dispatch(getMyLearningCourseAction(userId));
+			dispatch(getMyLearningCourseAction({ page: '1', limit: '8' }, userId));
 			dispatch(getCategoryAction({ page: '1', limit }, 'course'));
 			dispatch(getInstructorAction({ page: '1', limit }));
 			initializeRef.current = false;
@@ -79,7 +83,8 @@ const MyLearning: FC = () => {
 		if (queryFilterState) {
 			const handelQuerySearch = () => {
 				const queryStr = formQueryStr(queryFilterState);
-				dispatch(getMyLearningCourseAction(userId, queryStr));
+				const details = { page: '1', limit: '8' };
+				dispatch(getMyLearningCourseAction(details, userId, queryStr));
 			};
 			handelQuerySearch();
 		}
@@ -109,8 +114,31 @@ const MyLearning: FC = () => {
 		},
 	];
 
-	const handelQuerySearch = (details: paginateType, queryString: string) => {
-		dispatch(getCoursesAction(details, queryString));
+	const arr = Array.from({ length: 8 }, (_v, i) => i);
+	const handleMyLearningDisplay = () => {
+		if (myLearningCourses?.data?.length < 1) {
+			return (
+				<>
+					{arr.map((_el, index) => (
+						<LoadingPulse key={index}>
+							<CourseCardLoading />
+						</LoadingPulse>
+					))}
+				</>
+			);
+		} else {
+			return (
+				<>
+					{myLearningCourses?.data?.map((el: any, idx: number) => {
+						return (
+							<div key={idx} className='basis-[24%]'>
+								<CourseCard activeLayout={activeLayout} {...el} />
+							</div>
+						);
+					})}
+				</>
+			);
+		}
 	};
 
 	return (
@@ -125,7 +153,6 @@ const MyLearning: FC = () => {
 								<DropDown
 									{...item}
 									key={index}
-									// handleQuerySearch={handelQuerySearch}
 									index={index}
 									arrLength={arr.length}
 								/>
@@ -147,13 +174,7 @@ const MyLearning: FC = () => {
 					</div>
 				</div>
 				<div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 my-16'>
-					{myLearningCourses?.data?.map((el: any, idx: number) => {
-						return (
-							<div key={idx} className='basis-[24%]'>
-								<CourseCard activeLayout={activeLayout} {...el} />
-							</div>
-						);
-					})}
+					{handleMyLearningDisplay()}
 				</div>
 
 				<div className='my-3'>
@@ -171,3 +192,18 @@ const MyLearning: FC = () => {
 };
 
 export default MyLearning;
+
+// const handelQuerySearch = (details: paginateType) => {
+// 	const queryStr = formQueryStr(queryFilterState);
+// 	dispatch(getMyLearningCourseAction(details, userId, queryStr));
+// };
+
+// if (queryFilterState) {
+// 	const handelQuerySearch = () => {
+// 		const queryStr = formQueryStr(queryFilterState);
+// 		dispatch(
+// 			getMyLearningCourseAction({ page: '1', limit: '8' }, userId, queryStr)
+// 		);
+// 	};
+// 	handelQuerySearch();
+// }

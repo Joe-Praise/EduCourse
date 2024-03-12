@@ -8,6 +8,7 @@ import {
 	LectureCourse,
 	SingleBlog,
 	MyLearning,
+	FrequentlyAsked,
 } from './pages/index';
 
 export const publicRoutes = [
@@ -24,6 +25,16 @@ export const publicRoutes = [
 	{
 		path: '/blogs',
 		component: Blog,
+		children: [
+			{
+				path: ':slug',
+				component: SingleBlog,
+			},
+		],
+	},
+	{
+		path: '/faqs',
+		component: FrequentlyAsked,
 		children: [
 			{
 				path: ':slug',

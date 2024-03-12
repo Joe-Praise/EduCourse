@@ -53,7 +53,9 @@ const BlogCard = (props: Iprop) => {
 							: 'basis-full flex justify-between flex-col'
 					}`}
 				>
-					<p className='text-lg font-bold my-1'>{blog.title}</p>
+					<p className='text-lg font-bold my-1'>
+						{truncateValue(blog?.title, true, 28)}
+					</p>
 
 					<div className='flex items-center gap-1'>
 						<FaRegCalendarAlt className='fill-[#45A5CD]' />

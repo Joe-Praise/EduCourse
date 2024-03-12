@@ -34,7 +34,7 @@ const Accordion: FC<{ content: accordionType }> = ({ content }) => {
 				className='flex w-full items-center flex-wrap'
 				onClick={() => setAccordionOpen((prevState) => !prevState)}
 			>
-				<div className='basis-full flex justify-between'>
+				<div className='basis-full flex justify-between items-center'>
 					<span className=''>{content?.title}</span>
 
 					<span className=''>
