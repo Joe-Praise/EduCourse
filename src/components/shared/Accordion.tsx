@@ -1,14 +1,19 @@
-import { FC, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { AccordionBtnIcon } from '../../assets/Svg';
-import AccordionBtn from './AccordionBtn';
+import { AccordionBtn } from './';
 import { accordionType } from '../../pages/Courses/courseType';
 
 const showCheckBoxRegex = [/\/courses\/([^/]+)\/lecture\/[a-zA-Z0-9]+$/].map(
 	(regex) => new RegExp(regex)
 );
 
-const Accordion: FC<{ content: accordionType }> = ({ content }) => {
+interface Iprop {
+	content: accordionType;
+}
+
+const Accordion = (props: Iprop) => {
+	const { content } = props;
 	/**
 	 * isMainCourse: is used to check if the url permitted to watch videos
 	 */

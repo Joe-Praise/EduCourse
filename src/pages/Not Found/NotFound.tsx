@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { NotFoundPage } from '../../assets/Svg';
-import Button from '../../components/shared/Button';
+import { Button } from '../../components/shared';
 
 const NotFound: FC = () => {
 	return (

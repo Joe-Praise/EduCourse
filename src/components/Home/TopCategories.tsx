@@ -1,15 +1,14 @@
-import { FC, useEffect } from 'react';
-import CardsPlaceholder from './CardsPlaceholder';
-import TopCategoryCard from './TopCategoryCard';
+import { useEffect } from 'react';
+import { CardsPlaceholder, TopCategoryCard } from './';
 import { AppDispatch } from '../../redux/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCategoryAction } from '../../redux/actions/categoryAction';
 import { RootState } from '../../redux/reducers';
-import LoadingEffect from '../shared/LoadingEffect';
+import { LoadingEffect } from '../shared';
 import { categoryType } from '../../redux/api/categoryApi';
 import { capitalizeFirstLetters } from '../../util/helperFunctions/helper';
 
-const TopCategories: FC = () => {
+const TopCategories = () => {
 	const dispatch: AppDispatch = useDispatch();
 	const categories = useSelector(
 		(state: RootState) => state.category.categories

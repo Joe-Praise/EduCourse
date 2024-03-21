@@ -102,6 +102,9 @@ export const getSingleBlogAction =
 	(slug: any): BlogThunk =>
 	async (dispatch: AppDispatch) => {
 		try {
+			dispatch({
+				type: types.GET_SINGLE_BLOG_FAIL,
+			});
 			let data: any = {};
 			const { error, data: blogData } = await api.getBlogBySlug(slug);
 

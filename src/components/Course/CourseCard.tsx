@@ -1,5 +1,4 @@
-import { FC } from 'react';
-import WhiteBackground from '../shared/WhiteBackground';
+import { WhiteBackground } from '../shared';
 import { IoMdTime } from 'react-icons/io';
 import { FaGraduationCap } from 'react-icons/fa6';
 import { Link } from 'react-router-dom';
@@ -8,7 +7,18 @@ import { handleDateFormat } from '../../util/helperFunctions/dateFormatter';
 import config from '../../../config';
 import { formatAmount, truncateValue } from '../../util/helperFunctions/helper';
 
-const CourseCard: FC<courseCardType> = (props) => {
+const CourseCard = (props: courseCardType) => {
+	const {
+		activeLayout,
+		slug,
+		imageCover,
+		title,
+		instructors,
+		createdAt,
+		studentsQuantity,
+		price,
+		category,
+	} = props;
 	// type test = {
 	// 	name: string;
 	// 	age: number;
@@ -27,33 +37,31 @@ const CourseCard: FC<courseCardType> = (props) => {
 	return (
 		<WhiteBackground
 			className={`rounded-b-none my-0 w-full px-0 shadow-md hover:scale-105 duration-150 h-full ${
-				props?.activeLayout === 'grid' ? 'sm:my-0' : 'my-5'
+				activeLayout === 'grid' ? 'sm:my-0' : 'my-5'
 			}`}
 		>
 			<Link
-				to={`/courses/${props.slug}`}
+				to={`/courses/${slug}`}
 				className={`flex hover:text-effect-active relative ${
-					props?.activeLayout === 'grid' ? ' flex-col' : 'flex-row md:h-[11rem]'
+					activeLayout === 'grid' ? ' flex-col' : 'flex-row md:h-[11rem]'
 				}`}
 			>
 				<div
 					className={`relative ${
-						props?.activeLayout === 'grid'
-							? 'pb-[12rem]'
-							: 'pr-[8rem] md:pr-[14rem]'
+						activeLayout === 'grid' ? 'pb-[12rem]' : 'pr-[8rem] md:pr-[14rem]'
 					}`}
 				>
 					<figure
 						className={`${
-							props?.activeLayout === 'grid' ? 'h-full' : 'basis-[50%] h-full'
+							activeLayout === 'grid' ? 'h-full' : 'basis-[50%] h-full'
 						}`}
 					>
 						<img
-							src={`${config.baseUrl}/course/${props?.imageCover}`}
-							alt={`${props?.title}'s cover image`}
+							src={`${config.baseUrl}/course/${imageCover}`}
+							alt={`${title}'s cover image`}
 							loading='lazy'
 							className={`absolute top-0 w-full object-cover object-bottom ${
-								props?.activeLayout === 'grid'
+								activeLayout === 'grid'
 									? 'rounded-t-lg h-48'
 									: 'rounded-l-lg h-full'
 							}`}
@@ -62,36 +70,33 @@ const CourseCard: FC<courseCardType> = (props) => {
 				</div>
 				<div
 					className={`p-3 ${
-						props?.activeLayout === 'grid'
+						activeLayout === 'grid'
 							? 'basis-[50%]'
 							: 'basis-full flex justify-between flex-col'
 					}`}
 				>
 					<small>
-						by{' '}
-						<span className='font-bold'>
-							{props?.instructors[0]?.userId?.name}
-						</span>
+						by <span className='font-bold'>{instructors[0]?.userId?.name}</span>
 					</small>
 					<p className='text-lg font-bold my-1'>
-						{truncateValue(props?.title, true, 29)}
+						{truncateValue(title, true, 29)}
 					</p>
 
 					<div
 						className={`items-center gap-3 text-sm ${
-							props?.activeLayout === 'grid' ? 'flex' : 'block'
+							activeLayout === 'grid' ? 'flex' : 'block'
 						}`}
 					>
 						<div className='flex items-center gap-1'>
 							<IoMdTime className='fill-effect-active' />
-							<span>{handleDateFormat(props?.createdAt)}</span>
+							<span>{handleDateFormat(createdAt)}</span>
 						</div>
 
 						<div className='flex items-center gap-1'>
 							<FaGraduationCap className='fill-effect-active' />
 							<span>
-								{props?.studentsQuantity}{' '}
-								{+props?.studentsQuantity > 1 ? 'students' : 'student'}
+								{studentsQuantity}{' '}
+								{+studentsQuantity > 1 ? 'students' : 'student'}
 							</span>
 						</div>
 					</div>
@@ -102,7 +107,7 @@ const CourseCard: FC<courseCardType> = (props) => {
 						<div className='flex items-center justify-between mt-1'>
 							<p>
 								<span className='line-through text-secondary-light'>
-									${formatAmount(props?.price)}
+									${formatAmount(price)}
 								</span>{' '}
 								<span className='text-green-500'>Free</span>
 							</p>
@@ -114,7 +119,7 @@ const CourseCard: FC<courseCardType> = (props) => {
 					</div>
 				</div>
 				<div className='badge'>
-					<span className='text-xs'>{props?.category?.name}</span>
+					<span className='text-xs'>{category?.name}</span>
 				</div>
 			</Link>
 		</WhiteBackground>

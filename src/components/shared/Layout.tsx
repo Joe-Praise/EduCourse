@@ -1,8 +1,7 @@
-import { FC } from 'react';
 import SignUpForm from '../Signin/Form';
 import img from '../../assets/image/card2.jpg';
 
-const Layout: FC = () => {
+const Layout = () => {
 	return (
 		<section className='flex w-full h-full  gap-[0] m-0 '>
 			<div className='flex-1 flex justify-center items-center'>

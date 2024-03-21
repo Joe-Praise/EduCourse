@@ -223,7 +223,20 @@ export const getAutoCompleteAllCourse = async (
 ): Promise<ApiResponse> => {
 	try {
 		const { data } = await API.get<ApiResponse>(
-			`/api/v1/courses/autocomplete?query=${queryString}`
+			`/api/v1/courses/autocomplete?q=${queryString}`
+		);
+		return data;
+	} catch (error) {
+		return handleApiError(error);
+	}
+};
+
+export const getAutoCompleteMyLearning = async (
+	queryString: Partial<string>
+): Promise<ApiResponse> => {
+	try {
+		const { data } = await API.get<ApiResponse>(
+			`/api/v1/courses/localSearch?q=${queryString}`
 		);
 		return data;
 	} catch (error) {

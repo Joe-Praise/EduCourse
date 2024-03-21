@@ -44,6 +44,7 @@ const HeaderContainer = (props: Iprop) => {
 			category,
 			instructors,
 			slug,
+			totalLessons,
 		},
 		isEnrolled,
 	} = props;
@@ -81,7 +82,7 @@ const HeaderContainer = (props: Iprop) => {
 		},
 		{
 			title: 'Lessons',
-			total: '20',
+			total: totalLessons + '',
 			icon: FaFile,
 		},
 		{

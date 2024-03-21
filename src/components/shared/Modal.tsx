@@ -1,6 +1,6 @@
 import { ReactNode, useImperativeHandle, useRef } from 'react';
 import { forwardRef } from 'react';
-import Button from './Button';
+import { Button } from './';
 import { IoClose } from 'react-icons/io5';
 import { ModalRef } from '../../pages/Main Course/LectureType';
 interface Iprop {

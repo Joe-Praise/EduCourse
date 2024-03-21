@@ -1,13 +1,15 @@
-import { FC } from 'react';
-
-const Hamburger: FC<{
+interface Iprop {
 	toggleHamburger: () => void;
 	HamburgerState: boolean;
-}> = (props) => {
-	const isClosed = props.HamburgerState;
+}
+
+const Hamburger = (props: Iprop) => {
+	const { toggleHamburger, HamburgerState } = props;
+
+	const isClosed = HamburgerState;
 
 	return (
-		<button onClick={props.toggleHamburger} className='cursor-pointer p-3'>
+		<button onClick={toggleHamburger} className='cursor-pointer p-3'>
 			<div
 				className={`w-7 h-[3px] bg-black duration-75 ${
 					isClosed && 'rotate-45 translate-y-[0.2rem]'

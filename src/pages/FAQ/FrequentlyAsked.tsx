@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import FaqAccordion from '../../components/Faq/FaqAccordion';
+import { FaqAccordion } from '../../components/Faq';
 
 interface Iprop {
 	question: string;

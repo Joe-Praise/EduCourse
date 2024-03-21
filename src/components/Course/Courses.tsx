@@ -1,13 +1,13 @@
-import { FC, useEffect } from 'react';
+import { useEffect } from 'react';
 import CourseCard from './CourseCard';
 import CardsPlaceholder from '../Home/CardsPlaceholder';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../redux/store';
 import { getCoursesAction } from '../../redux/actions/courseAction';
-import LoadingPulse from '../shared/LoadingPulse';
+import { LoadingPulse } from '../shared';
 import CourseCardLoading from './CourseCardLoading';
 
-const Courses: FC = () => {
+const Courses = () => {
 	const dispatch: AppDispatch = useDispatch();
 	const coursesData = useSelector((state: RootState) => state.course.course);
 

@@ -1,10 +1,11 @@
-import { FC, ReactNode } from 'react';
-interface props {
+import { ReactNode } from 'react';
+interface Iprop {
 	img: string;
 	children: ReactNode;
 }
 
-const BigBanner: FC<props> = ({ img, children }) => {
+const BigBanner = (props: Iprop) => {
+	const { img, children } = props;
 	return (
 		<div className='w-full h-[33.875rem] relative mb-3'>
 			<img

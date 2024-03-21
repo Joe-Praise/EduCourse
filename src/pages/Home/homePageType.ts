@@ -35,10 +35,11 @@ interface courseCard {
 	slug: string;
 	__v: number;
 	id: string;
+	totalLessons: number;
 	activeLayout: any;
 }
 
-export type courseCardType = Omit<courseCard, '__v'>;
+export type courseCardType = Omit<courseCard, '__v active'>;
 
 export interface Category {
 	_id: string;

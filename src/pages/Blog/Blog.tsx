@@ -1,12 +1,14 @@
 import { ChangeEvent, FC, useEffect, useRef, useState } from 'react';
-import FilterStructure from '../../components/shared/FilterStructure';
-import FilterActionMenu from '../../components/shared/FilterActionMenu';
-import BlogCard from '../../components/Blog/BlogCard';
+import {
+	FilterActionMenu,
+	FilterStructure,
+	Pagination,
+} from '../../components/shared';
+import { BlogCard } from '../../components/Blog';
 import { useDispatch, useSelector } from 'react-redux';
 import { setFilter } from '../../redux/actions/courseAction';
 import { AppDispatch, RootState } from '../../redux/store';
 import { FaFilter } from 'react-icons/fa';
-import Pagination from '../../components/shared/Pagination';
 import useDebounce from '../../hooks/UseDebounce';
 import {
 	getAutoCompleteAllBlogAction,

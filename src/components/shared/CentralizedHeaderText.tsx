@@ -1,9 +1,8 @@
-import { FC } from 'react';
-import WhiteBackground from './WhiteBackground';
 import { bannerTextType } from '../../pages/Home/homePageType';
-import LinkBtn from './LinkBtn';
+import { LinkBtn, WhiteBackground } from './';
 
-const CentralizedHeaderText: FC<bannerTextType> = ({ title, body }) => {
+const CentralizedHeaderText = (props: bannerTextType) => {
+	const { title, body } = props;
 	return (
 		<div className='w-[85%] sm:w-[55%] lg:w-[40%] absolute top-28 left-8'>
 			<WhiteBackground className='p-5'>

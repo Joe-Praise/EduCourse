@@ -92,6 +92,9 @@ export const getSingleCourseAction =
 	(slug: any): CourseThunk =>
 	async (dispatch: AppDispatch) => {
 		try {
+			dispatch({
+				type: types.GET_SINGLE_COURSE_FAIL,
+			});
 			const userId = getLocalStorage('profile')?.user?._id;
 			let data: any = {};
 			const {
@@ -197,6 +200,9 @@ export const getMyLearningCourseAction =
 	): CourseThunk =>
 	async (dispatch: AppDispatch) => {
 		try {
+			// dispatch({
+			// 	type: types.RESET_MY_LEARNING_COURSE,
+			// });
 			// let query: any = {};
 			const response = await api.getMyLearningCourse(
 				details,
@@ -204,6 +210,8 @@ export const getMyLearningCourseAction =
 				queryString
 			);
 			const { error } = response;
+
+			console.log('course action', error);
 
 			throwErrorHandler(error);
 
@@ -225,10 +233,10 @@ export const getMyLearningCourseAction =
 			// console.log('error');
 			// handleError(error.message, dispatch);
 			dispatchErrorHandler(dispatch, error.message);
-			// dispatch({
-			// 	type: types.GET_MY_LEARNING_COURSE_FAIL,
-			// 	payload: error.message,
-			// });
+			dispatch({
+				type: types.GET_MY_LEARNING_COURSE_FAIL,
+				payload: error.message,
+			});
 		}
 	};
 
@@ -254,9 +262,42 @@ export const getAutoCompleteAllCourseAction =
 		}
 	};
 
+export const getAutoCompleteMyLearningAction =
+	(queryString: string): CourseThunk =>
+	async (dispatch: AppDispatch) => {
+		try {
+			const response = await api.getAutoCompleteMyLearning(queryString);
+			const { error, data } = response;
+
+			throwErrorHandler(error);
+
+			dispatch({
+				type: types.GET_AUTO_COMPLETE_MY_LEARNING_SUCCESS,
+				payload: data,
+			});
+		} catch (error: any) {
+			dispatch({
+				type: types.GET_AUTO_COMPLETE_MY_LEARNING_FAIL,
+				payload: error.message,
+			});
+		}
+	};
+
 export const resetAutoCompleteAction = () => {
 	return {
-		type: types.GET_AUTO_COMPLETE_ALL_COURSE_FAIL,
+		type: types.RESET_AUTO_COMPLETE_ALL_COURSE,
+	};
+};
+
+export const resetMyLearningAutoCompleteAction = () => {
+	return {
+		type: types.RESET_AUTO_COMPLETE_MY_LEARNING,
+	};
+};
+
+export const resetMyLearningCourses = () => {
+	return {
+		type: types.RESET_MY_LEARNING_COURSE,
 	};
 };
 

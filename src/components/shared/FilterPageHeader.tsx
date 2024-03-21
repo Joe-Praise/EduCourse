@@ -1,5 +1,5 @@
-import { ChangeEvent, FC } from 'react';
-import SearchAndLayout from './SearchAndLayout';
+import { ChangeEvent } from 'react';
+import { SearchAndLayout } from './';
 import { autocompleteType } from '../../redux/sharedTypes';
 
 interface headerType {
@@ -11,16 +11,24 @@ interface headerType {
 	redirectFunc: (_: autocompleteType) => void;
 }
 
-const FilterPageHeader: FC<headerType> = (props) => {
+const FilterPageHeader = (props: headerType) => {
+	const {
+		searchFunc,
+		layoutFunc,
+		activeLayout,
+		autocomplete,
+		redirectFunc,
+		title,
+	} = props;
 	return (
 		<div className='flex justify-between flex-wrap items-end sticky top-0 z-20 bg-white p-3 shadow-lg'>
-			<h1 className='basis-full sm:basis-auto'>{props.title}</h1>
+			<h1 className='basis-full sm:basis-auto'>{title}</h1>
 			<SearchAndLayout
-				handleSearch={props.searchFunc}
-				handleLayout={props.layoutFunc}
-				activeLayout={props.activeLayout}
-				autocomplete={props.autocomplete}
-				redirectFunc={props.redirectFunc}
+				handleSearch={searchFunc}
+				handleLayout={layoutFunc}
+				activeLayout={activeLayout}
+				autocomplete={autocomplete}
+				redirectFunc={redirectFunc}
 			/>
 		</div>
 	);

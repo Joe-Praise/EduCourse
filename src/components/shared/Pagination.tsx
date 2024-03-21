@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { metaData, paginateType } from '../../redux/sharedTypes';
 
 interface Iprop {
@@ -7,7 +7,7 @@ interface Iprop {
 	queryString: string;
 }
 
-const Pagination: FC<Iprop> = (props) => {
+const Pagination = (props: Iprop) => {
 	const { metaData, handlePagination, queryString } = props;
 	const [pages, setPages] = useState<number[]>([]);
 	const [activePage, setActivePage] = useState(metaData?.page || 1);
@@ -16,7 +16,7 @@ const Pagination: FC<Iprop> = (props) => {
 
 	const buildPages = useCallback(() => {
 		let start = 1,
-			end = pageCount < 5 ? pageCount : 1;
+			end = pageCount > 5 ? pageCount / 2 : pageCount;
 
 		if (activePage > 3 && activePage < pageCount - 3) {
 			start = activePage - 2;
@@ -25,7 +25,7 @@ const Pagination: FC<Iprop> = (props) => {
 
 		if (pageCount > 5 && activePage > pageCount - 5) {
 			start = pageCount - 5;
-			end = pageCount;
+			end = pageCount - 1;
 		}
 
 		const newPages = [];
@@ -75,8 +75,8 @@ const Pagination: FC<Iprop> = (props) => {
 						{page}
 					</button>
 				))}
-				{activePage < pageCount - 4 && <span>...</span>}
-				{pageCount > 5 && activePage < pageCount && (
+				{activePage < pageCount - 2 && <span>...</span>}
+				{pageCount > 5 && (
 					<button
 						className={`${isActive(
 							pageCount

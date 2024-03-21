@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import RenderIf from './RenderIf';
+import { RenderIf } from './';
 import { MdCheckBox, MdCheckBoxOutlineBlank } from 'react-icons/md';
 import { FaLock } from 'react-icons/fa6';
 import { useDispatch } from 'react-redux';
