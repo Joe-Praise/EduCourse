@@ -87,18 +87,16 @@ const contacUsDetails: contactUs[] = [
 	},
 ];
 
+const eduContenttext =
+	"Unlock the door to boundless knowledge and skill enhancement with EduCourse, your premier destination for online education. Whether you're a passionate learner seeking tobroaden your horizons or a professional aiming to stay ahead in a rapidly evolving world, we're here to empower your journey.";
+
 const LayoutFooter: FC = () => {
 	return (
 		<div className='px-3 sm:px-0 py-4 bg-effect-active text-white'>
 			<div className='flex sm:justify-between flex-wrap sm:w-11/12 sm:mx-auto pb-4'>
 				<div className='basis-full sm:basis-[30%] mt-3'>
 					<Logo />
-					<p>
-						Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum
-						facilis porro pariatur iste suscipit quaerat repellendus molestiae
-						amet vero veritatis, doloribus error reiciendis nisi corrupti
-						temporibus ipsam. Non, rerum! Natus!
-					</p>
+					<p>{eduContenttext}</p>
 				</div>
 				<div className='mt-3 basis-[20%]'>
 					<LinksList link={link1} />

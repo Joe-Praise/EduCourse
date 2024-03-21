@@ -47,13 +47,11 @@ const ReviewCourse = (props: Iprop) => {
 		// TODO: check if the response was successful then display message accordingnly
 		setTimeout(() => {
 			setLodaing(false);
-			// setRegards(true);
-		}, 2800);
-		setTimeout(() => {
 			reviewTextRef.current!.value = '';
-			setActiveRating(3);
+			// setRegards(true);
 			onCloseModal();
-		}, 3000);
+			setActiveRating(3);
+		}, 800);
 	};
 
 	const handleDisplayRegards = () => {

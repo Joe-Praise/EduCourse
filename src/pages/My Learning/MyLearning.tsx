@@ -3,22 +3,25 @@ import LayoutHeader from '../../widgets/LayoutHeader/LayoutHeader';
 import LayoutFooter from '../../widgets/LayoutFooter/LayoutFooter';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/reducers';
-import { getMyLearningCourseAction } from '../../redux/actions/courseAction';
+import {
+	getAutoCompleteMyLearningAction,
+	getMyLearningCourseAction,
+	resetMyLearningAutoCompleteAction,
+} from '../../redux/actions/courseAction';
 import { AppDispatch } from '../../redux/store';
 import { OmittedCategoryDataType } from '../../redux/api/categoryApi';
 import { OmittedInstructorDataType } from '../../redux/api/instructorApi';
 import { getCategoryAction } from '../../redux/actions/categoryAction';
 import { getInstructorAction } from '../../redux/actions/instructorAction';
-import DropDown from '../../components/shared/DropDown';
+import { DropDown, Pagination, LoadingPulse } from '../../components/shared';
 import {
 	formQueryStr,
 	getLocalStorage,
 } from '../../util/helperFunctions/helper';
-import CourseCard from '../../components/Course/CourseCard';
-import Pagination from '../../components/shared/Pagination';
+import { CourseCard, CourseCardLoading } from '../../components/Course';
 import { paginateType } from '../../redux/sharedTypes';
-import CourseCardLoading from '../../components/Course/CourseCardLoading';
-import LoadingPulse from '../../components/shared/LoadingPulse';
+import useDebounce from '../../hooks/UseDebounce';
+import { Link } from 'react-router-dom';
 
 interface progressType {
 	completed: 'in progress' | 'completed';
@@ -35,6 +38,7 @@ export interface dropDownTypes {
 
 const MyLearning: FC = () => {
 	const dispatch: AppDispatch = useDispatch();
+	const limit = '50';
 	const initializeRef = useRef(true);
 	const category = useSelector((state: RootState) => state.category.categories);
 	const instructor = useSelector(
@@ -44,22 +48,26 @@ const MyLearning: FC = () => {
 	const metaData = courseState.myLearning.metaData;
 	const queryFilterState = courseState.queryFilter;
 	const myLearningCourses = courseState.myLearning;
+	const myLearningSearch = courseState.myLearningAutoComplete;
+	const loading = courseState.loading;
+	const notification = courseState.notification;
 
 	const [activeLayout, setActiveLayout] = useState('grid');
+	const [search, setSearch] = useState('');
+	const debouncedSearch = useDebounce(search);
 
 	const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
-		console.log(e.target.value);
+		setSearch(e.target.value);
 	};
 
-	const limit = '50';
+	useEffect(() => {
+		if (debouncedSearch.length <= 2) {
+			dispatch(resetMyLearningAutoCompleteAction());
+			return;
+		}
 
-	// const handleLayoutChange = (value: string) => {
-	// 	setActiveLayout(value);
-	// };
-
-	// const handleCloseFilterOnMobile = () => {
-	// 	dispatch(setFilter());
-	// };
+		dispatch(getAutoCompleteMyLearningAction(debouncedSearch));
+	}, [dispatch, debouncedSearch]);
 
 	const userId = getLocalStorage('profile')?.user?._id;
 
@@ -104,31 +112,47 @@ const MyLearning: FC = () => {
 			items: [
 				{
 					name: 'in progress',
-					_id: 'false',
+					_id: 'inprogress',
 				},
 				{
 					name: 'completed',
-					_id: 'true',
+					_id: 'completed',
 				},
 			],
 		},
 	];
 
+	console.log(notification);
+
+	/**
+	 * THIS FUNCTION HANDELES THE DISPLAY OF THE CARDS */
 	const arr = Array.from({ length: 8 }, (_v, i) => i);
 	const handleMyLearningDisplay = () => {
-		if (myLearningCourses?.data?.length < 1) {
+		if (myLearningSearch?.length > 0 && !loading && !notification.length) {
 			return (
-				<>
+				<div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 my-16'>
+					{myLearningSearch?.map((el: any, idx: number) => {
+						return (
+							<div key={idx} className='basis-[24%]'>
+								<CourseCard activeLayout={activeLayout} {...el} />
+							</div>
+						);
+					})}
+				</div>
+			);
+		} else if (loading && !notification.length) {
+			return (
+				<div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 my-16'>
 					{arr.map((_el, index) => (
 						<LoadingPulse key={index}>
 							<CourseCardLoading />
 						</LoadingPulse>
 					))}
-				</>
+				</div>
 			);
-		} else {
+		} else if (myLearningCourses?.data?.length > 0 && !loading) {
 			return (
-				<>
+				<div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 my-16'>
 					{myLearningCourses?.data?.map((el: any, idx: number) => {
 						return (
 							<div key={idx} className='basis-[24%]'>
@@ -136,10 +160,33 @@ const MyLearning: FC = () => {
 							</div>
 						);
 					})}
-				</>
+				</div>
+			);
+		} else if (myLearningCourses.length < 1 && notification.length) {
+			return (
+				<div className='flex flex-col gap-2 justify-center items-center h-[20vw] uppercase'>
+					<h1 className='text-xlg text-center'>
+						You haven&apos;t completed any course yet!
+					</h1>
+					<Link to={'/courses'} className='underline text-lg'>
+						Explore Courses
+					</Link>
+				</div>
+			);
+		} else {
+			return (
+				<div className='flex flex-col gap-2 justify-center items-center h-[20vw] uppercase'>
+					<h1 className='text-xlg text-center'>
+						Have you Registered for a course?
+					</h1>
+					<Link to={'/courses'} className='underline text-lg'>
+						Explore Courses
+					</Link>
+				</div>
 			);
 		}
 	};
+	// ENDS HERE
 
 	return (
 		<section className='layoutHightWithGrid'>
@@ -173,9 +220,8 @@ const MyLearning: FC = () => {
 						</form>
 					</div>
 				</div>
-				<div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 my-16'>
-					{handleMyLearningDisplay()}
-				</div>
+
+				<>{handleMyLearningDisplay()}</>
 
 				<div className='my-3'>
 					<Pagination

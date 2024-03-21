@@ -1,4 +1,4 @@
-import { FC, ReactNode, useState } from 'react';
+import { ReactNode, useState } from 'react';
 
 type tabheaderType = {
 	Overview: string;
@@ -8,13 +8,14 @@ type tabheaderType = {
 };
 
 type Jsx = ReactNode;
-
-const TabContainer: FC<{
+interface Iprop {
 	children1: Jsx;
 	children2: Jsx;
 	children3: Jsx;
 	children4: Jsx;
-}> = (props) => {
+}
+
+const TabContainer = (props: Iprop) => {
 	const { children1, children2, children3, children4 } = props;
 	const [activeView, setActiveView] = useState<string>('Overview');
 

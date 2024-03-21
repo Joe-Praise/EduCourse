@@ -1,15 +1,17 @@
 import { FC, useEffect } from 'react';
-import Curriculum from '../../components/Single Course/Curriculum';
-import HeaderContainer from '../../components/Single Course/HeaderContainer';
-import Instructor from '../../components/Single Course/Instructor';
-import OverView from '../../components/Single Course/OverView';
-import Reviews from '../../components/Single Course/Reviews';
-import TabContainer from '../../components/Single Course/TabContainer';
+import {
+	Curriculum,
+	HeaderContainer,
+	Instructor,
+	OverView,
+	Reviews,
+	TabContainer,
+} from '../../components/Single Course';
+import { LoadingEffect } from '../../components/shared';
 import { useParams } from 'react-router-dom';
 import { AppDispatch, RootState } from '../../redux/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { getSingleCourseAction } from '../../redux/actions/courseAction';
-import LoadingEffect from '../../components/shared/LoadingEffect';
 
 const SingleCourse: FC = () => {
 	const dispatch: AppDispatch = useDispatch();

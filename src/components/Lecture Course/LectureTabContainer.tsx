@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { useState } from 'react';
 
 type tabheaderType = {
 	CourseContent: string | undefined;
@@ -9,7 +9,7 @@ type tabheaderType = {
 
 import { lectureType } from '../../pages/Main Course/LectureType';
 
-const LectureTabContainer: FC<lectureType> = (props) => {
+const LectureTabContainer = (props: lectureType) => {
 	const {
 		children1,
 		children2,

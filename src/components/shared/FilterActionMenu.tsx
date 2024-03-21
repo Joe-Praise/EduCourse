@@ -1,11 +1,12 @@
-import { FC } from 'react';
+import { FilterActionList } from './';
 
-import FilterActionList from './FilterActionList';
-
-const FilterActionMenu: FC<{
+interface Iprop {
 	header: string;
 	values: any[];
-}> = ({ header, values }) => {
+}
+
+const FilterActionMenu = (props: Iprop) => {
+	const { header, values } = props;
 	return (
 		<div className='w-[95%] mx-auto my-3'>
 			<h1 className='text-sm'>{header}</h1>

@@ -1,9 +1,6 @@
-// import { IoClose } from 'react-icons/io5';
-import Button from './Button';
-import { copyToClipBoard } from '../../util/helperFunctions/helper';
-import PopUp from './PopUp';
-import RenderIf from './RenderIf';
 import { useState } from 'react';
+import { copyToClipBoard } from '../../util/helperFunctions/helper';
+import { RenderIf, PopUp, Button } from './';
 
 interface Iprop {
 	title: string;

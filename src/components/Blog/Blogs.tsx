@@ -1,4 +1,4 @@
-import { FC, useEffect } from 'react';
+import { useEffect } from 'react';
 import CardsPlaceholder from '../Home/CardsPlaceholder';
 import BlogCard from './BlogCard';
 import { AppDispatch, RootState } from '../../redux/store';
@@ -6,9 +6,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getBlogsAction } from '../../redux/actions/blogAction';
 import { singleBlogType } from '../../redux/api/blogApi';
 import BlogCardLoading from './BlogCardLoading';
-import LoadingPulse from '../shared/LoadingPulse';
+import { LoadingPulse } from '../shared';
 
-const Blogs: FC = () => {
+const Blogs = () => {
 	const dispatch: AppDispatch = useDispatch();
 	const blogData = useSelector((state: RootState) => state.blog.blog);
 

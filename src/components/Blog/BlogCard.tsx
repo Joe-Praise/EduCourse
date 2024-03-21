@@ -1,4 +1,4 @@
-import WhiteBackground from '../shared/WhiteBackground';
+import { WhiteBackground } from '../shared';
 import { FaRegCalendarAlt } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { handleDateFormat } from '../../util/helperFunctions/dateFormatter';

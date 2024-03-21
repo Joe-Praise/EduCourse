@@ -71,13 +71,13 @@ export const getCoursesReviewAction =
 	async (dispatch: AppDispatch) => {
 		try {
 			const response = await api.getCourseReviews(details, courseId);
-			const { error, data } = response;
+			const { error } = response;
 
 			throwErrorHandler(error);
 
 			dispatch({
 				type: types.GET_COURSE_REVIEW_SUCCESS,
-				payload: data,
+				payload: response,
 			});
 		} catch (error: any) {
 			dispatchErrorHandler(dispatch, error.message);
@@ -94,13 +94,13 @@ export const createCourseReviewAction =
 	async (dispatch: AppDispatch) => {
 		try {
 			const response = await api.createCourseReview(payload, courseId);
-			const { error, data } = response;
+			const { error } = response;
 
 			throwErrorHandler(error);
 
 			dispatch({
 				type: types.CREATE_COURSE_REVIEW_SUCCESS,
-				payload: data,
+				payload: response,
 			});
 
 			dispatchSuccessHandler(dispatch, 'Thank you for your feedback!');
@@ -119,13 +119,13 @@ export const deleteReviewAction =
 	async (dispatch: AppDispatch) => {
 		try {
 			const response = await api.deleteReview(reviewId);
-			const { error, data } = response;
+			const { error } = response;
 
 			throwErrorHandler(error);
 
 			dispatch({
 				type: types.DELETE_REVIEW_SUCCESS,
-				payload: data,
+				payload: response,
 			});
 
 			dispatchSuccessHandler(dispatch, 'Delete Successful!');

@@ -1,7 +1,6 @@
-import { FC } from 'react';
-import DetailsCard from './DetailsCard';
+import { DetailsCard } from './';
 
-const Details: FC = () => {
+const Details = () => {
 	interface cardProps {
 		total: string;
 		title: string;

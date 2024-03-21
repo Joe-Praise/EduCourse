@@ -9,10 +9,12 @@ export type courseState = {
 	lectureCourse: SingleCourseType[];
 	myLearning: courseType;
 	autoComplete: autocompleteType[];
+	myLearningAutoComplete: autocompleteType[];
 	videoId: string;
 	courseError: string;
 	notification: [];
 	queryFilter: {};
+	loading: boolean;
 };
 
 /**
@@ -48,8 +50,10 @@ const initialState: courseState = {
 		data: [],
 	},
 	autoComplete: [],
+	myLearningAutoComplete: [],
 	notification: [],
 	videoId: '',
+	loading: true,
 };
 
 const courseSlice = (state = initialState, action: any) => {
@@ -63,11 +67,13 @@ const courseSlice = (state = initialState, action: any) => {
 		case types.GET_COURSES_SUCCESS:
 			return {
 				...state,
+				loading: false,
 				course: payload,
 			};
 		case types.GET_COURSES_FAIL:
 			return {
 				...state,
+				loading: true,
 				course: {
 					status: '',
 					metaData: {
@@ -82,39 +88,51 @@ const courseSlice = (state = initialState, action: any) => {
 		case types.GET_SINGLE_COURSE_SUCCESS:
 			return {
 				...state,
+				loading: false,
 				singleCourse: payload,
 			};
 		case types.GET_SINGLE_COURSE_FAIL:
 			return {
 				...state,
+				loading: true,
 				singleCourse: [],
 			};
 		case types.GET_LECTURE_COURSE_SUCCESS:
 			return {
 				...state,
+				loading: false,
 				lectureCourse: payload,
 				videoId: handleVideoId(payload.modules),
 			};
 		case types.GET_LECTURE_COURSE_FAIL:
 			return {
 				...state,
+				loading: true,
 				lectureCourse: [],
 			};
 		case types.GET_MY_LEARNING_COURSE_SUCCESS:
 			return {
 				...state,
+				loading: false,
 				myLearning: payload,
 			};
 		case types.GET_MY_LEARNING_COURSE_FAIL:
 			return {
 				...state,
+				loading: true,
 				myLearning: [],
 				notification: payload,
+			};
+		case types.RESET_MY_LEARNING_COURSE:
+			return {
+				...state,
+				myLearning: [],
 			};
 		case types.CREATE_LECTURE_COURSE_SUCCESS:
 			// TODO: TEST THIS TO SEE THE OUTCOME
 			return {
 				...state,
+				loading: false,
 				// course: {
 				// 	...state.course,
 				// 	metaData: {
@@ -129,17 +147,42 @@ const courseSlice = (state = initialState, action: any) => {
 		case types.CREATE_LECTURE_COURSE_FAIL:
 			return {
 				...state,
+				loading: true,
 				notification: payload,
 			};
 		case types.GET_AUTO_COMPLETE_ALL_COURSE_SUCCESS:
 			return {
 				...state,
+				loading: true,
 				autoComplete: payload,
 			};
 		case types.GET_AUTO_COMPLETE_ALL_COURSE_FAIL:
 			return {
 				...state,
+				loading: true,
 				autoComplete: [],
+			};
+		case types.RESET_AUTO_COMPLETE_ALL_COURSE:
+			return {
+				...state,
+				autoComplete: [],
+			};
+		case types.GET_AUTO_COMPLETE_MY_LEARNING_SUCCESS:
+			return {
+				...state,
+				loading: false,
+				myLearningAutoComplete: payload,
+			};
+		case types.GET_AUTO_COMPLETE_MY_LEARNING_FAIL:
+			return {
+				...state,
+				loading: true,
+				myLearningAutoComplete: [],
+			};
+		case types.RESET_AUTO_COMPLETE_MY_LEARNING:
+			return {
+				...state,
+				myLearningAutoComplete: [],
 			};
 		case types.SET_QUERY_FILTER:
 			return {

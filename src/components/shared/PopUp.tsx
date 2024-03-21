@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import RenderIf from './RenderIf';
+import { RenderIf } from './';
 
 type Iprop = {
 	message: string;

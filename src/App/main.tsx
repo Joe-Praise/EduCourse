@@ -13,10 +13,10 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 	// <React.StrictMode>
 	<Provider store={store}>
 		<NotificationProvider>
+			{/* <Toastify /> */}
 			<BrowserRouter>
 				<AppContainer />
 			</BrowserRouter>
-			{/* <Toastify /> */}
 		</NotificationProvider>
 	</Provider>
 	// </React.StrictMode>

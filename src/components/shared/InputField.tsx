@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import RenderIf from '../shared/RenderIf';
+import { RenderIf } from './';
 import Eye from '../svg/eye';
 import EyeOff from '../svg/eye-off';
 import { LuAsterisk } from 'react-icons/lu';

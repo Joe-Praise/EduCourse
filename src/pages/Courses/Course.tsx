@@ -1,7 +1,10 @@
 import { ChangeEvent, FC, useEffect, useRef, useState } from 'react';
-import FilterStructure from '../../components/shared/FilterStructure';
-import FilterActionMenu from '../../components/shared/FilterActionMenu';
-import CourseCard from '../../components/Course/CourseCard';
+import {
+	FilterStructure,
+	FilterActionMenu,
+	Pagination,
+} from '../../components/shared';
+import { CourseCard, CourseCardLoading } from '../../components/Course';
 import { FaFilter } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -18,12 +21,9 @@ import { getInstructorAction } from '../../redux/actions/instructorAction';
 import { OmittedInstructorDataType } from '../../redux/api/instructorApi';
 import useDebounce from '../../hooks/UseDebounce';
 import { formQueryStr } from '../../util/helperFunctions/helper';
-import Pagination from '../../components/shared/Pagination';
 import { autocompleteType, paginateType } from '../../redux/sharedTypes';
-// import LoadingEffect from '../../components/shared/LoadingEffect';
 import { useLocation, useNavigate } from 'react-router-dom';
 import LoadingPulse from '../../components/shared/LoadingPulse';
-import CourseCardLoading from '../../components/Course/CourseCardLoading';
 
 const Course: FC = () => {
 	const dispatch: AppDispatch = useDispatch();
@@ -48,8 +48,7 @@ const Course: FC = () => {
 	const debouncedSearch = useDebounce(search);
 
 	const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
-		const value = e.target.value;
-		setSearch(value);
+		setSearch(e.target.value);
 	};
 
 	const handleLayoutChange = (value: string) => {

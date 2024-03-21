@@ -2,8 +2,12 @@ import { FC, useEffect } from 'react';
 import { headerbadge } from '../../components/Single Course/HeaderContainer';
 import { FaRegCalendar, FaUser } from 'react-icons/fa';
 import { LiaCommentsSolid } from 'react-icons/lia';
-import Tags from '../../components/Single Blog/Tags';
-import Comment from '../../components/shared/Comment';
+import {
+	Tags,
+	BlogHeader,
+	BlogCommentCard,
+} from '../../components/Single Blog';
+import { Comment, LoadingEffect, Pagination } from '../../components/shared';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../redux/store';
@@ -12,15 +16,11 @@ import {
 	getBlogCommentsAction,
 	getSingleBlogAction,
 } from '../../redux/actions/blogAction';
-import BlogHeader from '../../components/Single Blog/BlogHeader';
 import { handleDateFormat } from '../../util/helperFunctions/dateFormatter';
 import config from '../../../config';
 import useFormatText from '../../hooks/UseFormatText';
-import BlogCommentCard from '../../components/Single Blog/BlogCommentCard';
-import Pagination from '../../components/shared/Pagination';
 import { paginateType } from '../../redux/sharedTypes';
 import { blogCommentType } from '../../redux/api/blogApi';
-import LoadingEffect from '../../components/shared/LoadingEffect';
 
 const SingleBlog: FC = () => {
 	/**

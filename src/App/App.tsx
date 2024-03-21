@@ -21,7 +21,9 @@ const App: FC = () => {
 
 	return (
 		<Fragment>
-			<Toastify />
+			<div className='absolute'>
+				<Toastify />
+			</div>
 			<ScrollToTop />
 			<Routes>
 				<Route path='/' element={<Layout />}>

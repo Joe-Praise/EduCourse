@@ -19,7 +19,6 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/reducers';
 import { ModuleType } from '../../redux/actions/courseAction';
 import config from '../../../config';
-// import { lectureType } from '../../pages/Main Course/LectureType';
 
 interface Iprop {
 	onWindowSize: number;
@@ -72,16 +71,10 @@ const LectureHeader = (props: Iprop) => {
 	useEffect(() => {
 		if (modules?.length > 0) {
 			const TotalNoOfModules = (modules: ModuleType[]) => {
-				const lessonsCopy: any = [];
-
-				for (let i = 0; i < modules.length; i++) {
-					lessonsCopy.push(modules[i].lessons);
-				}
-
-				const reveal = lessonsCopy.flatMap((el: any) => el);
+				const summary = modules.flatMap((el) => el.lessons);
 				setLessonSummary({
-					total: reveal?.length,
-					completed: Math.round(reveal?.length / 2),
+					total: summary?.length,
+					completed: Math.round(summary?.length / 2),
 				});
 			};
 			TotalNoOfModules(modules);

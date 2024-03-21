@@ -1,10 +1,10 @@
-import { ChangeEvent, FC, ReactNode } from 'react';
-import FilterPageHeader from './FilterPageHeader';
+import { ChangeEvent, ReactNode } from 'react';
+import { FilterPageHeader } from './';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
 import { autocompleteType } from '../../redux/sharedTypes';
 
-const FilterStructure: FC<{
+interface Iprop {
 	title: string;
 	searchFunc: (_: ChangeEvent<HTMLInputElement>) => void;
 	layoutFunc: (_: string) => void;
@@ -14,17 +14,20 @@ const FilterStructure: FC<{
 	activeLayout: string;
 	autocomplete: autocompleteType[];
 	redirectFunc: (_: autocompleteType) => void;
-}> = ({
-	title,
-	searchFunc,
-	layoutFunc,
-	children1,
-	children2,
-	children3,
-	activeLayout,
-	autocomplete,
-	redirectFunc,
-}) => {
+}
+
+const FilterStructure = (props: Iprop) => {
+	const {
+		title,
+		searchFunc,
+		layoutFunc,
+		children1,
+		children2,
+		children3,
+		activeLayout,
+		autocomplete,
+		redirectFunc,
+	} = props;
 	// const handelQuerySearch = (details: )=> {
 
 	// }

@@ -2,7 +2,7 @@ import { FC, useEffect, useState } from 'react';
 import VideoSection from '../../components/Lecture Course/VideoSection';
 import LayoutFooter from '../../widgets/LayoutFooter/LayoutFooter';
 import { IoClose } from 'react-icons/io5';
-import RenderIf from '../../components/shared/RenderIf';
+import { RenderIf, Accordion, LoadingEffect } from '../../components/shared';
 import { FaArrowLeft } from 'react-icons/fa';
 import LectureHeader from '../../components/Lecture Course/LectureHeader';
 import OverView from '../../components/Single Course/OverView';
@@ -19,8 +19,6 @@ import {
 	lectureCourseType,
 } from '../../redux/actions/courseAction';
 import { getLocalStorage } from '../../util/helperFunctions/helper';
-import Accordion from '../../components/shared/Accordion';
-import LoadingEffect from '../../components/shared/LoadingEffect';
 
 const LectureCourse: FC = () => {
 	const { slug, courseId } = useParams<{ courseId: string; slug: string }>();
@@ -85,6 +83,7 @@ const LectureCourse: FC = () => {
 
 			{lectureCourse?.course?._id ? (
 				<div className='flex relative overflow-hidden '>
+					{/* LEFT HAND SIDE OF THE PAGE THAT CONTAINS THE VIDEO, TABS AND FOOTER */}
 					<div
 						className={`min-h-screen  lg:basis-9/12 bg-gray-50 ${
 							hideCourseContent ? 'flex-1 transition-all' : ''
@@ -105,6 +104,9 @@ const LectureCourse: FC = () => {
 						/>
 						<LayoutFooter />
 					</div>
+					{/* ENDS HERE; */}
+
+					{/* RIGHT HAND SECTION THAT HOLD S THE CONTENT MODULES */}
 					<div
 						className={`hidden lg:block min-h-screen max-h-screen overflow-auto md:fixed w-[25%] bg-white right-0 transition-all  ${
 							hideCourseContent ? 'translate-x-96' : ''
@@ -127,6 +129,7 @@ const LectureCourse: FC = () => {
 							})}
 						</div>
 					</div>
+					{/* ENDS HERE */}
 
 					{/* the popup button that shows when menu is closed */}
 					<RenderIf condition={hideCourseContent}>

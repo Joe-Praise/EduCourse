@@ -1,14 +1,12 @@
-import React, { FC, useRef } from 'react';
-import Button from './Button';
-// import { AppDispatch } from '../../redux/store';
-// import { useDispatch } from 'react-redux';
+import React, { useRef } from 'react';
+import { Button } from './';
 
 type func = {
 	onCommentvalue: (_: string) => void;
 };
-const Comment: FC<func> = ({ onCommentvalue }) => {
-	// const dispatch: AppDispatch = useDispatch();
-	// const initializeRef = useRef(true);
+const Comment = (props: func) => {
+	const { onCommentvalue } = props;
+
 	const commentRef = useRef<HTMLTextAreaElement>(null);
 
 	const handleComment = (event: React.FormEvent) => {

@@ -1,7 +1,7 @@
-import { FC, ReactNode } from 'react';
-import LinkBtn from '../shared/LinkBtn';
+import { ReactNode } from 'react';
+import { LinkBtn } from '../shared';
 
-interface sectionProps {
+interface Iprop {
 	className: string;
 	title: string;
 	description: string;
@@ -10,21 +10,22 @@ interface sectionProps {
 	children: ReactNode;
 }
 
-const CardsPlaceholder: FC<sectionProps> = (props) => {
+const CardsPlaceholder = (props: Iprop) => {
+	const { className, title, description, path, btnValue, children } = props;
 	return (
 		<section className='my-[5rem]'>
 			<div className='flex justify-between items-center my-4'>
 				<div>
-					<h1>{props.title}</h1>
-					<p>{props.description}</p>
+					<h1>{title}</h1>
+					<p>{description}</p>
 				</div>
 				<LinkBtn
 					className='block py-1 hover:text-effect-hover hover:border-effect-hover'
-					value={props.btnValue}
-					path={props.path}
+					value={btnValue}
+					path={path}
 				/>
 			</div>
-			<div className={`grid my-3 ${props.className}`}>{props.children}</div>
+			<div className={`grid my-3 ${className}`}>{children}</div>
 		</section>
 	);
 };
