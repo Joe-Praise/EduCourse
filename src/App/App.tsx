@@ -2,14 +2,12 @@ import { FC, Fragment } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import Layout from './Layout/Layout';
 import Home from '../pages/Home/Home';
-
 import { useSelector } from 'react-redux';
 import { RootState } from '../redux/reducers';
-
 import { authRoutes, protectedRoutes, publicRoutes } from '../Routes';
 import PrivateRoutes from './PrivateRoutes';
 import NotFound from '../pages/Not Found/NotFound';
-import Toastify from '../components/shared/Toastify';
+import { Toastify } from '../components/shared';
 import ScrollToTop from '../util/ScrollToTop';
 
 // import the admin login page with lazy loading
