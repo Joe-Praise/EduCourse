@@ -184,7 +184,7 @@ export const createLectureCourseAction =
 			navigate(`/courses/${slug}/lecture/${id}`);
 		} catch (error: any) {
 			dispatchErrorHandler(dispatch, error.message);
-			navigate(`/signup`);
+			navigate(`/signin`);
 			// dispatch({
 			// 	type: types.CREATE_LECTURE_COURSE_FAIL,
 			// 	payload: error.message,
@@ -210,8 +210,6 @@ export const getMyLearningCourseAction =
 				queryString
 			);
 			const { error } = response;
-
-			console.log('course action', error);
 
 			throwErrorHandler(error);
 

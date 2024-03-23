@@ -122,13 +122,21 @@ const MyLearning: FC = () => {
 		},
 	];
 
-	console.log(notification);
-
 	/**
 	 * THIS FUNCTION HANDELES THE DISPLAY OF THE CARDS */
 	const arr = Array.from({ length: 8 }, (_v, i) => i);
 	const handleMyLearningDisplay = () => {
-		if (myLearningSearch?.length > 0 && !loading && !notification.length) {
+		if (loading && !notification.length) {
+			return (
+				<div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 my-16'>
+					{arr.map((_el, index) => (
+						<LoadingPulse key={index}>
+							<CourseCardLoading />
+						</LoadingPulse>
+					))}
+				</div>
+			);
+		} else if (myLearningSearch?.length > 0 && !loading) {
 			return (
 				<div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 my-16'>
 					{myLearningSearch?.map((el: any, idx: number) => {
@@ -138,16 +146,6 @@ const MyLearning: FC = () => {
 							</div>
 						);
 					})}
-				</div>
-			);
-		} else if (loading && !notification.length) {
-			return (
-				<div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 my-16'>
-					{arr.map((_el, index) => (
-						<LoadingPulse key={index}>
-							<CourseCardLoading />
-						</LoadingPulse>
-					))}
 				</div>
 			);
 		} else if (myLearningCourses?.data?.length > 0 && !loading) {
