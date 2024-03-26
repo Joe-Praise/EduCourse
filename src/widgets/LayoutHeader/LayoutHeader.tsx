@@ -21,6 +21,11 @@ const LayoutHeader: FC = () => {
 	// const userData = useSelector((state: RootState) => state.auth);
 	// console.log(userData);
 
+	// takes out an element from an array
+	const takeOut = (arr: linkType[], id: number) => {
+		return arr.filter((el) => el.id !== id);
+	};
+
 	const {
 		modal: toggleDropdown,
 		handleModal: handleToggleDropdown,
@@ -30,8 +35,7 @@ const LayoutHeader: FC = () => {
 	const { modal: HamburgerState, handleModal: handleToggleHamburger } =
 		useHandleModal();
 
-	// const [user] = useState(false);
-	const leftLnks: linkType[] = [
+	const leftLinks: linkType[] = [
 		{
 			id: 1,
 			name: 'Home',
@@ -128,6 +132,10 @@ const LayoutHeader: FC = () => {
 			path: '/contactus',
 		},
 	];
+
+	// takes out the fourth element from the leftLinks array(my learning)
+	const loopFrom = userDetails ? leftLinks : takeOut(leftLinks, 4);
+	const loopFromMobile = userDetails ? leftLinks : takeOut(mobileNav, 4);
 
 	const handleLogoutFunctionality = () => {
 		dispatch(logoutAction(navigate));
@@ -301,7 +309,7 @@ const LayoutHeader: FC = () => {
 							Navigation
 						</h1>
 						<ul className='w-full gap-1 sm:flex lg:gap-2'>
-							{mobileNav?.map((el) => (
+							{loopFromMobile?.map((el) => (
 								<li
 									key={el.id}
 									className='w-full rounded-md hover:underline hover:underline-offset-4  uppercase'
@@ -354,7 +362,7 @@ const LayoutHeader: FC = () => {
 
 					<div className='hidden sm:flex justify-between items-center basis-full'>
 						<ul className='basis-auto gap-1 sm:flex lg:gap-2'>
-							{leftLnks?.map((el) => (
+							{loopFrom?.map((el) => (
 								<li key={el.id} className='w-auto'>
 									<NavLink
 										to={el.path}

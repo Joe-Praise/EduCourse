@@ -1,5 +1,4 @@
 import { FC, useEffect } from 'react';
-
 import { Outlet, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setInitialAuthState } from '../redux/actions/authAction';
@@ -21,9 +20,9 @@ const PrivateRoutes: FC<privateRoutetype> = ({ user }) => {
 
 	useEffect(() => {
 		if (!isAuthenticatedUser) {
-			if (loading) {
-				dispatch(setInitialAuthState(navigate));
-			}
+			// if (loading) {
+			dispatch(setInitialAuthState(navigate));
+			// }
 		}
 	}, [dispatch, isAuthenticatedUser, loading, navigate]);
 

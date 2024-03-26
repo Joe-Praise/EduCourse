@@ -162,7 +162,7 @@ const MyLearning: FC = () => {
 			);
 		} else if (myLearningCourses.length < 1 && notification.length) {
 			return (
-				<div className='flex flex-col gap-2 justify-center items-center h-[20vw] uppercase'>
+				<div className='flex flex-col gap-2 justify-center items-center h-[110vw] md:h-[25vw] uppercase'>
 					<h1 className='text-xlg text-center'>
 						You haven&apos;t completed any course yet!
 					</h1>
@@ -173,7 +173,7 @@ const MyLearning: FC = () => {
 			);
 		} else {
 			return (
-				<div className='flex flex-col gap-2 justify-center items-center h-[20vw] uppercase'>
+				<div className='flex flex-col gap-2 justify-center items-center h-[110vw] md:h-[25vw] uppercase'>
 					<h1 className='text-xlg text-center'>
 						Have you Registered for a course?
 					</h1>
@@ -191,8 +191,8 @@ const MyLearning: FC = () => {
 			<LayoutHeader />
 			<div className='mt-5 w-[90%] sm:w-[75%] mx-auto'>
 				<h1>My Learning</h1>
-				<div className='m-2 flex flex-col flex-wrap justify-between md:flex-row gap-6 items-baseline'>
-					<div className='order-2 md:order-1 flex gap-5'>
+				<div className='md:m-2 flex flex-col flex-wrap justify-between md:flex-row gap-6 items-baseline'>
+					<div className='order-2 text-sm md:text-base md:order-1 flex gap-2 md:gap-5'>
 						{dropDown.map((item, index, arr) => {
 							return (
 								<DropDown
