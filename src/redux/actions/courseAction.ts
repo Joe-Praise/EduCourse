@@ -331,3 +331,14 @@ export const removeVideoId = () => {
 		type: types.REMOVE_VIDEO_ID,
 	};
 };
+
+export const setLoadingAction = () => {
+	return {
+		type: types.SET_LOADING,
+	};
+};
+export const resetLoadingAction = () => {
+	return {
+		type: types.RESET_LOADING,
+	};
+};

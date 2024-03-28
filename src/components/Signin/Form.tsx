@@ -111,7 +111,7 @@ const SigninForm: FC = () => {
 
 							<div className='flex justify-between items-center flex-wrap mt-5 gap-3 sm:gap-0'>
 								<Button href='/signup' className='underline'>
-									Dont&apos;t an account? {'>'} Sign up
+									Don&apos;t an account? {'>'} Sign up
 								</Button>
 								<Button href='/' className='underline'>
 									Return to home page

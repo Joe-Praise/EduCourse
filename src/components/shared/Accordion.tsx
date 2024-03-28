@@ -36,7 +36,7 @@ const Accordion = (props: Iprop) => {
 			} `}
 		>
 			<button
-				className='flex w-full items-center flex-wrap'
+				className={`flex w-full items-center flex-wrap`}
 				onClick={() => setAccordionOpen((prevState) => !prevState)}
 			>
 				<div className='basis-full flex justify-between items-center'>
@@ -50,7 +50,7 @@ const Accordion = (props: Iprop) => {
 					<span className='hidden md:inline-block'>
 						{content?.lessons.length} lessons
 					</span>
-					<span className='hidden md:inline-block'>45 mins</span>
+					{/* <span className='hidden md:inline-block'>45 mins</span> */}
 				</div>
 			</button>
 			<div

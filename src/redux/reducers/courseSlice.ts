@@ -17,10 +17,6 @@ export type courseState = {
 	loading: boolean;
 };
 
-/**
- * TODO: Handle Error if fetching data does not work. Both single course and all courses
- */
-
 const initialState: courseState = {
 	filterState: false,
 	queryFilter: {},
@@ -206,6 +202,16 @@ const courseSlice = (state = initialState, action: any) => {
 			return {
 				...state,
 				videoId: '',
+			};
+		case types.SET_LOADING:
+			return {
+				...state,
+				loading: true,
+			};
+		case types.RESET_LOADING:
+			return {
+				...state,
+				loading: false,
 			};
 		default:
 			return state;

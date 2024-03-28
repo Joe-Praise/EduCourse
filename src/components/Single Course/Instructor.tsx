@@ -1,7 +1,6 @@
 // import SocialMedia from '../../widgets/LayoutFooter/SocialMedia';
 import { FaGraduationCap } from 'react-icons/fa';
 import { FaFile } from 'react-icons/fa6';
-import { FC } from 'react';
 import config from '../../../config';
 import useFormatText from '../../hooks/UseFormatText';
 import SocialMedia from '../../widgets/LayoutFooter/SocialMedia';
@@ -29,7 +28,12 @@ export interface LinkType {
 	url: string;
 }
 
-const Instructor: FC<{ instructors: InstructorType[] }> = ({ instructors }) => {
+interface Iprop {
+	instructors: InstructorType[];
+}
+
+const Instructor = (props: Iprop) => {
+	const { instructors } = props;
 	const { formatText } = useFormatText();
 	return (
 		<div>
@@ -49,7 +53,7 @@ const Instructor: FC<{ instructors: InstructorType[] }> = ({ instructors }) => {
 								<div className='my-3'>
 									<div className='flex items-center gap-1'>
 										<FaGraduationCap />
-										<span>150 students</span>
+										<span>30 students</span>
 									</div>
 									<div className='flex items-center gap-1'>
 										<FaFile />

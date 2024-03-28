@@ -10,10 +10,9 @@ interface Iprop {
 const Pagination = (props: Iprop) => {
 	const { metaData, handlePagination, queryString } = props;
 	const [pages, setPages] = useState<number[]>([]);
-	const [activePage, setActivePage] = useState(metaData?.page || 1);
+	const [activePage, setActivePage] = useState(metaData?.page);
 
 	const pageCount = metaData?.totalPages;
-
 	const buildPages = useCallback(() => {
 		let start = 1,
 			end = pageCount > 5 ? pageCount / 2 : pageCount;
@@ -47,7 +46,10 @@ const Pagination = (props: Iprop) => {
 		return handlePagination(details, queryString);
 	};
 
-	const isActive = (page: number) => (activePage === page ? 'active' : '');
+	// const isActive = (page: number) => {
+	// 	// console.log(page, activePage);
+	// 	activePage === page ? 'active' : '';
+	// };
 
 	useEffect(() => buildPages(), [activePage, buildPages]);
 	return (
@@ -56,31 +58,33 @@ const Pagination = (props: Iprop) => {
 				{activePage > 3 && (
 					<button
 						onClick={() => onChange(1)}
-						className={`${isActive(
-							pageCount
-						)} w-9 h-9 border rounded-full flex justify-center items-center cursor-pointer duration-150 hover:bg-black hover:text-white`}
+						className={`${
+							activePage === 1 ? 'active' : ''
+						}  w-9 h-9 border rounded-full flex justify-center items-center cursor-pointer duration-150 hover:bg-black hover:text-white`}
 					>
 						{1}
 					</button>
 				)}
 				{activePage >= 4 && <span>...</span>}
-				{pages.map((page) => (
-					<button
-						key={page}
-						className={`${isActive(
-							page
-						)} w-9 h-9 border rounded-full flex justify-center items-center cursor-pointer duration-150 hover:bg-black hover:text-white`}
-						onClick={() => onChange(page)}
-					>
-						{page}
-					</button>
-				))}
+				{pages.map((page) => {
+					return (
+						<button
+							key={page}
+							className={`${
+								activePage === page ? 'active' : ''
+							} w-9 h-9 border rounded-full flex justify-center items-center cursor-pointer duration-150 hover:bg-black hover:text-white`}
+							onClick={() => onChange(page)}
+						>
+							{page}
+						</button>
+					);
+				})}
 				{activePage < pageCount - 2 && <span>...</span>}
 				{pageCount > 5 && (
 					<button
-						className={`${isActive(
-							pageCount
-						)} w-9 h-9 border rounded-full flex justify-center items-center cursor-pointer duration-150 hover:bg-black hover:text-white`}
+						className={`${
+							activePage === pageCount ? 'active' : ''
+						}  w-9 h-9 border rounded-full flex justify-center items-center cursor-pointer duration-150 hover:bg-black hover:text-white`}
 						onClick={() => onChange(pageCount)}
 					>
 						{pageCount}

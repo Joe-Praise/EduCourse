@@ -15,7 +15,7 @@ const FormLayout = (props: IProps) => {
 				{children}
 			</div>
 			<figure
-				className={`bg-black md:w-1/2 lg:basis-2/5 hidden md:block ${imgDiv}`}
+				className={`bg-black md:w-1/2 lg:basis-[45%] hidden md:block ${imgDiv}`}
 			>
 				<img
 					src={img}
