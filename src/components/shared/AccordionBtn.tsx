@@ -34,15 +34,18 @@ const AccordionBtn = (props: Iprop) => {
 	return (
 		<li onClick={() => isMainCourse && handleChange(item)}>
 			<button
-				className={`flex items-center justify-between cursor-pointer p-2 active:bg-effect-focus active:text-white w-full ${
+				className={`flex items-center justify-between cursor-pointer py-3 active:bg-effect-focus active:text-white w-full ${
 					isMainCourse ? '' : 'border-none'
 				} `}
 			>
-				<div className='flex gap-3 items-center'>
-					<RenderIf condition={isMainCourse}>
-						{isChecked ? <MdCheckBox /> : <MdCheckBoxOutlineBlank />}
-					</RenderIf>
-					<span>{item.title}</span>
+				<div className='flex gap-3 items-center justify-start  text-left'>
+					<div className=''>
+						<RenderIf condition={isMainCourse}>
+							{isChecked ? <MdCheckBox /> : <MdCheckBoxOutlineBlank />}
+						</RenderIf>
+					</div>
+
+					<p>{item.title}</p>
 				</div>
 				<div className='text-xs flex items-center gap-2'>
 					<span>{item.duration}</span>

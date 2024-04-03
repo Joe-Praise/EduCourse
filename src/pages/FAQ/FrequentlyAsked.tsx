@@ -50,7 +50,7 @@ const FrequentlyAsked: FC<{}> = () => {
 	];
 
 	return (
-		<section className='my-[2rem] md:w-8/12 mx-auto'>
+		<section className='flex justify-center items flex-col md:min-h-[75vh] my-[2rem] md:w-8/12 mx-auto'>
 			<div className=''>
 				<div>
 					<h1>FAQ</h1>

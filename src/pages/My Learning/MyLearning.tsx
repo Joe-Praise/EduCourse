@@ -7,6 +7,7 @@ import {
 	getAutoCompleteMyLearningAction,
 	getMyLearningCourseAction,
 	resetMyLearningAutoCompleteAction,
+	setLoadingAction,
 } from '../../redux/actions/courseAction';
 import { AppDispatch } from '../../redux/store';
 import { OmittedCategoryDataType } from '../../redux/api/categoryApi';
@@ -80,6 +81,7 @@ const MyLearning: FC = () => {
 
 	useEffect(() => {
 		if (initializeRef.current) {
+			dispatch(setLoadingAction());
 			dispatch(getMyLearningCourseAction({ page: '1', limit: '8' }, userId));
 			dispatch(getCategoryAction({ page: '1', limit }, 'course'));
 			dispatch(getInstructorAction({ page: '1', limit }));
@@ -92,6 +94,7 @@ const MyLearning: FC = () => {
 			const handelQuerySearch = () => {
 				const queryStr = formQueryStr(queryFilterState);
 				const details = { page: '1', limit: '8' };
+				dispatch(setLoadingAction());
 				dispatch(getMyLearningCourseAction(details, userId, queryStr));
 			};
 			handelQuerySearch();
@@ -126,7 +129,7 @@ const MyLearning: FC = () => {
 	 * THIS FUNCTION HANDELES THE DISPLAY OF THE CARDS */
 	const arr = Array.from({ length: 8 }, (_v, i) => i);
 	const handleMyLearningDisplay = () => {
-		if (loading && !notification.length) {
+		if (loading && notification.length === 0) {
 			return (
 				<div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 my-16'>
 					{arr.map((_el, index) => (
