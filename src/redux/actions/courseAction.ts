@@ -204,6 +204,7 @@ export const getMyLearningCourseAction =
 			// 	type: types.RESET_MY_LEARNING_COURSE,
 			// });
 			// let query: any = {};
+			dispatch(resetNotification());
 			const response = await api.getMyLearningCourse(
 				details,
 				userId,
@@ -264,6 +265,7 @@ export const getAutoCompleteMyLearningAction =
 	(queryString: string): CourseThunk =>
 	async (dispatch: AppDispatch) => {
 		try {
+			dispatch(resetNotification());
 			const response = await api.getAutoCompleteMyLearning(queryString);
 			const { error, data } = response;
 
@@ -340,5 +342,11 @@ export const setLoadingAction = () => {
 export const resetLoadingAction = () => {
 	return {
 		type: types.RESET_LOADING,
+	};
+};
+
+export const resetNotification = () => {
+	return {
+		type: types.RESET_NOTIFICATION,
 	};
 };

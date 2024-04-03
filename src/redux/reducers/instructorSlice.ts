@@ -3,12 +3,14 @@ import * as types from '../constants/instructorConstants';
 
 export type instructorState = {
 	instructors: OmittedInstructorDataType[];
+	myLearningInstructors: OmittedInstructorDataType[];
 	singleInstructor: OmittedInstructorDataType;
 	instructorError: string;
 };
 
 const initialState: instructorState = {
 	instructors: [],
+	myLearningInstructors: [],
 	singleInstructor: {
 		_id: '',
 		userId: {
@@ -47,6 +49,16 @@ const instructorSlice = (state = initialState, action: any) => {
 			return {
 				...state,
 				instructorError: payload,
+			};
+		case types.GET_MY_LEARNING_INSTRUCTORS_SUCCESS:
+			return {
+				...state,
+				myLearningInstructors: payload,
+			};
+		case types.GET_MY_LEARNING_INSTRUCTORS_FAIL:
+			return {
+				...state,
+				myLearningInstructors: [],
 			};
 		case types.CREATE_INSTRUCTOR_SUCCESS:
 			return {

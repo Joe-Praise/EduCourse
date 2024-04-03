@@ -1,5 +1,6 @@
 import {
 	addNotification,
+	// clearNotification,
 	notificationType,
 } from '../../redux/actions/notification';
 import { user } from '../../redux/api/userApi';

@@ -46,6 +46,19 @@ export const getCategories = async (
 	}
 };
 
+export const getRegisteredCategoriesApi = async <T>(
+	userId: T
+): Promise<ApiResponse> => {
+	try {
+		const { data } = await API.get<ApiResponse>(
+			`/api/v1/category/registered/${userId}`
+		);
+		return data;
+	} catch (error) {
+		return handleApiError(error);
+	}
+};
+
 export const getSingleCategory = async <T>(
 	categoryId: T
 ): Promise<ApiResponse> => {

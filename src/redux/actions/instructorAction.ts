@@ -29,6 +29,16 @@ type GetInstructorsFailAction = {
 	payload: any;
 };
 
+type GetMyLearningInstructorSuccessAction = {
+	type: typeof types.GET_MY_LEARNING_INSTRUCTORS_SUCCESS;
+	payload: any;
+};
+
+type GetMyLearningInstructorFailAction = {
+	type: typeof types.GET_MY_LEARNING_INSTRUCTORS_FAIL;
+	payload: any;
+};
+
 type GetSingleInstructorSuccessAction = {
 	type: typeof types.GET_SINGLE_INSTRUCTOR_SUCCESS;
 	payload: any;
@@ -64,6 +74,8 @@ export type InstructorActionTypes =
 	| CreateInstructorFailAction
 	| GetInstructorsSuccessAction
 	| GetInstructorsFailAction
+	| GetMyLearningInstructorSuccessAction
+	| GetMyLearningInstructorFailAction
 	| GetSingleInstructorSuccessAction
 	| GetSingleInstructorFailAction
 	| UpdateInstructorSuccessAction
@@ -118,6 +130,28 @@ export const getInstructorAction =
 			dispatchErrorHandler(dispatch, error.message);
 			// dispatch({
 			// 	type: types.GET_INSTRUCTORS_FAIL,
+			// 	payload: error,
+			// });
+		}
+	};
+
+export const GetMyLearningInstructorAction =
+	(userId: string): InstructorThunk =>
+	async (dispatch: AppDispatch) => {
+		try {
+			const response = await api.getMyLearningInstructorApi(userId);
+			const { error } = response;
+
+			throwErrorHandler(error);
+
+			dispatch({
+				type: types.GET_MY_LEARNING_INSTRUCTORS_SUCCESS,
+				payload: response,
+			});
+		} catch (error: any) {
+			dispatchErrorHandler(dispatch, error.message);
+			// dispatch({
+			// 	type: types.GET_MY_LEARNING_INSTRUCTORS_FAIL,
 			// 	payload: error,
 			// });
 		}

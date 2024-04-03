@@ -61,7 +61,7 @@ function DropDown(props: Iprop) {
 			});
 			dispatch(removeQueryFilterAction(obj));
 		} else {
-			console.log(data);
+			// console.log(data);
 			dispatch(setQueryFilterAction(obj));
 			setActive(data?._id);
 		}

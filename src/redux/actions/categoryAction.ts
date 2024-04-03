@@ -39,6 +39,16 @@ type GetSingleCategoryFailAction = {
 	payload: any;
 };
 
+type GetRegisteredCategorySuccessAction = {
+	type: typeof types.GET_REGISTERED_CATEGORY_SUCCESS;
+	payload: any;
+};
+
+type GetRegisteredCategoryFailAction = {
+	type: typeof types.GET_REGISTERED_CATEGORY_FAIL;
+	payload: any;
+};
+
 type UpdateCategorySuccessAction = {
 	type: typeof types.UPDATE_CATEGORY_SUCCESS;
 	payload: any;
@@ -64,6 +74,8 @@ export type CategoryActionTypes =
 	| CreateCategoryFailAction
 	| GetCategorySuccessAction
 	| GetCategoryFailAction
+	| GetRegisteredCategorySuccessAction
+	| GetRegisteredCategoryFailAction
 	| GetSingleCategorySuccessAction
 	| GetSingleCategoryFailAction
 	| UpdateCategorySuccessAction
@@ -119,6 +131,28 @@ export const getCategoryAction =
 			dispatchErrorHandler(dispatch, error.message);
 			// dispatch({
 			// 	type: types.GET_CATEGORY_FAIL,
+			// 	payload: error.message,
+			// });
+		}
+	};
+
+export const getRegisteredCategoryAction =
+	(userId: string): CategoryThunk =>
+	async (dispatch: AppDispatch) => {
+		try {
+			const response = await api.getRegisteredCategoriesApi(userId);
+			const { error } = response;
+
+			throwErrorHandler(error);
+
+			dispatch({
+				type: types.GET_REGISTERED_CATEGORY_SUCCESS,
+				payload: response,
+			});
+		} catch (error: any) {
+			dispatchErrorHandler(dispatch, error.message);
+			// dispatch({
+			// 	type: types.GET_REGISTERED_CATEGORY_FAIL,
 			// 	payload: error.message,
 			// });
 		}
