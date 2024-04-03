@@ -165,7 +165,6 @@ export const logoutAction = (navigate: NavigateFunction) => {
 		}
 		return { type: types.LOGOUT };
 	} catch (error: any) {
-		console.log(error.message);
 		return { type: types.LOGOUT, payload: types.ERROR_MESSAGE };
 	}
 };

@@ -213,6 +213,11 @@ const courseSlice = (state = initialState, action: any) => {
 				...state,
 				loading: false,
 			};
+		case types.RESET_NOTIFICATION:
+			return {
+				...state,
+				notification: [],
+			};
 		default:
 			return state;
 	}

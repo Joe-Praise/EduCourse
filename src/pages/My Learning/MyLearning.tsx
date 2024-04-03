@@ -92,9 +92,9 @@ const MyLearning: FC = () => {
 		// setting query comes from dropdown, this triggers the post request to filter for courses
 		if (queryFilterState) {
 			const handelQuerySearch = () => {
+				dispatch(setLoadingAction());
 				const queryStr = formQueryStr(queryFilterState);
 				const details = { page: '1', limit: '8' };
-				dispatch(setLoadingAction());
 				dispatch(getMyLearningCourseAction(details, userId, queryStr));
 			};
 			handelQuerySearch();

@@ -48,14 +48,14 @@ const VideoSection = () => {
 	// 	// console.log(player.getCurrentTime());
 	// };
 
-	const onVideoStateChange: YouTubeProps['onStateChange'] = (event) => {
-		const player = event.target;
-		console.log(player.getDuration());
-		console.log(player.getCurrentTime());
-		if (event.data === 0) {
-			console.log('Data', event.data);
-		}
-	};
+	// const onVideoStateChange: YouTubeProps['onStateChange'] = (event) => {
+	// 	const player = event.target;
+	// 	console.log(player.getDuration());
+	// 	console.log(player.getCurrentTime());
+	// 	if (event.data === 0) {
+	// 		console.log('Data', event.data);
+	// 	}
+	// };
 
 	const opts: YouTubeProps['opts'] = {
 		height: '550',
@@ -71,7 +71,7 @@ const VideoSection = () => {
 			opts={opts}
 			// onReady={onPlayerReady}
 			// onPlay={onPlayerPlay}
-			onStateChange={onVideoStateChange}
+			// onStateChange={onVideoStateChange}
 			className=''
 		/>
 	);

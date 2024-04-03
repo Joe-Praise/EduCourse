@@ -52,3 +52,4 @@ export const SET_VIDEO_ID = 'SET_VIDEO_ID';
 export const REMOVE_VIDEO_ID = 'REMOVE_VIDEO_ID';
 export const SET_LOADING = 'SET_LOADING';
 export const RESET_LOADING = 'RESET_LOADING';
+export const RESET_NOTIFICATION = 'RESET_NOTIFICATION';
