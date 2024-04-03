@@ -61,6 +61,19 @@ export const getInstructors = async (
 	}
 };
 
+export const getMyLearningInstructorApi = async <T>(
+	userId: T
+): Promise<ApiResponse> => {
+	try {
+		const { data } = await API.get<ApiResponse>(
+			`/api/v1/instructors/myLearningInstructors/${userId}`
+		);
+		return data;
+	} catch (error) {
+		return handleApiError(error);
+	}
+};
+
 export const getSingleInstructor = async <T>(
 	instructorId: T
 ): Promise<ApiResponse> => {

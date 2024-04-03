@@ -12,8 +12,8 @@ import {
 import { AppDispatch } from '../../redux/store';
 import { OmittedCategoryDataType } from '../../redux/api/categoryApi';
 import { OmittedInstructorDataType } from '../../redux/api/instructorApi';
-import { getCategoryAction } from '../../redux/actions/categoryAction';
-import { getInstructorAction } from '../../redux/actions/instructorAction';
+import { getRegisteredCategoryAction } from '../../redux/actions/categoryAction';
+import { GetMyLearningInstructorAction } from '../../redux/actions/instructorAction';
 import { DropDown, Pagination, LoadingPulse } from '../../components/shared';
 import {
 	formQueryStr,
@@ -38,14 +38,19 @@ export interface dropDownTypes {
 }
 
 const MyLearning: FC = () => {
+	const userId = getLocalStorage('profile')?.user?._id;
 	const dispatch: AppDispatch = useDispatch();
-	const limit = '50';
+	// const limit = '50';
 	const initializeRef = useRef(true);
-	const category = useSelector((state: RootState) => state.category.categories);
+	const category = useSelector(
+		(state: RootState) => state.category.registeredCategories
+	);
 	const instructor = useSelector(
 		(state: RootState) => state.instructor.instructors
 	);
 	const courseState = useSelector((state: RootState) => state.course);
+
+	// get required data from the store
 	const metaData = courseState.myLearning.metaData;
 	const queryFilterState = courseState.queryFilter;
 	const myLearningCourses = courseState.myLearning;
@@ -62,15 +67,19 @@ const MyLearning: FC = () => {
 	};
 
 	useEffect(() => {
+		// if search is less than 3 characters, reset the search
 		if (debouncedSearch.length <= 2) {
 			dispatch(resetMyLearningAutoCompleteAction());
 			return;
 		}
 
+		// else if search is more than 2 characters, dispatch the search
+		// and set the loading state to true for loader
+		dispatch(setLoadingAction());
+
+		// dispatch the search
 		dispatch(getAutoCompleteMyLearningAction(debouncedSearch));
 	}, [dispatch, debouncedSearch]);
-
-	const userId = getLocalStorage('profile')?.user?._id;
 
 	useEffect(() => {}, [activeLayout, setActiveLayout]);
 
@@ -80,11 +89,22 @@ const MyLearning: FC = () => {
 	};
 
 	useEffect(() => {
+		// initializeRef is used to track the initial render of the component
+		// if initializeRef is true, get courses user has registered for
 		if (initializeRef.current) {
+			// set loading to true
 			dispatch(setLoadingAction());
+
+			// get courses user has registered for
 			dispatch(getMyLearningCourseAction({ page: '1', limit: '8' }, userId));
-			dispatch(getCategoryAction({ page: '1', limit }, 'course'));
-			dispatch(getInstructorAction({ page: '1', limit }));
+
+			// get categories for courses user has regidtered for
+			dispatch(getRegisteredCategoryAction(userId));
+
+			// get instructors for courses user has regidtered for
+			dispatch(GetMyLearningInstructorAction(userId));
+
+			// set initializeRef to false
 			initializeRef.current = false;
 			return;
 		}
@@ -92,11 +112,20 @@ const MyLearning: FC = () => {
 		// setting query comes from dropdown, this triggers the post request to filter for courses
 		if (queryFilterState) {
 			const handelQuerySearch = () => {
+				// set loading to true
 				dispatch(setLoadingAction());
+
+				// generate custom query string form the queryFilterState
 				const queryStr = formQueryStr(queryFilterState);
+
+				// set pagination details
 				const details = { page: '1', limit: '8' };
+
+				// get courses user has registered for
 				dispatch(getMyLearningCourseAction(details, userId, queryStr));
 			};
+
+			// call the function
 			handelQuerySearch();
 		}
 	}, [dispatch, queryFilterState, userId]);

@@ -4,6 +4,7 @@ import { OmittedCategoryDataType } from '../api/categoryApi';
 export type categoryState = {
 	categories: OmittedCategoryDataType[];
 	singleCategory: OmittedCategoryDataType;
+	registeredCategories: OmittedCategoryDataType[];
 	categoryError: string;
 };
 
@@ -14,6 +15,7 @@ const initialState: categoryState = {
 		name: '',
 		group: '',
 	},
+	registeredCategories: [],
 	categoryError: '',
 };
 
@@ -39,6 +41,16 @@ const categorySlice = (state = initialState, action: any) => {
 			return {
 				...state,
 				categoryError: payload,
+			};
+		case types.GET_REGISTERED_CATEGORY_SUCCESS:
+			return {
+				...state,
+				registeredCategories: payload,
+			};
+		case types.GET_REGISTERED_CATEGORY_FAIL:
+			return {
+				...state,
+				registeredCategories: [],
 			};
 		case types.DELETE_CATEGORY_SUCCESS:
 			return {
