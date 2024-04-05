@@ -46,7 +46,7 @@ const MyLearning: FC = () => {
 		(state: RootState) => state.category.registeredCategories
 	);
 	const instructor = useSelector(
-		(state: RootState) => state.instructor.instructors
+		(state: RootState) => state.instructor.myLearningInstructors
 	);
 	const courseState = useSelector((state: RootState) => state.course);
 
