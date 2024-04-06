@@ -28,6 +28,7 @@ const Blog: FC = () => {
 	const navigate = useNavigate();
 	const location = useLocation();
 	const initializeRef = useRef(true);
+
 	const blogState = useSelector((state: RootState) => state.blog);
 	const category = useSelector((state: RootState) => state.category.categories);
 	const tag = useSelector((state: RootState) => state.tag.tags);

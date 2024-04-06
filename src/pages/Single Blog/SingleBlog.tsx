@@ -16,7 +16,7 @@ import {
 	getBlogCommentsAction,
 	getSingleBlogAction,
 } from '../../redux/actions/blogAction';
-import { handleDateFormat } from '../../util/helperFunctions/dateFormatter';
+// import { handleDateFormat } from '../../util/helperFunctions/dateFormatter';
 import config from '../../../config';
 import useFormatText from '../../hooks/UseFormatText';
 import { paginateType } from '../../redux/sharedTypes';
@@ -50,7 +50,7 @@ const SingleBlog: FC = () => {
 			icon: FaUser,
 		},
 		{
-			title: handleDateFormat(singleBlog.createdAt),
+			title: singleBlog.createdAt,
 			total: '',
 			icon: FaRegCalendar,
 		},

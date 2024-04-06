@@ -8,7 +8,7 @@ import { IconType } from 'react-icons';
 import { useNavigate } from 'react-router-dom';
 import DataBadge from '../shared/DataBadge';
 import { courseCardType } from '../../pages/Home/homePageType';
-import { handleDateFormat } from '../../util/helperFunctions/dateFormatter';
+// import { handleDateFormat } from '../../util/helperFunctions/dateFormatter';
 import config from '../../../config';
 import {
 	capitalizeFirstLetters,
@@ -86,7 +86,7 @@ const HeaderContainer = (props: Iprop) => {
 			icon: FaFile,
 		},
 		{
-			title: handleDateFormat(createdAt),
+			title: createdAt,
 			total: '',
 			icon: IoMdTime,
 		},

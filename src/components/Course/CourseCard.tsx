@@ -3,7 +3,7 @@ import { IoMdTime } from 'react-icons/io';
 import { FaGraduationCap } from 'react-icons/fa6';
 import { Link } from 'react-router-dom';
 import { courseCardType } from '../../pages/Home/homePageType';
-import { handleDateFormat } from '../../util/helperFunctions/dateFormatter';
+// import { handleDateFormat } from '../../util/helperFunctions/dateFormatter';
 import config from '../../../config';
 import { formatAmount, truncateValue } from '../../util/helperFunctions/helper';
 
@@ -89,7 +89,7 @@ const CourseCard = (props: courseCardType) => {
 					>
 						<div className='flex items-center gap-1'>
 							<IoMdTime className='fill-effect-active' />
-							<span>{handleDateFormat(createdAt)}</span>
+							<span>{createdAt}</span>
 						</div>
 
 						<div className='flex items-center gap-1'>

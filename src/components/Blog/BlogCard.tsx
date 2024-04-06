@@ -1,7 +1,7 @@
 import { WhiteBackground } from '../shared';
 import { FaRegCalendarAlt } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
-import { handleDateFormat } from '../../util/helperFunctions/dateFormatter';
+// import { handleDateFormat } from '../../util/helperFunctions/dateFormatter';
 import { truncateValue } from '../../util/helperFunctions/helper';
 import { singleBlogType } from '../../redux/api/blogApi';
 import config from '../../../config';
@@ -59,7 +59,7 @@ const BlogCard = (props: Iprop) => {
 
 					<div className='flex items-center gap-1'>
 						<FaRegCalendarAlt className='fill-[#45A5CD]' />
-						<span>{handleDateFormat(blog.createdAt)}</span>
+						<span>{blog.createdAt}</span>
 					</div>
 
 					<div className='mt-1'>

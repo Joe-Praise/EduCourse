@@ -250,16 +250,16 @@ export const resetAutoCompleteAction = () => {
 	};
 };
 
-export const setQueryFilterAction = (filter: obj) => {
+export const setBlogQueryFilterAction = (filter: obj) => {
 	return {
-		type: types.SET_QUERY_FILTER,
+		type: types.SET_BLOG_QUERY_FILTER,
 		payload: filter,
 	};
 };
 
-export const removeQueryFilterAction = (filter: obj) => {
+export const removeBlogQueryFilterAction = (filter: obj) => {
 	return {
-		type: types.REMOVE_QUERY_FILTER,
+		type: types.REMOVE_BLOG_QUERY_FILTER,
 		payload: filter,
 	};
 };

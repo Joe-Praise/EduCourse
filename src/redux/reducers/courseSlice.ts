@@ -14,6 +14,7 @@ export type courseState = {
 	courseError: string;
 	notification: [];
 	queryFilter: {};
+	myLearningQueryFilter: {};
 	loading: boolean;
 };
 
@@ -47,6 +48,7 @@ const initialState: courseState = {
 	},
 	autoComplete: [],
 	myLearningAutoComplete: [],
+	myLearningQueryFilter: {},
 	notification: [],
 	videoId: '',
 	loading: true,
@@ -93,6 +95,11 @@ const courseSlice = (state = initialState, action: any) => {
 				loading: true,
 				singleCourse: [],
 			};
+		// case types.INCREMENT_RATING_REVIEW:
+		// 	return {
+		// 		...state,
+		// 		// singleCourse: state.singleCourse.ratingSummary
+		// 	};
 		case types.GET_LECTURE_COURSE_SUCCESS:
 			return {
 				...state,
@@ -192,6 +199,22 @@ const courseSlice = (state = initialState, action: any) => {
 			return {
 				...state,
 				queryFilter: removeQueryFilter(state.queryFilter, payload),
+			};
+		case types.SET_MY_LEARNING_QUERY_FILTER:
+			return {
+				...state,
+				myLearningQueryFilter: {
+					...state.myLearningQueryFilter,
+					...payload,
+				},
+			};
+		case types.REMOVE_MY_LEARNING_QUERY_FILTER:
+			return {
+				...state,
+				myLearningQueryFilter: removeQueryFilter(
+					state.myLearningQueryFilter,
+					payload
+				),
 			};
 		case types.SET_VIDEO_ID:
 			return {

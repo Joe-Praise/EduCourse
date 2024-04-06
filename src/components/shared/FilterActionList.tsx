@@ -10,13 +10,26 @@ import {
 	removeQueryFilterAction,
 	setQueryFilterAction,
 } from '../../redux/actions/courseAction';
+import { useLocation } from 'react-router-dom';
+import {
+	removeBlogQueryFilterAction,
+	setBlogQueryFilterAction,
+} from '../../redux/actions/blogAction';
 
 interface Iprop {
 	header: string;
 	values: any[];
 }
+// function testPath(url: string) {
+// 	if (url.startsWith('/blogs')) {
+// 		return 'blog';
+// 	} else if (url.startsWith('/courses')) {
+// 		return 'course';
+// 	}
+// }
 
 const FilterActionList = (props: Iprop) => {
+	const location = useLocation();
 	const dispatch: AppDispatch = useDispatch();
 	const { values, header } = props;
 
@@ -38,9 +51,17 @@ const FilterActionList = (props: Iprop) => {
 
 		if (active === data?._id) {
 			setActive('');
-			dispatch(removeQueryFilterAction(obj));
+			if (location.pathname.startsWith('/blog')) {
+				dispatch(removeBlogQueryFilterAction(obj));
+			} else if (location.pathname.startsWith('/courses')) {
+				dispatch(removeQueryFilterAction(obj));
+			}
 		} else {
-			dispatch(setQueryFilterAction(obj));
+			if (location.pathname.startsWith('/blog')) {
+				dispatch(setBlogQueryFilterAction(obj));
+			} else if (location.pathname.startsWith('/courses')) {
+				dispatch(setQueryFilterAction(obj));
+			}
 			setActive(data?._id);
 		}
 	};

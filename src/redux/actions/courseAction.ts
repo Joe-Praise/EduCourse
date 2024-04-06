@@ -321,6 +321,20 @@ export const removeQueryFilterAction = (filter: obj) => {
 	};
 };
 
+export const setMyLearningQueryFilterAction = (filter: obj) => {
+	return {
+		type: types.SET_MY_LEARNING_QUERY_FILTER,
+		payload: filter,
+	};
+};
+
+export const removeMyLearningQueryFilterAction = (filter: obj) => {
+	return {
+		type: types.REMOVE_MY_LEARNING_QUERY_FILTER,
+		payload: filter,
+	};
+};
+
 export const setVideoId = (videoId: string) => {
 	return {
 		type: types.SET_VIDEO_ID,

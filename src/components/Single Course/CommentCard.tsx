@@ -3,7 +3,7 @@ import { useState } from 'react';
 import RenderIf from '../shared/RenderIf';
 import { truncateValue } from '../../util/helperFunctions/helper';
 import { OmittedReviewDataType } from '../../redux/api/reviewApi';
-import { handleDateFormat } from '../../util/helperFunctions/dateFormatter';
+// import { handleDateFormat } from '../../util/helperFunctions/dateFormatter';
 import config from '../../../config';
 
 const CommentCard = (props: OmittedReviewDataType) => {
@@ -26,7 +26,7 @@ const CommentCard = (props: OmittedReviewDataType) => {
 				<p>{userId?.name}</p>
 				<div className='flex gap-2 items-center'>
 					<RatingStars rating={rating + ''} />
-					<p>{handleDateFormat(createdAt)}</p>
+					<p>{createdAt}</p>
 				</div>
 
 				<div className='relative'>

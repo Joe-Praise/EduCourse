@@ -1,6 +1,7 @@
 import { ThunkAction } from 'redux-thunk';
 import * as api from '../api/reviewApi';
 import * as types from '../constants/reviewConstants';
+// import { INCREMENT_RATING_REVIEW } from '../constants/courseConstants';
 import { AppDispatch, RootState } from '../store';
 import { paginateType } from '../sharedTypes';
 import {
@@ -102,6 +103,12 @@ export const createCourseReviewAction =
 				type: types.CREATE_COURSE_REVIEW_SUCCESS,
 				payload: response,
 			});
+
+			console.log('response', response);
+			// dispatch({
+			// 	type: INCREMENT_RATING_REVIEW,
+			// 	payload: response?.data,
+			// });
 
 			dispatchSuccessHandler(dispatch, 'Thank you for your feedback!');
 		} catch (error: any) {

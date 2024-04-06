@@ -145,7 +145,7 @@ const blogSlice = (state = initialState, action: any) => {
 				blogError: payload,
 			};
 
-		case types.SET_QUERY_FILTER:
+		case types.SET_BLOG_QUERY_FILTER:
 			return {
 				...state,
 				queryFilter: {
@@ -153,7 +153,7 @@ const blogSlice = (state = initialState, action: any) => {
 					...payload,
 				},
 			};
-		case types.REMOVE_QUERY_FILTER:
+		case types.REMOVE_BLOG_QUERY_FILTER:
 			return {
 				...state,
 				queryFilter: removeQueryFilter(state.queryFilter, payload),
