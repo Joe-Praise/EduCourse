@@ -52,7 +52,7 @@ const MyLearning: FC = () => {
 
 	// get required data from the store
 	const metaData = courseState.myLearning.metaData;
-	const queryFilterState = courseState.queryFilter;
+	const queryFilterState = courseState.myLearningQueryFilter;
 	const myLearningCourses = courseState.myLearning;
 	const myLearningSearch = courseState.myLearningAutoComplete;
 	const loading = courseState.loading;
@@ -196,7 +196,7 @@ const MyLearning: FC = () => {
 			return (
 				<div className='flex flex-col gap-2 justify-center items-center h-[110vw] md:h-[25vw] uppercase'>
 					<h1 className='text-xlg text-center'>
-						You haven&apos;t completed any course yet!
+						You haven&apos;t Registered for any course yet!
 					</h1>
 					<Link to={'/courses'} className='underline text-lg'>
 						Explore Courses

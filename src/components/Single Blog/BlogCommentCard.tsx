@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import RenderIf from '../shared/RenderIf';
 import { truncateValue } from '../../util/helperFunctions/helper';
-import { handleDateFormat } from '../../util/helperFunctions/dateFormatter';
+// import { handleDateFormat } from '../../util/helperFunctions/dateFormatter';
 import config from '../../../config';
 import { blogCommentType } from '../../redux/api/blogApi';
 
@@ -30,7 +30,7 @@ const BlogCommentCard = (props: Iprop) => {
 			<div className='flex-1'>
 				<div className='flex justify-between items-center'>
 					<p>{userId?.name}</p>
-					<p>{handleDateFormat(createdAt)}</p>
+					<p>{createdAt}</p>
 				</div>
 
 				<div className='relative'>

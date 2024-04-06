@@ -4,8 +4,8 @@ import { capitalizeFirstLetters } from '../../util/helperFunctions/helper';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../redux/store';
 import {
-	removeQueryFilterAction,
-	setQueryFilterAction,
+	removeMyLearningQueryFilterAction,
+	setMyLearningQueryFilterAction,
 } from '../../redux/actions/courseAction';
 
 interface Iprop {
@@ -59,10 +59,10 @@ function DropDown(props: Iprop) {
 			setSelectvalue({
 				[tag]: '',
 			});
-			dispatch(removeQueryFilterAction(obj));
+			dispatch(removeMyLearningQueryFilterAction(obj));
 		} else {
 			// console.log(data);
-			dispatch(setQueryFilterAction(obj));
+			dispatch(setMyLearningQueryFilterAction(obj));
 			setActive(data?._id);
 		}
 	};
