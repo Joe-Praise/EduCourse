@@ -6,15 +6,7 @@ import axios, {
 } from 'axios';
 import config from '../../../config';
 import { getLocalStorage } from '../../util/helperFunctions/helper';
-// interface ImportMetaEnv {
-//     readonly VITE_BASE_URL: string
-//     // more env variables...
-//   }
 
-// interface ImportMeta {
-//   readonly env: ImportMetaEnv
-// }
-// const BASE_URL = import.meta.env.VITE_BASE_URL as string;
 const baseURL: string = config.baseUrl || 'http://localhost:3000';
 
 export const axiosInstance = axios.create({
@@ -36,7 +28,7 @@ const decodeJwt = (jwt: string) => {
 const onRequest = (
 	request: InternalAxiosRequestConfig<any>
 ): InternalAxiosRequestConfig<any> => {
-	const userData = getLocalStorage(config.userData);
+	const userData = getLocalStorage(config.userConstant);
 	const jwt = userData?.token || '';
 	const accessToken = decodeJwt(jwt);
 	if (!accessToken) return request;

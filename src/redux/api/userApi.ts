@@ -1,6 +1,5 @@
 import { handleApiError } from '../../util/helperFunctions/helper';
 import { axiosInstance as API } from './utils';
-handleApiError;
 
 export type user = {
 	_id: string;

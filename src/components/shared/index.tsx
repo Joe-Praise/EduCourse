@@ -28,3 +28,4 @@ export { default as RenderIf } from './RenderIf';
 export { default as SearchAndLayout } from './SearchAndLayout';
 export { default as Toastify } from './Toastify';
 export { default as WhiteBackground } from './WhiteBackground';
+export { default as UserCoursesSectionWrapper } from './UserCoursesSectionWrapper';

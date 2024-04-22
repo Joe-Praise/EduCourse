@@ -14,15 +14,21 @@ import { OmittedCategoryDataType } from '../../redux/api/categoryApi';
 import { OmittedInstructorDataType } from '../../redux/api/instructorApi';
 import { getRegisteredCategoryAction } from '../../redux/actions/categoryAction';
 import { GetMyLearningInstructorAction } from '../../redux/actions/instructorAction';
-import { DropDown, Pagination, LoadingPulse } from '../../components/shared';
+import {
+	DropDown,
+	Pagination,
+	LoadingPulse,
+	UserCoursesSectionWrapper,
+} from '../../components/shared';
 import {
 	formQueryStr,
 	getLocalStorage,
 } from '../../util/helperFunctions/helper';
-import { CourseCard, CourseCardLoading } from '../../components/Course';
+import { CourseCardLoading } from '../../components/Course';
 import { paginateType } from '../../redux/sharedTypes';
 import useDebounce from '../../hooks/UseDebounce';
-import { Link } from 'react-router-dom';
+import MyLearningError from '../../components/My Learning/MyLearningError';
+import { UserCoursesSection } from '../../components/My Learning';
 
 interface progressType {
 	completed: 'in progress' | 'completed';
@@ -160,59 +166,43 @@ const MyLearning: FC = () => {
 	const handleMyLearningDisplay = () => {
 		if (loading && notification.length === 0) {
 			return (
-				<div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 my-16'>
+				<UserCoursesSectionWrapper>
 					{arr.map((_el, index) => (
 						<LoadingPulse key={index}>
 							<CourseCardLoading />
 						</LoadingPulse>
 					))}
-				</div>
+				</UserCoursesSectionWrapper>
 			);
 		} else if (myLearningSearch?.length > 0 && !loading) {
 			return (
-				<div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 my-16'>
-					{myLearningSearch?.map((el: any, idx: number) => {
-						return (
-							<div key={idx} className='basis-[24%]'>
-								<CourseCard activeLayout={activeLayout} {...el} />
-							</div>
-						);
-					})}
-				</div>
+				<UserCoursesSection
+					activeLayout={activeLayout}
+					data={myLearningSearch}
+				/>
 			);
 		} else if (myLearningCourses?.data?.length > 0 && !loading) {
 			return (
-				<div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 my-16'>
-					{myLearningCourses?.data?.map((el: any, idx: number) => {
-						return (
-							<div key={idx} className='basis-[24%]'>
-								<CourseCard activeLayout={activeLayout} {...el} />
-							</div>
-						);
-					})}
-				</div>
+				<UserCoursesSection
+					activeLayout={activeLayout}
+					data={myLearningCourses?.data}
+				/>
 			);
 		} else if (myLearningCourses.length < 1 && notification.length) {
 			return (
-				<div className='flex flex-col gap-2 justify-center items-center h-[110vw] md:h-[25vw] uppercase'>
+				<MyLearningError to='/courses'>
 					<h1 className='text-xlg text-center'>
 						You haven&apos;t Registered for any course yet!
 					</h1>
-					<Link to={'/courses'} className='underline text-lg'>
-						Explore Courses
-					</Link>
-				</div>
+				</MyLearningError>
 			);
 		} else {
 			return (
-				<div className='flex flex-col gap-2 justify-center items-center h-[110vw] md:h-[25vw] uppercase'>
+				<MyLearningError to='/courses'>
 					<h1 className='text-xlg text-center'>
 						Have you Registered for a course?
 					</h1>
-					<Link to={'/courses'} className='underline text-lg'>
-						Explore Courses
-					</Link>
-				</div>
+				</MyLearningError>
 			);
 		}
 	};

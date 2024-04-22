@@ -9,6 +9,7 @@ import instructorReducer from './instructorSlice';
 import blogReducer from './blogSlice';
 import tagReducer from './tagSlice';
 import notificationReducer from './notification';
+import publicProfileReducer from './publicProfileSlice';
 
 export const rootReducer = combineReducers({
 	user: userReducer,
@@ -20,6 +21,7 @@ export const rootReducer = combineReducers({
 	blog: blogReducer,
 	tag: tagReducer,
 	notification: notificationReducer,
+	publicProfile: publicProfileReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
