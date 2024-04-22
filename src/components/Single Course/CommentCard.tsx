@@ -3,8 +3,9 @@ import { useState } from 'react';
 import RenderIf from '../shared/RenderIf';
 import { truncateValue } from '../../util/helperFunctions/helper';
 import { OmittedReviewDataType } from '../../redux/api/reviewApi';
-// import { handleDateFormat } from '../../util/helperFunctions/dateFormatter';
+
 import config from '../../../config';
+import PublicProfileLink from '../shared/PublicProfileLink';
 
 const CommentCard = (props: OmittedReviewDataType) => {
 	const { userId, review, rating, createdAt } = props;
@@ -14,16 +15,20 @@ const CommentCard = (props: OmittedReviewDataType) => {
 	return (
 		<section className='flex gap-2 border-b py-2 my-1'>
 			<div className='basis-[10%] flex justify-center items-center '>
-				<figure className='w-16 h-16 block'>
-					<img
-						src={`${config?.baseUrl}/img/${userId?.photo}`}
-						alt={`${userId?.name}'s display image`}
-						className='rounded-full '
-					/>
-				</figure>
+				<PublicProfileLink userId={userId?._id}>
+					<figure className='w-16 h-16 block'>
+						<img
+							src={`${config?.baseUrl}/img/${userId?.photo}`}
+							alt={`${userId?.name}'s display image`}
+							className='rounded-full '
+						/>
+					</figure>
+				</PublicProfileLink>
 			</div>
 			<div className='flex-1'>
-				<p>{userId?.name}</p>
+				<PublicProfileLink userId={userId?._id}>
+					<p>{userId?.name}</p>
+				</PublicProfileLink>
 				<div className='flex gap-2 items-center'>
 					<RatingStars rating={rating + ''} />
 					<p>{createdAt}</p>

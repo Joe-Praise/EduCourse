@@ -48,8 +48,8 @@ const LayoutHeader: FC = () => {
 		},
 		{
 			id: 3,
-			name: 'Blog',
-			path: '/blogs',
+			name: 'Instructors',
+			path: '/instructors',
 		},
 		{
 			id: 4,
@@ -58,6 +58,11 @@ const LayoutHeader: FC = () => {
 		},
 		{
 			id: 5,
+			name: 'Blog',
+			path: '/blogs',
+		},
+		{
+			id: 6,
 			name: "FAQ's",
 			path: '/faqs',
 		},
@@ -85,11 +90,16 @@ const LayoutHeader: FC = () => {
 		},
 		{
 			id: 2,
+			name: 'Public Profile',
+			path: '/publicprofile',
+		},
+		{
+			id: 3,
 			name: 'Contact Us',
 			path: '/contactus',
 		},
 		{
-			id: 3,
+			id: 4,
 			name: 'Logout',
 			path: '/logout',
 		},
@@ -108,8 +118,8 @@ const LayoutHeader: FC = () => {
 		},
 		{
 			id: 3,
-			name: 'Blog',
-			path: '/blogs',
+			name: 'Instructors',
+			path: '/instructors',
 		},
 		{
 			id: 4,
@@ -118,16 +128,26 @@ const LayoutHeader: FC = () => {
 		},
 		{
 			id: 5,
+			name: 'Blog',
+			path: '/blogs',
+		},
+		{
+			id: 6,
 			name: "FAQ's",
 			path: '/faqs',
 		},
 		{
-			id: 6,
+			id: 7,
 			name: 'Profile',
 			path: '/profile',
 		},
 		{
-			id: 7,
+			id: 8,
+			name: 'Public Profile',
+			path: '/publicprofile',
+		},
+		{
+			id: 9,
 			name: 'Contact Us',
 			path: '/contactus',
 		},

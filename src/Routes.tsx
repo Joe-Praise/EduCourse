@@ -9,6 +9,9 @@ import {
 	SingleBlog,
 	MyLearning,
 	FrequentlyAsked,
+	Instructors,
+	SingleInstructor,
+	PublicProfile,
 } from './pages/index';
 
 export const publicRoutes = [
@@ -41,6 +44,20 @@ export const publicRoutes = [
 				component: SingleBlog,
 			},
 		],
+	},
+	{
+		path: '/instructors',
+		component: Instructors,
+		children: [
+			{
+				path: ':slug',
+				component: SingleInstructor,
+			},
+		],
+	},
+	{
+		path: 'user/:slug',
+		component: PublicProfile,
 	},
 ];
 

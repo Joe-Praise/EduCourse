@@ -19,6 +19,7 @@ import { AppDispatch } from '../../redux/store';
 import { useDispatch } from 'react-redux';
 import { createLectureCourseAction } from '../../redux/actions/courseAction';
 import RenderIf from '../shared/RenderIf';
+import PublicProfileLink from '../shared/PublicProfileLink';
 
 export type headerbadge = {
 	title: string;
@@ -109,13 +110,15 @@ const HeaderContainer = (props: Iprop) => {
 							<span>by</span>
 							{instructors?.map((el, index, arr) => (
 								<span key={el._id}>
-									{index === arr.length - 1 && arr.length > 1
-										? '& '
-										: index > 0
-										? ', '
-										: ''}
+									<PublicProfileLink userId={el?.userId?._id}>
+										{index === arr.length - 1 && arr.length > 1
+											? '& '
+											: index > 0
+											? ', '
+											: ''}
 
-									{el?.userId.name}
+										{el?.userId.name}
+									</PublicProfileLink>
 								</span>
 							))}
 							<span></span>

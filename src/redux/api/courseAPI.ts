@@ -72,7 +72,7 @@ interface courseDataType {
 	ratingsQuantity: number;
 }
 
-type OmittedCourseDataType = Omit<courseDataType, '__v'>;
+export type OmittedCourseDataType = Omit<courseDataType, '__v'>;
 
 export type courseType = {
 	status: string;
