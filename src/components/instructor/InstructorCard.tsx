@@ -1,8 +1,10 @@
 import { FaGraduationCap } from 'react-icons/fa';
 import { FaRegCirclePlay } from 'react-icons/fa6';
 import { Link } from 'react-router-dom';
+import config from '../../../config';
 
 interface Iprop {
+	img: string;
 	name: string;
 	expertise: string;
 	noOfStudents: string;
@@ -10,7 +12,7 @@ interface Iprop {
 }
 
 const InstructorCard = (props: Iprop) => {
-	const { name, expertise, noOfStudents, noOfCourses } = props;
+	const { img, name, expertise, noOfStudents, noOfCourses } = props;
 	return (
 		<Link
 			to={''}
@@ -18,8 +20,9 @@ const InstructorCard = (props: Iprop) => {
 		>
 			<figure className='block w-44 h-44 rounded-full'>
 				<img
-					src='/src/assets/image/card1.jpg'
-					alt=''
+					src={`${config.baseUrl}/img/${img}`}
+					alt={`Instructor ${name}'s cover image`}
+					loading='lazy'
 					className='w-full h-full rounded-full'
 				/>
 			</figure>
