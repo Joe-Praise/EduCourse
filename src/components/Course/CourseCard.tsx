@@ -3,7 +3,6 @@ import { IoMdTime } from 'react-icons/io';
 import { FaGraduationCap } from 'react-icons/fa6';
 import { Link } from 'react-router-dom';
 import { courseCardType } from '../../pages/Home/homePageType';
-// import { handleDateFormat } from '../../util/helperFunctions/dateFormatter';
 import config from '../../../config';
 import { formatAmount, truncateValue } from '../../util/helperFunctions/helper';
 
@@ -36,7 +35,7 @@ const CourseCard = (props: courseCardType) => {
 
 	return (
 		<WhiteBackground
-			className={`rounded-b-none my-0 w-full px-0 shadow-md hover:scale-105 duration-150 h-full ${
+			className={` my-0 w-full px-0  hover:scale-105 duration-150 h-full ${
 				activeLayout === 'grid' ? 'sm:my-0' : 'my-5'
 			}`}
 		>

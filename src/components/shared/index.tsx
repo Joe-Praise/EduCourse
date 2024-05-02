@@ -29,3 +29,4 @@ export { default as SearchAndLayout } from './SearchAndLayout';
 export { default as Toastify } from './Toastify';
 export { default as WhiteBackground } from './WhiteBackground';
 export { default as UserCoursesSectionWrapper } from './UserCoursesSectionWrapper';
+export { default as CategoryCardLoading } from './CategoryCardLoading';

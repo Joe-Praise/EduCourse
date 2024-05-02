@@ -77,7 +77,7 @@ export type OmittedCourseDataType = Omit<courseDataType, '__v'>;
 export type courseType = {
 	status: string;
 	metaData: metaData;
-	isEnrolled?: boolean;
+	isEnrolled?: true | false;
 	data: OmittedCourseDataType[];
 };
 

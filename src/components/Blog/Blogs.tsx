@@ -1,24 +1,22 @@
-import { useEffect } from 'react';
+// import { useEffect } from 'react';
 import CardsPlaceholder from '../Home/CardsPlaceholder';
 import BlogCard from './BlogCard';
-import { AppDispatch, RootState } from '../../redux/store';
-import { useDispatch, useSelector } from 'react-redux';
-import { getBlogsAction } from '../../redux/actions/blogAction';
+// import { AppDispatch, RootState } from '../../redux/store';
+// import { useDispatch, useSelector } from 'react-redux';
+// import { getBlogsAction } from '../../redux/actions/blogAction';
 import { singleBlogType } from '../../redux/api/blogApi';
 import BlogCardLoading from './BlogCardLoading';
 import { LoadingPulse } from '../shared';
 
-const Blogs = () => {
-	const dispatch: AppDispatch = useDispatch();
-	const blogData = useSelector((state: RootState) => state.blog.blog);
-
-	useEffect(() => {
-		dispatch(getBlogsAction({ page: '1', limit: '6' }));
-	}, [dispatch]);
+interface Iprop {
+	blogs: singleBlogType[];
+}
+const Blogs = (props: Iprop) => {
+	const { blogs } = props;
 
 	const arr = Array.from({ length: 6 }, (_v, i) => i);
 	const handleBlogDisplay = () => {
-		if (blogData?.data?.length < 1) {
+		if (!blogs) {
 			return (
 				<>
 					{arr.map((_el, index) => (
@@ -31,7 +29,7 @@ const Blogs = () => {
 		} else {
 			return (
 				<>
-					{blogData?.data?.map((el: singleBlogType) => {
+					{blogs?.map((el: singleBlogType) => {
 						return <BlogCard blog={el} key={el._id} activeLayout='grid' />;
 					})}
 				</>
