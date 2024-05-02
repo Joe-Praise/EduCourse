@@ -14,7 +14,7 @@ const BlogCard = (props: Iprop) => {
 	const { activeLayout, blog } = props;
 	return (
 		<WhiteBackground
-			className={`rounded-b-none my-0 w-full px-0 shadow-md hover:scale-105 duration-150 h-full ${
+			className={` my-0 w-full px-0 hover:scale-105 duration-150 h-full ${
 				activeLayout === 'grid' ? 'sm:my-0' : 'my-5'
 			}`}
 		>
