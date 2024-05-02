@@ -32,6 +32,7 @@ const TopInstrtuctors = (props: Iprop) => {
 						return (
 							<InstructorCard
 								key={`instructors_${el._id}`}
+								img={el.userId?.photo}
 								name={el.userId?.name}
 								expertise={'Upcoming'}
 								noOfStudents={'500'}
