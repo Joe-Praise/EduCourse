@@ -1,0 +1,4 @@
+export const GET_LANDING_PAGE_SUCCESS = 'GET_LANDING_PAGE_SUCCESS';
+export const GET_LANDING_PAGE_FAIL = 'GET_LANDING_PAGE_FAIL';
+
+export const LANDING_PAGE_CONST = 'landingPage';

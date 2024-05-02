@@ -1,103 +1,65 @@
-import { useEffect } from 'react';
 import { CardsPlaceholder, TopCategoryCard } from './';
-import { AppDispatch } from '../../redux/store';
-import { useDispatch, useSelector } from 'react-redux';
-import { getCategoryAction } from '../../redux/actions/categoryAction';
-import { RootState } from '../../redux/reducers';
-import { LoadingEffect } from '../shared';
-import { categoryType } from '../../redux/api/categoryApi';
+import { CategoryCardLoading } from '../shared';
+import {
+	OmittedCategoryDataType,
+	categoryType,
+} from '../../redux/api/categoryApi';
 import { capitalizeFirstLetters } from '../../util/helperFunctions/helper';
+import { LoadingPulse } from '../shared';
 
-const TopCategories = () => {
-	const dispatch: AppDispatch = useDispatch();
-	const categories = useSelector(
-		(state: RootState) => state.category.categories
-	);
-	// const categories: topCategoryCardType[] = [
-	// 	{
-	// 		title: 'Art and Design',
-	// 		total: '17',
-	// 	},
-	// 	{
-	// 		title: 'Marketing',
-	// 		total: '50',
-	// 	},
-	// 	{
-	// 		title: 'Mathematics',
-	// 		total: '70',
-	// 	},
-	// 	{
-	// 		title: 'Communication',
-	// 		total: '14',
-	// 	},
-	// 	{
-	// 		title: 'Programming',
-	// 		total: '200',
-	// 	},
-	// 	{
-	// 		title: 'Building & construction',
-	// 		total: '10',
-	// 	},
-	// 	{
-	// 		title: 'Finance',
-	// 		total: '150',
-	// 	},
-	// 	{
-	// 		title: 'Science',
-	// 		total: '700',
-	// 	},
-	// 	{
-	// 		title: 'Network',
-	// 		total: '120',
-	// 	},
-	// 	{
-	// 		title: 'Videography',
-	// 		total: '1',
-	// 	},
-	// ];
+interface Iprop {
+	categories: categoryType[];
+}
 
-	useEffect(() => {
-		const details = {
-			page: '1',
-			limit: '6',
-		};
-		dispatch(getCategoryAction(details, 'course'));
-	}, [dispatch]);
+const TopCategories = (props: Iprop) => {
+	const categories = props.categories;
+
+	const arr = Array.from({ length: 6 }, (_v, i) => i);
 
 	const handleCategoryDisplay = () => {
-		if (categories?.data?.length < 1) {
+		if (!categories) {
 			return (
-				<div>
-					<LoadingEffect />
-				</div>
+				<>
+					{arr.map((_, index) => {
+						if (index <= 6) {
+							return (
+								<LoadingPulse key={`category_Card_${index}`}>
+									<CategoryCardLoading />
+								</LoadingPulse>
+							);
+						}
+					})}
+				</>
 			);
 		} else {
 			return (
-				<CardsPlaceholder
-					className='grid-cols-2 sm:grid-cols-3 gap-4'
-					title={'Top Categories'}
-					description={'Explore our Popular Categories'}
-					path={'/'}
-					btnValue={'All Categories'}
-				>
-					<>
-						{categories?.data?.map((el: categoryType) => {
-							// if (id <= 9) {
-							return (
-								<TopCategoryCard
-									key={el._id}
-									title={capitalizeFirstLetters(el.name)}
-								/>
-							);
-							// }
-						})}
-					</>
-				</CardsPlaceholder>
+				<>
+					{categories?.map((el: OmittedCategoryDataType) => {
+						return (
+							<TopCategoryCard
+								key={el._id}
+								title={capitalizeFirstLetters(el.name)}
+							/>
+						);
+					})}
+				</>
 			);
 		}
 	};
 
-	return <div>{handleCategoryDisplay()}</div>;
+	return (
+		<div>
+			<CardsPlaceholder
+				className='grid-cols-2 sm:grid-cols-3 gap-4'
+				title={'Top Categories'}
+				description={'Explore our Popular Categories'}
+				path={'/'}
+				btnValue={'All Categories'}
+			>
+				{handleCategoryDisplay()}
+			</CardsPlaceholder>
+		</div>
+	);
 };
 
 export default TopCategories;

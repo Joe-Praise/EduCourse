@@ -35,6 +35,35 @@ export const removeLocalStorage = (key: string) => {
 	}
 };
 
+export const getSessionStorage = (key: string) => {
+	try {
+		const jsonData = sessionStorage.getItem(key);
+		if (!jsonData) return null;
+		return JSON.parse(jsonData);
+	} catch (error) {
+		return null;
+	}
+};
+
+export const saveSessionStorage = (key: string, data: any) => {
+	try {
+		const jsonData = JSON.stringify(data);
+		sessionStorage.setItem(key, jsonData);
+		return true;
+	} catch (error) {
+		return false;
+	}
+};
+
+export const removeSessionStorage = (key: string) => {
+	try {
+		sessionStorage.removeItem(key);
+		return;
+	} catch (error) {
+		return false;
+	}
+};
+
 export const checkToken = (key: string) => {
 	const token = getLocalStorage(key);
 

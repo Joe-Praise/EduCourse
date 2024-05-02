@@ -16,7 +16,7 @@ const CourseCardLoading = () => {
 					</div>
 
 					<div>
-						<div className='w-auto mx-auto mt-3 h-[0.1rem] rounded-full bg-gray-400 shadow0'></div>
+						<div className='w-auto mx-auto mt-3 h-[0.1rem] rounded-full bg-gray-400 shadow'></div>
 
 						<div className='flex items-center justify-between mt-1 h-4 rounded-full '>
 							<p className='h-4 w-3/12 rounded-full bg-gray-400 shadow'></p>
