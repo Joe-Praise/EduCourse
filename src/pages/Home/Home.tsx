@@ -31,7 +31,6 @@ const Home: FC = () => {
 		dispatch(getLandingPageAction());
 	}, [dispatch]);
 
-	console.log(landingPageData);
 	return (
 		<>
 			<BigBanner img={img}>

@@ -9,14 +9,16 @@ interface Iprop {
 	expertise: string;
 	noOfStudents: string;
 	noOfCourses: string;
+	_id: string;
 }
 
 const InstructorCard = (props: Iprop) => {
-	const { img, name, expertise, noOfStudents, noOfCourses } = props;
+	const { img, name, expertise, noOfStudents, noOfCourses, _id } = props;
 	return (
 		<Link
-			to={''}
-			className='w-52 flex flex-col items-center justify-center m-2 p-1 hover:scale-105 duration-150'
+			// place in the slug or id here
+			to={`/user/${_id}`}
+			className='w-52 flex flex-col items-center justify-center m-2 p-1 hover:scale-105 duration-150 hover:text-effect-active'
 		>
 			<figure className='block w-44 h-44 rounded-full'>
 				<img

@@ -71,6 +71,7 @@ const Course: FC = () => {
 	useEffect(() => {
 		dispatch(getCoursesAction({ page: '1', limit }));
 		dispatch(getCategoryAction({ page: '1', limit: '30' }, 'course'));
+		//TODO:  Implement pagination on the instructors when system scales
 		dispatch(getInstructorAction({ page: '1', limit: '10' }));
 	}, [dispatch]);
 

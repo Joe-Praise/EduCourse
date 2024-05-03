@@ -1,7 +1,8 @@
-import InstructorCard from './InstructorCard';
 import { InstructorType } from '../../redux/api/instructorApi';
 import CardsPlaceholder from '../Home/CardsPlaceholder';
-import { CategoryCardLoading, LoadingPulse } from '../shared';
+import { LoadingPulse } from '../shared';
+import InstructorsCardLoading from './InstructorsCardLoading';
+import MappedInstructorCard from './MappedInstructorCard';
 
 interface Iprop {
 	instructors: InstructorType[];
@@ -18,7 +19,7 @@ const TopInstrtuctors = (props: Iprop) => {
 						if (index <= 6) {
 							return (
 								<LoadingPulse key={`category_Card_${index}`}>
-									<CategoryCardLoading />
+									<InstructorsCardLoading />
 								</LoadingPulse>
 							);
 						}
@@ -26,22 +27,7 @@ const TopInstrtuctors = (props: Iprop) => {
 				</>
 			);
 		} else {
-			return (
-				<>
-					{instructors?.map((el: InstructorType) => {
-						return (
-							<InstructorCard
-								key={`instructors_${el._id}`}
-								img={el.userId?.photo}
-								name={el.userId?.name}
-								expertise={'Upcoming'}
-								noOfStudents={'500'}
-								noOfCourses={'100'}
-							/>
-						);
-					})}
-				</>
-			);
+			return <MappedInstructorCard data={instructors} />;
 		}
 	};
 

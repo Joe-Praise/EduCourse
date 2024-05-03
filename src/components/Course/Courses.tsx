@@ -1,9 +1,5 @@
-// import { useEffect } from 'react';
 import CourseCard from './CourseCard';
 import CardsPlaceholder from '../Home/CardsPlaceholder';
-// import { useDispatch, useSelector } from 'react-redux';
-// import { AppDispatch, RootState } from '../../redux/store';
-// import { getCoursesAction } from '../../redux/actions/courseAction';
 import { LoadingPulse } from '../shared';
 import CourseCardLoading from './CourseCardLoading';
 import { OmittedCourseDataType } from '../../redux/api/courseAPI';
