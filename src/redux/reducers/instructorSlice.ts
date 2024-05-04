@@ -21,6 +21,7 @@ const initialState: instructorState = {
 			photo: '',
 		},
 		description: '',
+		expertise: '',
 		links: [],
 		id: '',
 	},
