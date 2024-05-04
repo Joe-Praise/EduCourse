@@ -1,10 +1,16 @@
-import { handleApiError } from '../../util/helperFunctions/helper';
+import {
+	getSessionStorage,
+	handleApiError,
+	saveSessionStorage,
+} from '../../util/helperFunctions/helper';
 import { ApiResponse, metaData, paginateType } from '../sharedTypes';
 import { axiosInstance as API } from './utils';
+import * as types from '../constants/instructorConstants';
 
 export interface InstructorType {
 	_id: string;
 	userId: UserID;
+	expertise: string;
 	__v: number;
 	description: string;
 	links: Link[];
@@ -51,10 +57,17 @@ export const getInstructors = async (
 	details: paginateType
 ): Promise<ApiResponse> => {
 	try {
+		const cachedCourses = getSessionStorage(types.INSTRUCTOR_CONST);
+		if (cachedCourses) {
+			return cachedCourses;
+		}
+
 		const { page, limit } = details;
 		const { data } = await API.get<ApiResponse>(
 			`/api/v1/instructors?page=${page}&limit=${limit}`
 		);
+
+		saveSessionStorage(types.INSTRUCTOR_CONST, data);
 		return data;
 	} catch (error) {
 		return handleApiError(error);

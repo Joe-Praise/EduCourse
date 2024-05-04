@@ -10,7 +10,7 @@ import {
 	MyLearning,
 	FrequentlyAsked,
 	Instructors,
-	SingleInstructor,
+	// SingleInstructor,
 	PublicProfile,
 } from './pages/index';
 
@@ -48,12 +48,12 @@ export const publicRoutes = [
 	{
 		path: '/instructors',
 		component: Instructors,
-		children: [
-			{
-				path: ':slug',
-				component: SingleInstructor,
-			},
-		],
+		// children: [
+		// 	{
+		// 		path: ':slug',
+		// 		component: SingleInstructor,
+		// 	},
+		// ],
 	},
 	{
 		path: 'user/:slug',

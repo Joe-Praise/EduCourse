@@ -88,7 +88,7 @@ export const getPublicProfileAction =
 	(
 		// details: paginateType,
 		userId: string,
-		navigate: NavigateFunction
+		navigate: NavigateFunction | null
 		// queryString: string = ''
 	): UserThunk =>
 	async (dispatch: AppDispatch) => {
@@ -105,7 +105,9 @@ export const getPublicProfileAction =
 				payload: response,
 			});
 
-			navigate(`/user/${userId}`);
+			if (navigate) {
+				navigate(`/user/${userId}`);
+			}
 		} catch (error: any) {
 			dispatchErrorHandler(dispatch, error.message);
 			dispatch({
@@ -116,6 +118,12 @@ export const getPublicProfileAction =
 	};
 
 export const resetPublicProfile = () => {
+	return {
+		type: types.RESET_USER_PUBLIC_PROFILE,
+	};
+};
+
+export const resetPublicProfileAction = () => {
 	return {
 		type: types.RESET_USER_PUBLIC_PROFILE,
 	};

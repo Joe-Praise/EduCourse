@@ -50,6 +50,7 @@ const publicProfileSlice = (state = initialState, action: any) => {
 				publicProfile: payload,
 			};
 		case types.GET_USER_PUBLIC_PROFILE_FAIL:
+		case types.RESET_USER_PUBLIC_PROFILE:
 			return {
 				...state,
 				publicProfile: {
