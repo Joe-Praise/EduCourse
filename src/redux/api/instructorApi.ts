@@ -10,6 +10,7 @@ import * as types from '../constants/instructorConstants';
 export interface InstructorType {
 	_id: string;
 	userId: UserID;
+	expertise: string;
 	__v: number;
 	description: string;
 	links: Link[];
