@@ -1,7 +1,7 @@
 import { FC } from 'react';
-import { FormLayout } from '../../components/shared';
 import { SigninForm } from '../../components/Signin';
 import img from '../../assets/image/card5.jpg';
+import FormLayout from '../../widgets/FormLayout';
 
 const Signin: FC = () => {
 	return (

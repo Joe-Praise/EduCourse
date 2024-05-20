@@ -41,7 +41,7 @@ const SignUpForm: FC = () => {
 
 	const onSubmit = async (values: InitialValues) => {
 		setLodaing(true);
-		await dispatch(signUpAction(values, navigate));
+		dispatch(signUpAction(values, navigate));
 		setLodaing(false);
 	};
 

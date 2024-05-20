@@ -2,14 +2,18 @@ import { FC, useEffect, useState } from 'react';
 import VideoSection from '../../components/Lecture Course/VideoSection';
 import LayoutFooter from '../../widgets/LayoutFooter/LayoutFooter';
 import { IoClose } from 'react-icons/io5';
-import { RenderIf, Accordion, LoadingEffect } from '../../components/shared';
+import {
+	RenderIf,
+	Accordion,
+	LoadingEffect,
+	TabContainer,
+} from '../../components/shared';
 import { FaArrowLeft } from 'react-icons/fa';
 import LectureHeader from '../../components/Lecture Course/LectureHeader';
 import OverView from '../../components/Single Course/OverView';
 import Curriculum from '../../components/Single Course/Curriculum';
 import Instructor from '../../components/Single Course/Instructor';
 import Review from '../../components/Single Course/Reviews';
-import LectureTabContainer from '../../components/Lecture Course/LectureTabContainer';
 import { useParams } from 'react-router-dom';
 import { AppDispatch, RootState } from '../../redux/store';
 import { useDispatch, useSelector } from 'react-redux';
@@ -20,8 +24,16 @@ import {
 } from '../../redux/actions/courseAction';
 import { getLocalStorage } from '../../util/helperFunctions/helper';
 
+type tabheaderType = {
+	CourseContent: string | undefined;
+	Overview: string;
+	Instructor: string;
+	Reviews: string;
+};
+
 const LectureCourse: FC = () => {
 	const { slug, courseId } = useParams<{ courseId: string; slug: string }>();
+	const [activeView, setActiveView] = useState<string>('Overview');
 
 	// ensuring courseId is always a string
 	const courseIdString: string = courseId || '';
@@ -76,6 +88,42 @@ const LectureCourse: FC = () => {
 		setCourseContent((prevState) => !prevState);
 	};
 
+	// setting the expected headers for the tabs
+	const tabHeader: tabheaderType = {
+		// this hides the course content when on desktop || course content(sidebar) is hidden
+		CourseContent:
+			hideCourseContent || windowSize[0] < 900 ? 'Course Content' : undefined,
+		Overview: 'Overview',
+		Instructor: 'Instructor',
+		Reviews: 'Reviews',
+	};
+
+	// switch the detail rendered content
+	let display;
+
+	switch (activeView) {
+		case 'Course Content':
+			// checks if course content is hidden and gives focus to overview
+			if (tabHeader.CourseContent === undefined) {
+				setActiveView('Overview');
+				display = <OverView description={lectureCourse?.course?.description} />;
+			} else {
+				display = <Curriculum modules={lectureCourse?.modules} />;
+			}
+			break;
+		case 'Overview':
+			display = <OverView description={lectureCourse?.course?.description} />;
+			break;
+		case 'Instructor':
+			display = <Instructor instructors={lectureCourse?.course?.instructors} />;
+			break;
+		case 'Reviews':
+			display = <Review course={lectureCourse?.course} />;
+			break;
+		default:
+			display = <OverView description={lectureCourse?.course?.description} />;
+	}
+
 	return (
 		<section className=''>
 			{/* LECTURE HEADER PAGE COMPONENT */}
@@ -90,7 +138,7 @@ const LectureCourse: FC = () => {
 						} `}
 					>
 						<VideoSection />
-						<LectureTabContainer
+						{/* <LectureTabContainer
 							children1={<Curriculum modules={lectureCourse?.modules} />}
 							children2={
 								<OverView description={lectureCourse?.course?.description} />
@@ -102,6 +150,30 @@ const LectureCourse: FC = () => {
 							isHideCourseContent={hideCourseContent}
 							onWindowSize={windowSize[0]}
 						/>
+					*/}
+
+						<TabContainer
+							lecture
+							buttons={
+								<>
+									{Object.entries(tabHeader).map(([, value], i) => {
+										return (
+											<li
+												key={i}
+												className={`p-2 py-5 cursor-pointer flex justify-center items-center text-sm font-semibold ${
+													activeView === value ? 'text-effect-active' : ''
+												}`}
+												onClick={() => setActiveView(value || '')}
+											>
+												{value}
+											</li>
+										);
+									})}
+								</>
+							}
+						>
+							{display}
+						</TabContainer>
 						<LayoutFooter />
 					</div>
 					{/* ENDS HERE; */}

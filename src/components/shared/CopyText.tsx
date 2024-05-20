@@ -20,9 +20,6 @@ const CopyText = (props: Iprop) => {
 		<div className='bg-white w-3/4 p-3 mx-auto flex flex-col items-between justify-center gap-5'>
 			<div className='flex justify-between items-center'>
 				<h2>{title}</h2>
-				{/* <button>
-					<IoClose className='h-6 w-6' />
-				</button> */}
 			</div>
 			<div className='relative flex items-center h-12 border'>
 				<div className='basis-10/12 m-0 ps-2  '>
@@ -42,9 +39,7 @@ const CopyText = (props: Iprop) => {
 				</Button>
 
 				<RenderIf condition={isCopied}>
-					{/* <div className=''> */}
 					<PopUp message={'Copied!'} isButton={false} actionBtn={setIsCopied} />
-					{/* </div> */}
 				</RenderIf>
 			</div>
 		</div>

@@ -72,11 +72,3 @@ const InputField = (props: IProps) => {
 };
 
 export default InputField;
-
-// style for select
-
-// ${
-//     restProps.type === 'select'
-//         ? 'border border-[rgba(0,0,0,0.2)] rounded font-semibold text-xs text-[#4a4a4a]'
-//         : ''
-// }

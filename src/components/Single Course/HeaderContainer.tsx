@@ -8,7 +8,6 @@ import { IconType } from 'react-icons';
 import { useNavigate } from 'react-router-dom';
 import DataBadge from '../shared/DataBadge';
 import { courseCardType } from '../../pages/Home/homePageType';
-// import { handleDateFormat } from '../../util/helperFunctions/dateFormatter';
 import config from '../../../config';
 import {
 	capitalizeFirstLetters,
@@ -109,7 +108,7 @@ const HeaderContainer = (props: Iprop) => {
 							</span>
 							<span>by</span>
 							{instructors?.map((el, index, arr) => (
-								<span key={el._id}>
+								<span key={`${el._id}_instructors`}>
 									<PublicProfileLink userId={el?.userId?._id}>
 										{index === arr.length - 1 && arr.length > 1
 											? '& '
@@ -127,7 +126,7 @@ const HeaderContainer = (props: Iprop) => {
 
 					<h1 className='my-2'>React and Redux master class</h1>
 
-					{/* displays summary of the course  with icons e.g totla students */}
+					{/* displays summary of the course with icons e.g total students */}
 					<DataBadge dataDisplay={dataDisplay} />
 				</div>
 				<div className='md:absolute md:right-0 md:top-5'>
