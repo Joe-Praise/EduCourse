@@ -109,7 +109,11 @@ export const formatAmount = (amount: number) => {
 	return formattedAmount;
 };
 
-export const capitalizeFirstLetters = (str: string) => {
+export const capitalizeFirstLetters = (str: string | null | undefined) => {
+	// Null-safe: a missing value (e.g. a YouTube instructor with no linked
+	// userId.name) used to throw `undefined.indexOf` and crash whatever filter
+	// list was rendering. Return '' instead so the UI degrades gracefully.
+	if (!str) return '';
 	let splitStr =
 		str.indexOf('-') !== -1
 			? str.toLowerCase().split('-')
@@ -126,7 +130,8 @@ export const capitalizeFirstLetters = (str: string) => {
 	return result;
 };
 
-export function camelCase(str: string) {
+export function camelCase(str: string | null | undefined) {
+	if (!str) return '';
 	let splitStr =
 		str.indexOf('-') !== -1
 			? str.toLowerCase().split('-')

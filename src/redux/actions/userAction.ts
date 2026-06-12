@@ -1,5 +1,6 @@
 import {
 	dispatchErrorHandler,
+	dispatchSuccessHandler,
 	throwErrorHandler,
 } from '../../util/helperFunctions/helper';
 import * as api from '../api/userApi';
@@ -24,6 +25,23 @@ export const getUserAction = () => async (dispatch: any) => {
 	}
 };
 
+export const updatePasswordAction =
+	(payload: {
+		currentPassword: string;
+		newPassword: string;
+		confirmPassword: string;
+	}) =>
+	async (dispatch: any) => {
+		try {
+			const { error } = await api.updatePassword(payload);
+			throwErrorHandler(error);
+			dispatchSuccessHandler(dispatch, 'Password updated successfully!');
+			dispatch({ type: types.UPDATE_PASSWORD_SUCCESS });
+		} catch (error: any) {
+			dispatchErrorHandler(dispatch, error.message);
+		}
+	};
+
 export const updateUser = (formData: FormData) => async (dispatch: any) => {
 	try {
 		const { error, data } = await api.updateUser(formData);
@@ -39,5 +57,25 @@ export const updateUser = (formData: FormData) => async (dispatch: any) => {
 		// 	type: types.UPDATE_USER_FAIL,
 		// 	payload: error,
 		// });
+	}
+};
+
+export const getLearningStreakAction = () => async (dispatch: any) => {
+	try {
+		const response = await api.getLearningStreakApi() as any;
+		throwErrorHandler(response?.error);
+		dispatch({ type: types.GET_LEARNING_STREAK_SUCCESS, payload: response?.data });
+	} catch {
+		dispatch({ type: types.GET_LEARNING_STREAK_FAIL });
+	}
+};
+
+export const getUserBadgesAction = () => async (dispatch: any) => {
+	try {
+		const response = await api.getUserBadgesApi() as any;
+		throwErrorHandler(response?.error);
+		dispatch({ type: types.GET_USER_BADGES_SUCCESS, payload: response?.data ?? [] });
+	} catch {
+		dispatch({ type: types.GET_USER_BADGES_FAIL });
 	}
 };

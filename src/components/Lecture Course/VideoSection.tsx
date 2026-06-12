@@ -1,101 +1,60 @@
-// const VideoSection = () => {
-// 	const videoId = '5oH9Nr3bKfw';
-// 	return (
-// 		<div>
-// 			<iframe
-// 				width='100%'
-// 				height='550px'
-// 				src={`https://www.youtube.com/embed/${videoId}?si=GeooVdwNmT8LodxB`}
-// 				title='YouTube video player'
-// 				allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
-// 				allowFullScreen
-// 			></iframe>
-// 			{/* <video width='320' height='240' autoPlay>
-// 				<source src='https://www.youtube.com/embed/favjC6EKFgw?si=GeooVdwNmT8LodxB' type='video/mp4' />
-// 				<source src='https://www.youtube.com/embed/favjC6EKFgw?si=GeooVdwNmT8LodxB' type='video/ogg' />
-// 			</video> */}
-// 		</div>
-// 	);
-// };
-
-// export default VideoSection;
-
-{
-	/* <iframe width="560" height="315" src="https://www.youtube.com/embed/favjC6EKFgw?si=GeooVdwNmT8LodxB" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe> */
-}
-
 import { useSelector } from 'react-redux';
-// ts
 import YouTube, { YouTubeProps } from 'react-youtube';
 import { RootState } from '../../redux/store';
 
-// interface Iprop
+interface VideoSectionProps {
+	/**
+	 * YouTube video id OR a YouTube URL. Falls back to `state.course.videoId`
+	 * if not provided — kept for older callers that haven't migrated.
+	 */
+	videoId?: string;
+	/** Called when the YT player reports the video has ended (state === 0). */
+	onEnded?: () => void;
+}
 
-const VideoSection = () => {
-	const videoId = useSelector((state: RootState) => state.course.videoId);
+/**
+ * Extract a YouTube video id from either a raw id, a long URL
+ * (youtube.com/watch?v=ID), or a short URL (youtu.be/ID). Falls through
+ * with the input if it doesn't look like a URL.
+ */
+const extractYouTubeId = (raw: string): string => {
+	const watchMatch = raw.match(/[?&]v=([^&#]+)/);
+	if (watchMatch) return watchMatch[1];
+	const shortMatch = raw.match(/youtu\.be\/([^?&#]+)/);
+	if (shortMatch) return shortMatch[1];
+	const embedMatch = raw.match(/youtube\.com\/embed\/([^?&#]+)/);
+	if (embedMatch) return embedMatch[1];
+	return raw;
+};
 
-	// If you want to auto change the course to the next video
-	// get the duration save it in a state and keep track of the currentTime[programtically update the videoId accordingly]
-	// const onPlayerReady: YouTubeProps['onReady'] = (event) => {
-	// 	// access to player in all event handlers via event.target
-	// 	const player = event.target;
-	// 	// console.log('Duration', player.getDuration());
-	// };
-
-	// const onPlayerPlay: YouTubeProps['onPlay'] = (event) => {
-	// 	// access to player in all event handlers via event.target
-	// 	const player = event.target;
-	// 	// console.log(player.getCurrentTime());
-	// };
-
-	// const onVideoStateChange: YouTubeProps['onStateChange'] = (event) => {
-	// 	const player = event.target;
-	// 	console.log(player.getDuration());
-	// 	console.log(player.getCurrentTime());
-	// 	if (event.data === 0) {
-	// 		console.log('Data', event.data);
-	// 	}
-	// };
+const VideoSection = ({ videoId, onEnded }: VideoSectionProps) => {
+	const fallbackVideoId = useSelector((state: RootState) => state.course.videoId);
+	const source = videoId || fallbackVideoId || '5oH9Nr3bKfw';
+	const id = extractYouTubeId(source);
 
 	const opts: YouTubeProps['opts'] = {
 		height: '550',
 		width: '100%',
 		playerVars: {
-			// autoplay: 1,
+			autoplay: 1,
+			// rel: 0 keeps post-video suggestions scoped to the same channel
+			rel: 0,
 		},
+	};
+
+	const handleStateChange: YouTubeProps['onStateChange'] = (event) => {
+		// YouTube IFrame API state codes: 0 = ENDED
+		if (event.data === 0) onEnded?.();
 	};
 
 	return (
 		<YouTube
-			videoId={videoId || '5oH9Nr3bKfw'}
+			key={id}
+			videoId={id}
 			opts={opts}
-			// onReady={onPlayerReady}
-			// onPlay={onPlayerPlay}
-			// onStateChange={onVideoStateChange}
-			className=''
+			onStateChange={handleStateChange}
 		/>
 	);
 };
 
 export default VideoSection;
-
-{
-	/* <YouTube
-  videoId={string}                  // defaults -> ''
-  id={string}                       // defaults -> ''
-  className={string}                // defaults -> ''
-  iframeClassName={string}          // defaults -> ''
-  style={object}                    // defaults -> {}
-  title={string}                    // defaults -> ''
-  loading={string}                  // defaults -> undefined
-  opts={obj}                        // defaults -> {}
-  onReady={func}                    // defaults -> noop
-  onPlay={func}                     // defaults -> noop
-  onPause={func}                    // defaults -> noop
-  onEnd={func}                      // defaults -> noop
-  onError={func}                    // defaults -> noop
-  onStateChange={func}              // defaults -> noop
-  onPlaybackRateChange={func}       // defaults -> noop
-  onPlaybackQualityChange={func}    // defaults -> noop
-/> */
-}

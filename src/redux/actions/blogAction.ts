@@ -102,9 +102,8 @@ export const getSingleBlogAction =
 	(slug: any): BlogThunk =>
 	async (dispatch: AppDispatch) => {
 		try {
-			dispatch({
-				type: types.GET_SINGLE_BLOG_FAIL,
-			});
+			// Reset state for the new slug — clears previous article + previous error.
+			dispatch({ type: types.RESET_SINGLE_BLOG });
 			let data: any = {};
 			const { error, data: blogData } = await api.getBlogBySlug(slug);
 
@@ -118,10 +117,10 @@ export const getSingleBlogAction =
 			});
 		} catch (error: any) {
 			dispatchErrorHandler(dispatch, error.message);
-			// dispatch({
-			// 	type: types.GET_SINGLE_BLOG_FAIL,
-			// 	payload: error.message,
-			// });
+			dispatch({
+				type: types.GET_SINGLE_BLOG_FAIL,
+				payload: error.message,
+			});
 		}
 	};
 
@@ -173,20 +172,17 @@ export const getAutoCompleteAllBlogAction =
 
 export const createBlogCommentAction =
 	(details: api.commentRequestType, blogId: string): BlogThunk =>
-	async (dispatch: AppDispatch) => {
+	async (dispatch: AppDispatch, getState) => {
 		try {
 			const response = await api.createBlogComment(details, blogId);
 			const { error, data } = response;
 
 			if (error) {
-				// TODO: Have notification reducer to handle all notifications
-				// console.log(error);
 				throw new Error(error);
 			}
-			// console.log('createBlogCommentAction', response);
 			dispatch({
 				type: types.CREATE_BLOG_COMMENT_SUCCESS,
-				payload: data,
+				payload: { comment: data, user: getState().user.userObj },
 			});
 
 			dispatchSuccessHandler(dispatch, 'Successfully Created!');

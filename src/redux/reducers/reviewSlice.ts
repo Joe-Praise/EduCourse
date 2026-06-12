@@ -1,4 +1,3 @@
-import { getLocalStorage } from '../../util/helperFunctions/helper';
 import { reviewDatatype, reviewType } from '../api/reviewApi';
 import * as types from '../constants/reviewConstants';
 
@@ -70,7 +69,7 @@ const reviewSlice = (state = initialState, action: any) => {
 			const newMetaData = calculateMetaData(state.review.metaData);
 
 			// Add loggedInUserDetails to newReview
-			newReview.userId = getLocalStorage('profile')?.user;
+			newReview.userId = payload.user;
 
 			// Update data array
 			const newData = addLoggedInUserDetails(newReview, state.review);

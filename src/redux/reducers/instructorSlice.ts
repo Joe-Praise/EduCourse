@@ -20,10 +20,10 @@ const initialState: instructorState = {
 			role: [],
 			photo: '',
 		},
+		title: '',
 		description: '',
 		expertise: '',
 		links: [],
-		id: '',
 	},
 	instructorError: '',
 };

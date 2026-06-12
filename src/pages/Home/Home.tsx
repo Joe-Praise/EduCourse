@@ -1,51 +1,76 @@
 import { FC, useEffect } from 'react';
-import { BigBanner, CentralizedHeaderText } from '../../components/shared';
-import img from '../../assets/image/brain and ideas.jpg';
-import { bannerTextType } from './homePageType';
-import { Courses } from '../../components/Course';
-import { Blogs } from '../../components/Blog';
-import { TopCategories, Details } from '../../components/Home';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../redux/store';
 import { getLandingPageAction } from '../../redux/actions/landingpageAction';
-import TopInstrtuctors from '../../components/instructor/TopInstrtuctors';
-
-const bannerTextDetails: bannerTextType[] = [
-	{
-		title: 'Learn new skills for the new year and beyond!',
-		body: 'Dive into a realm of knowledge, creativity, and community engagement. Embrace the freedom to learn, connect, and thrive. Your journey to empowerment begins here – Join us on the path to a brighter digital future! ',
-	},
-];
+import { getPlatformStatsAction } from '../../redux/actions/platformAction';
+import { Preloader } from '../../patterns/Preloader/Preloader';
+import {
+	Hero,
+	TrustMarquee,
+	CategoryBento,
+	FeaturedCoursesRail,
+	InstructorSpotlightGrid,
+	StatsBand,
+	FinalCTA,
+	PinnedStory,
+} from '../../features/home';
+import type { CourseCardData } from '../../features/course/CourseCard';
 
 const Home: FC = () => {
 	const dispatch: AppDispatch = useDispatch();
 	const landingPageData = useSelector(
-		(state: RootState) => state.landingPage?.landingData.data
+		(state: RootState) => state.landingPage?.landingData.data,
 	);
-	const courses = landingPageData?.courses;
-	const instructors = landingPageData?.instructors;
-	const categories = landingPageData?.categories;
-	const blogs = landingPageData?.blogs;
+	const platformStats = useSelector((state: RootState) => state.platform?.stats);
 
 	useEffect(() => {
 		dispatch(getLandingPageAction());
+		dispatch(getPlatformStatsAction());
 	}, [dispatch]);
+
+	const courses = (landingPageData?.courses ?? []) as unknown as ReadonlyArray<CourseCardData>;
+	const categories = landingPageData?.categories;
+	const instructors = landingPageData?.instructors;
 
 	return (
 		<>
-			<BigBanner img={img}>
-				<CentralizedHeaderText
-					title={bannerTextDetails[0].title}
-					body={bannerTextDetails[0].body}
-				/>
-			</BigBanner>
-			<div className='w-[83%] sm:w-10/12 lg:w-7/12 mx-auto'>
-				<Courses courses={courses} />
-				<TopCategories categories={categories} />
-				<TopInstrtuctors instructors={instructors} />
-				<Details />
-				<Blogs blogs={blogs} />
-			</div>
+			<Preloader wordmark='EduCourse' />
+			<Hero courses={courses} />
+			<TrustMarquee />
+			<CategoryBento categories={categories} />
+
+			{/* Three pinned editorial story sections — Learner, Instructor (light break), Team */}
+			<PinnedStory
+				persona='learner'
+				eyebrow='For the person who finishes'
+				headline='Built for the work, not the credential.'
+				body='EduCourse is the antidote to the dabbling carousel. Pick a craft, watch real practitioners build, then build the same thing yourself.'
+				imageSide='left'
+			/>
+			<PinnedStory
+				persona='instructor'
+				eyebrow='For the person who built it'
+				headline='Teach the thing you actually made.'
+				body='We pay 80% to creators. We give you the tools to publish a course in an afternoon and the room to keep iterating it for a decade.'
+				imageSide='right'
+				tone='paper'
+			/>
+			<PinnedStory
+				persona='team'
+				eyebrow='For the group'
+				headline='Bring it back to the team.'
+				body='Roll EduCourse out to engineering, design, ops. One bill. Real outcomes. Quarterly cohort reports.'
+				imageSide='left'
+			/>
+
+			<FeaturedCoursesRail courses={courses} />
+			<InstructorSpotlightGrid instructors={instructors} />
+			<StatsBand
+				totalStudents={platformStats?.totalStudents}
+				totalPaidToCreators={platformStats?.totalPaidToCreators}
+				totalLessons={platformStats?.totalLessons}
+			/>
+			<FinalCTA />
 		</>
 	);
 };

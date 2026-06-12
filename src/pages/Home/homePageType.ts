@@ -22,24 +22,23 @@ interface courseCard {
 	description: string;
 	imageCover: string;
 	level: string;
-	language: string;
 	instructors: Instructor[];
 	category: Category;
 	duration: string;
 	ratingsAverage: number;
 	ratingsQuantity: number;
 	price: number;
+	priceDiscount?: number;
 	priceCategory: string;
 	studentsQuantity: number;
 	createdAt: string;
+	updatedAt: string;
 	slug: string;
-	__v: number;
-	id: string;
-	totalLessons: number;
-	activeLayout: any;
+	totalLessons?: number;
+	activeLayout: string;
 }
 
-export type courseCardType = Omit<courseCard, '__v active'>;
+export type courseCardType = courseCard;
 
 export interface Category {
 	_id: string;
@@ -47,11 +46,19 @@ export interface Category {
 	group: string;
 }
 
+export interface Link {
+	_id: string;
+	platform: string;
+	url: string;
+	displayName?: string;
+}
+
 export interface Instructor {
 	_id: string;
 	userId: UserID;
-	links: string[];
+	title: string;
 	description: string;
+	links: Link[];
 }
 
 export interface UserID {

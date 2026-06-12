@@ -92,7 +92,7 @@ export const getCoursesReviewAction =
 
 export const createCourseReviewAction =
 	(payload: api.createReviewPayloadType, courseId: string): ReviewThunk =>
-	async (dispatch: AppDispatch) => {
+	async (dispatch: AppDispatch, getState) => {
 		try {
 			const response = await api.createCourseReview(payload, courseId);
 			const { error } = response;
@@ -101,10 +101,8 @@ export const createCourseReviewAction =
 
 			dispatch({
 				type: types.CREATE_COURSE_REVIEW_SUCCESS,
-				payload: response,
+				payload: { ...response, user: getState().user.userObj },
 			});
-
-			console.log('response', response);
 			// dispatch({
 			// 	type: INCREMENT_RATING_REVIEW,
 			// 	payload: response?.data,

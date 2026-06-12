@@ -48,11 +48,10 @@ export interface ModuleType {
 	courseId: string;
 	title: string;
 	moduleIndex: number;
-	createdAt: Date;
-	__v: number;
 	section: string;
 	lessons: Lesson[];
-	id: string;
+	createdAt: string;
+	updatedAt: string;
 }
 
 export interface Lesson {
@@ -61,9 +60,11 @@ export interface Lesson {
 	courseId: string;
 	url: string;
 	title: string;
+	description: string;
 	duration: string;
 	lessonIndex: number;
-	active: boolean;
+	createdAt: string;
+	updatedAt: string;
 }
 
 export const getCoursesAction =
@@ -92,9 +93,9 @@ export const getSingleCourseAction =
 	(slug: any): CourseThunk =>
 	async (dispatch: AppDispatch) => {
 		try {
-			dispatch({
-				type: types.GET_SINGLE_COURSE_FAIL,
-			});
+			// Reset state for the new slug — clears previous course + previous error,
+			// puts the slice into a clean loading state.
+			dispatch({ type: types.RESET_SINGLE_COURSE });
 			const userId = getLocalStorage('profile')?.user?._id;
 			let data: any = {};
 			const {
@@ -120,11 +121,10 @@ export const getSingleCourseAction =
 			});
 		} catch (error: any) {
 			dispatchErrorHandler(dispatch, error.message);
-
-			// dispatch({
-			// 	type: types.GET_SINGLE_COURSE_FAIL,
-			// 	payload: error.message,
-			// });
+			dispatch({
+				type: types.GET_SINGLE_COURSE_FAIL,
+				payload: error.message,
+			});
 		}
 	};
 
@@ -152,11 +152,31 @@ export const getLectureCourseAction =
 			});
 		} catch (error: any) {
 			dispatchErrorHandler(dispatch, error.message);
+			dispatch({
+				type: types.GET_LECTURE_COURSE_FAIL,
+				payload: error.message,
+			});
+		}
+	};
 
-			// dispatch({
-			// 	type: types.GET_LECTURE_COURSE_FAIL,
-			// 	payload: error.message,
-			// });
+/**
+ * Toggle a lesson's "completed" state for the current lecture course.
+ * Optimistic — updates local state immediately so the UI (rail check marks,
+ * header progress ring) updates without waiting for the server roundtrip.
+ * If the PATCH fails, dispatches an error toast but does NOT revert — the
+ * next page load will resync from the source of truth.
+ */
+export const markLessonCompleteAction =
+	(completedCourseId: string, lessonId: string): CourseThunk =>
+	async (dispatch: AppDispatch) => {
+		// Optimistic local update first
+		dispatch({ type: types.MARK_LESSON_COMPLETE_LOCAL, payload: lessonId });
+		if (!completedCourseId) return;
+		try {
+			const response = await api.markLessonComplete(completedCourseId, lessonId);
+			throwErrorHandler(response.error);
+		} catch (error: any) {
+			dispatchErrorHandler(dispatch, error.message);
 		}
 	};
 
@@ -169,7 +189,9 @@ export const createLectureCourseAction =
 	async (dispatch: AppDispatch) => {
 		const { slug, id } = params;
 		try {
-			const { error, data } = await api.createLectureCourse(details);
+			const { createEnrollmentApi } = await import('../api/enrollmentApi');
+			const response = await createEnrollmentApi({ userId: details.userId ?? '', courseId: details.courseId });
+			const { error, data } = response;
 
 			throwErrorHandler(error);
 
@@ -185,10 +207,6 @@ export const createLectureCourseAction =
 		} catch (error: any) {
 			dispatchErrorHandler(dispatch, error.message);
 			navigate(`/signin`);
-			// dispatch({
-			// 	type: types.CREATE_LECTURE_COURSE_FAIL,
-			// 	payload: error.message,
-			// });
 		}
 	};
 

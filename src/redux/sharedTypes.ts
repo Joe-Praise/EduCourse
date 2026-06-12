@@ -21,7 +21,11 @@ export interface ApiResponse {
 }
 
 export interface autocompleteType {
-	_id: string;
+	_id?: string;
 	title: string;
 	slug: string;
+	imageCover?: string;
+	score?: number;
+	/** 'importing' = an AI/YouTube import is still building this course. */
+	publishedStatus?: string;
 }
