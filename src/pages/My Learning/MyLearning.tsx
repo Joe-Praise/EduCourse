@@ -1,275 +1,202 @@
 import { ChangeEvent, FC, useEffect, useRef, useState } from 'react';
-import LayoutHeader from '../../widgets/LayoutHeader/LayoutHeader';
-import LayoutFooter from '../../widgets/LayoutFooter/LayoutFooter';
 import { useDispatch, useSelector } from 'react-redux';
+import { Search, X } from 'lucide-react';
 import { RootState } from '../../redux/reducers';
 import {
 	getAutoCompleteMyLearningAction,
 	getMyLearningCourseAction,
+	removeMyLearningQueryFilterAction,
 	resetMyLearningAutoCompleteAction,
 	setLoadingAction,
 } from '../../redux/actions/courseAction';
 import { AppDispatch } from '../../redux/store';
-import { OmittedCategoryDataType } from '../../redux/api/categoryApi';
-import { OmittedInstructorDataType } from '../../redux/api/instructorApi';
 import { getRegisteredCategoryAction } from '../../redux/actions/categoryAction';
 import { GetMyLearningInstructorAction } from '../../redux/actions/instructorAction';
-import {
-	DropDown,
-	Pagination,
-	LoadingPulse,
-	UserCoursesSectionWrapper,
-} from '../../components/shared';
-import {
-	formQueryStr,
-	getLocalStorage,
-} from '../../util/helperFunctions/helper';
-import { CourseCardLoading } from '../../components/Course';
+import { Pagination } from '../../components/shared';
+import { CourseCardSkeleton } from '../../features/course';
+import { formQueryStr } from '../../util/helperFunctions/helper';
 import { paginateType } from '../../redux/sharedTypes';
 import useDebounce from '../../hooks/UseDebounce';
-import MyLearningError from '../../components/My Learning/MyLearningError';
-import { UserCoursesSection } from '../../components/My Learning';
-
-interface progressType {
-	completed: 'in progress' | 'completed';
-	_id: string;
-}
-
-export interface dropDownTypes {
-	tag: string;
-	items:
-		| OmittedCategoryDataType[]
-		| OmittedInstructorDataType[]
-		| progressType[];
-}
+import {
+	MyLearningEmpty,
+	MyLearningFilters,
+	UserCoursesSection,
+} from '../../components/My Learning';
 
 const MyLearning: FC = () => {
-	const userId = getLocalStorage('profile')?.user?._id;
+	const userId = useSelector((state: RootState) => state.user.userObj?._id);
 	const dispatch: AppDispatch = useDispatch();
-	// const limit = '50';
 	const initializeRef = useRef(true);
+
 	const category = useSelector(
-		(state: RootState) => state.category.registeredCategories
+		(state: RootState) => state.category.registeredCategories,
 	);
 	const instructor = useSelector(
-		(state: RootState) => state.instructor.myLearningInstructors
+		(state: RootState) => state.instructor.myLearningInstructors,
 	);
 	const courseState = useSelector((state: RootState) => state.course);
 
-	// get required data from the store
 	const metaData = courseState.myLearning.metaData;
-	const queryFilterState = courseState.myLearningQueryFilter;
+	const queryFilterState = courseState.myLearningQueryFilter as Record<string, string>;
 	const myLearningCourses = courseState.myLearning;
 	const myLearningSearch = courseState.myLearningAutoComplete;
 	const loading = courseState.loading;
 	const notification = courseState.notification;
 
-	const [activeLayout, setActiveLayout] = useState('grid');
 	const [search, setSearch] = useState('');
 	const debouncedSearch = useDebounce(search);
 
-	const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
-		setSearch(e.target.value);
+	const handleSearch = (e: ChangeEvent<HTMLInputElement>) => setSearch(e.target.value);
+	const clearSearch = () => {
+		setSearch('');
+		dispatch(resetMyLearningAutoCompleteAction());
+	};
+	const clearFilters = () => {
+		Object.entries(queryFilterState ?? {}).forEach(([key, value]) =>
+			dispatch(removeMyLearningQueryFilterAction({ [key]: value })),
+		);
 	};
 
+	// ─── Autocomplete search ────────────────────────────────────────────────────
 	useEffect(() => {
-		// if search is less than 3 characters, reset the search
-		if (debouncedSearch.length <= 2) {
+		if (debouncedSearch.trim().length <= 2) {
 			dispatch(resetMyLearningAutoCompleteAction());
 			return;
 		}
-
-		// else if search is more than 2 characters, dispatch the search
-		// and set the loading state to true for loader
 		dispatch(setLoadingAction());
-
-		// dispatch the search
 		dispatch(getAutoCompleteMyLearningAction(debouncedSearch));
 	}, [dispatch, debouncedSearch]);
-
-	useEffect(() => {}, [activeLayout, setActiveLayout]);
 
 	const handelQuerySearch = (details: paginateType) => {
 		const queryStr = formQueryStr(queryFilterState);
 		dispatch(getMyLearningCourseAction(details, userId, queryStr));
 	};
 
+	// ─── Initial load + react to filter changes ─────────────────────────────────
 	useEffect(() => {
-		// initializeRef is used to track the initial render of the component
-		// if initializeRef is true, get courses user has registered for
 		if (initializeRef.current) {
-			// set loading to true
 			dispatch(setLoadingAction());
-
-			// get courses user has registered for
 			dispatch(getMyLearningCourseAction({ page: '1', limit: '8' }, userId));
-
-			// get categories for courses user has regidtered for
 			dispatch(getRegisteredCategoryAction(userId));
-
-			// get instructors for courses user has regidtered for
 			dispatch(GetMyLearningInstructorAction(userId));
-
-			// set initializeRef to false
 			initializeRef.current = false;
 			return;
 		}
 
-		// setting query comes from dropdown, this triggers the post request to filter for courses
-		if (queryFilterState) {
-			const handelQuerySearch = () => {
-				// set loading to true
-				dispatch(setLoadingAction());
-
-				// generate custom query string form the queryFilterState
-				const queryStr = formQueryStr(queryFilterState);
-
-				// set pagination details
-				const details = { page: '1', limit: '8' };
-
-				// get courses user has registered for
-				dispatch(getMyLearningCourseAction(details, userId, queryStr));
-			};
-
-			// call the function
-			handelQuerySearch();
-		}
+		dispatch(setLoadingAction());
+		const queryStr = formQueryStr(queryFilterState);
+		dispatch(getMyLearningCourseAction({ page: '1', limit: '8' }, userId, queryStr));
 	}, [dispatch, queryFilterState, userId]);
 
-	const dropDown: dropDownTypes[] = [
-		{
-			tag: 'category',
-			items: category?.data,
-		},
-		{
-			tag: 'instructors',
-			items: instructor?.data,
-		},
-		{
-			tag: 'progress',
-			items: [
-				{
-					name: 'in progress',
-					_id: 'inprogress',
-				},
-				{
-					name: 'completed',
-					_id: 'completed',
-				},
-			],
-		},
-	];
+	// ─── Derived display state ───────────────────────────────────────────────────
+	const courses = myLearningCourses?.data ?? [];
+	const searchResults = myLearningSearch ?? [];
+	const isSearching = debouncedSearch.trim().length > 2;
+	const hasActiveFilter = Object.keys(queryFilterState ?? {}).length > 0;
+	const showSkeleton = loading && notification.length === 0;
+	const totalDocuments = metaData?.totalDocuments ?? courses.length;
 
-	/**
-	 * THIS FUNCTION HANDELES THE DISPLAY OF THE CARDS */
-	const arr = Array.from({ length: 8 }, (_v, i) => i);
-	const handleMyLearningDisplay = () => {
-		if (loading && notification.length === 0) {
+	const renderBody = () => {
+		if (showSkeleton) {
 			return (
-				<UserCoursesSectionWrapper>
-					{arr.map((_el, index) => (
-						<LoadingPulse key={index}>
-							<CourseCardLoading />
-						</LoadingPulse>
+				<div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-12'>
+					{Array.from({ length: 8 }).map((_v, i) => (
+						<CourseCardSkeleton key={i} />
 					))}
-				</UserCoursesSectionWrapper>
-			);
-		} else if (myLearningSearch?.length > 0 && !loading) {
-			return (
-				<UserCoursesSection
-					activeLayout={activeLayout}
-					data={myLearningSearch}
-				/>
-			);
-		} else if (myLearningCourses?.data?.length > 0 && !loading) {
-			return (
-				<UserCoursesSection
-					activeLayout={activeLayout}
-					data={myLearningCourses?.data}
-				/>
-			);
-		} else if (myLearningCourses.length < 1 && notification.length) {
-			return (
-				<MyLearningError to='/courses'>
-					<h1 className='text-xlg text-center'>
-						You haven&apos;t Registered for any course yet!
-					</h1>
-				</MyLearningError>
-			);
-		} else {
-			return (
-				<MyLearningError to='/courses'>
-					<h1 className='text-xlg text-center'>
-						Have you Registered for a course?
-					</h1>
-				</MyLearningError>
+				</div>
 			);
 		}
+
+		if (isSearching) {
+			return searchResults.length > 0 ? (
+				<UserCoursesSection data={searchResults} />
+			) : (
+				<MyLearningEmpty variant='search' query={search} onClearSearch={clearSearch} />
+			);
+		}
+
+		if (courses.length > 0) {
+			return <UserCoursesSection data={courses} />;
+		}
+
+		if (hasActiveFilter) {
+			return <MyLearningEmpty variant='filter' onClearFilters={clearFilters} />;
+		}
+
+		return <MyLearningEmpty variant='none' />;
 	};
-	// ENDS HERE
 
 	return (
-		<section className='layoutHightWithGrid'>
-			<LayoutHeader />
-			<div className='mt-5 w-[90%] sm:w-[75%] mx-auto'>
-				<h1>My Learning</h1>
-				<div className='md:m-2 flex flex-col flex-wrap justify-between md:flex-row gap-6 items-baseline'>
-					<div className='order-2 text-sm md:text-base md:order-1 flex gap-2 md:gap-5'>
-						{dropDown.map((item, index, arr) => {
-							return (
-								<DropDown
-									{...item}
-									key={index}
-									index={index}
-									arrLength={arr.length}
-								/>
-							);
-						})}
-					</div>
-
-					<div className='order-1 md:order-2'>
-						<form>
-							<input
-								type='search'
-								name='search'
-								id='headerSearch'
-								placeholder='Search'
-								className='searchInput rounded-none'
-								onChange={(e) => handleSearch(e)}
-							/>
-						</form>
-					</div>
+		<div className='mx-auto w-full max-w-container px-5 sm:px-8 lg:px-12 py-10 sm:py-16'>
+			{/* Header */}
+			<header className='border-b border-line-subtle pb-8'>
+				<span className='font-mono text-2xs uppercase tracking-[0.22em] text-clay-400'>
+					Library
+				</span>
+				<div className='mt-3 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between'>
+					<h1
+						className='font-display font-semibold text-5xl leading-[1.02] tracking-[-0.03em] text-ink-primary'
+						style={{ fontVariationSettings: '"opsz" 144' }}
+					>
+						My Learning
+					</h1>
+					{!isSearching && (
+						<p className='font-body text-sm text-ink-secondary tabular-nums'>
+							{totalDocuments > 0
+								? `${totalDocuments} ${totalDocuments === 1 ? 'course' : 'courses'} on your shelf`
+								: 'Pick up where you left off'}
+						</p>
+					)}
 				</div>
+			</header>
 
-				<>{handleMyLearningDisplay()}</>
+			{/* Controls */}
+			<div className='mt-8 flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between'>
+				<MyLearningFilters categories={category?.data} instructors={instructor?.data} />
 
-				<div className='my-3'>
-					<Pagination
-						metaData={metaData}
-						handlePagination={handelQuerySearch}
-						queryString={queryFilterState}
+				<div className='relative w-full lg:w-[320px] shrink-0'>
+					<Search
+						size={16}
+						strokeWidth={1.8}
+						className='pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-ink-tertiary'
 					/>
+					<input
+						type='search'
+						name='search'
+						aria-label='Search your library'
+						placeholder='Search your library'
+						value={search}
+						onChange={handleSearch}
+						className='h-11 w-full rounded-pill border border-line-base bg-bg-raised pl-11 pr-10 font-body text-sm text-ink-primary placeholder:text-ink-tertiary outline-none transition-colors focus:border-clay-500/60 [&::-webkit-search-cancel-button]:hidden'
+					/>
+					{search && (
+						<button
+							type='button'
+							onClick={clearSearch}
+							aria-label='Clear search'
+							className='absolute right-3 top-1/2 -translate-y-1/2 grid h-6 w-6 place-items-center rounded-full text-ink-tertiary hover:text-ink-primary transition-colors'
+						>
+							<X size={15} strokeWidth={2} />
+						</button>
+					)}
 				</div>
 			</div>
 
-			<LayoutFooter />
-		</section>
+			{/* Body */}
+			<div className='mt-4'>{renderBody()}</div>
+
+			{/* Pagination — only meaningful for the full (non-search) list */}
+			{!isSearching && courses.length > 0 && (
+				<div className='mt-6'>
+					<Pagination
+						metaData={metaData}
+						handlePagination={handelQuerySearch}
+						queryString={formQueryStr(queryFilterState)}
+					/>
+				</div>
+			)}
+		</div>
 	);
 };
 
 export default MyLearning;
-
-// const handelQuerySearch = (details: paginateType) => {
-// 	const queryStr = formQueryStr(queryFilterState);
-// 	dispatch(getMyLearningCourseAction(details, userId, queryStr));
-// };
-
-// if (queryFilterState) {
-// 	const handelQuerySearch = () => {
-// 		const queryStr = formQueryStr(queryFilterState);
-// 		dispatch(
-// 			getMyLearningCourseAction({ page: '1', limit: '8' }, userId, queryStr)
-// 		);
-// 	};
-// 	handelQuerySearch();
-// }

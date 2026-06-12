@@ -11,6 +11,11 @@ import tagReducer from './tagSlice';
 import notificationReducer from './notification';
 import publicProfileReducer from './publicProfileSlice';
 import landingPageReducer from './landingPageSlice';
+import instructorDashboardReducer from './instructorDashboardSlice';
+import enrollmentReducer from './enrollmentSlice';
+import wishlistReducer from './wishlistSlice';
+import notificationAppReducer from './notificationAppSlice';
+import platformReducer from './platformSlice';
 
 export const rootReducer = combineReducers({
 	user: userReducer,
@@ -24,6 +29,11 @@ export const rootReducer = combineReducers({
 	notification: notificationReducer,
 	publicProfile: publicProfileReducer,
 	landingPage: landingPageReducer,
+	instructorDashboard: instructorDashboardReducer,
+	enrollment: enrollmentReducer,
+	wishlist: wishlistReducer,
+	notificationApp: notificationAppReducer,
+	platform: platformReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

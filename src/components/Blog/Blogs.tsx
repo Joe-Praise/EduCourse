@@ -1,12 +1,7 @@
-// import { useEffect } from 'react';
 import CardsPlaceholder from '../Home/CardsPlaceholder';
-import BlogCard from './BlogCard';
-// import { AppDispatch, RootState } from '../../redux/store';
-// import { useDispatch, useSelector } from 'react-redux';
-// import { getBlogsAction } from '../../redux/actions/blogAction';
+import { BlogCard, type BlogCardData } from '../../features/blog';
+import { CourseCardSkeleton } from '../../features/course';
 import { singleBlogType } from '../../redux/api/blogApi';
-import BlogCardLoading from './BlogCardLoading';
-import { LoadingPulse } from '../shared';
 
 interface Iprop {
 	blogs: singleBlogType[];
@@ -14,27 +9,24 @@ interface Iprop {
 const Blogs = (props: Iprop) => {
 	const { blogs } = props;
 
-	const arr = Array.from({ length: 6 }, (_v, i) => i);
+	const skeletons = Array.from({ length: 6 }, (_v, i) => i);
 	const handleBlogDisplay = () => {
 		if (!blogs) {
 			return (
 				<>
-					{arr.map((_el, index) => (
-						<LoadingPulse key={index}>
-							<BlogCardLoading />
-						</LoadingPulse>
+					{skeletons.map((idx) => (
+						<CourseCardSkeleton key={idx} />
 					))}
 				</>
 			);
-		} else {
-			return (
-				<>
-					{blogs?.map((el: singleBlogType) => {
-						return <BlogCard blog={el} key={el._id} activeLayout='grid' />;
-					})}
-				</>
-			);
 		}
+		return (
+			<>
+				{blogs.map((el: singleBlogType) => (
+					<BlogCard blog={el as unknown as BlogCardData} key={el._id} />
+				))}
+			</>
+		);
 	};
 
 	return (
@@ -43,7 +35,7 @@ const Blogs = (props: Iprop) => {
 			description={'Explore our Free Articles'}
 			path={`/blogs`}
 			btnValue={'All Articles'}
-			className='grid-cols-1 gap-y-8 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3'
+			className='grid-cols-1 gap-y-8 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3'
 		>
 			{handleBlogDisplay()}
 		</CardsPlaceholder>

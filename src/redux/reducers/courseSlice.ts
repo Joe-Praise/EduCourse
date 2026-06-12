@@ -88,12 +88,21 @@ const courseSlice = (state = initialState, action: any) => {
 				...state,
 				loading: false,
 				singleCourse: payload,
+				courseError: '',
 			};
 		case types.GET_SINGLE_COURSE_FAIL:
 			return {
 				...state,
+				loading: false,
+				singleCourse: [],
+				courseError: payload || 'Could not load course',
+			};
+		case types.RESET_SINGLE_COURSE:
+			return {
+				...state,
 				loading: true,
 				singleCourse: [],
+				courseError: '',
 			};
 		// case types.INCREMENT_RATING_REVIEW:
 		// 	return {
@@ -106,13 +115,35 @@ const courseSlice = (state = initialState, action: any) => {
 				loading: false,
 				lectureCourse: payload,
 				videoId: handleVideoId(payload.modules),
+				courseError: '',
 			};
 		case types.GET_LECTURE_COURSE_FAIL:
 			return {
 				...state,
-				loading: true,
+				loading: false,
 				lectureCourse: [],
+				courseError: payload || 'Could not load lecture',
 			};
+		case types.MARK_LESSON_COMPLETE_LOCAL: {
+			// Optimistic update: toggle the lesson id in/out of the local
+			// `completedLessons` array. Mirrors the backend's toggle behavior
+			// in updateActiveCourseLessons (PATCH /completed-courses/:id).
+			const lectureCourse = state.lectureCourse as unknown as
+				| { course?: { completedLessons?: string[] } }
+				| undefined;
+			if (!lectureCourse?.course) return state;
+			const existing = lectureCourse.course.completedLessons ?? [];
+			const next = existing.includes(payload)
+				? existing.filter((id) => id !== payload)
+				: [...existing, payload];
+			return {
+				...state,
+				lectureCourse: {
+					...lectureCourse,
+					course: { ...lectureCourse.course, completedLessons: next },
+				} as unknown as typeof state.lectureCourse,
+			};
+		}
 		case types.GET_MY_LEARNING_COURSE_SUCCESS:
 			return {
 				...state,

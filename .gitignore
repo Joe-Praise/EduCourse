@@ -24,3 +24,9 @@ task.txt
 *.njsproj
 *.sln
 *.sw?
+
+# Architecture docs (AI context files)
+CLAUDE.md
+AGENTS.md
+REPO_MAP.md
+plans

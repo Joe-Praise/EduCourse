@@ -21,7 +21,7 @@ const FilterPageHeader = (props: headerType) => {
 		title,
 	} = props;
 	return (
-		<div className='flex justify-between flex-wrap items-end sticky top-0 z-20 bg-white p-3 shadow-lg'>
+		<div className='flex justify-between flex-wrap items-end sticky top-[72px] z-20 bg-[#080814]/95 backdrop-blur-xl border-b border-violet-500/20 p-3 shadow-lg shadow-violet-500/5'>
 			<h1 className='basis-full sm:basis-auto'>{title}</h1>
 			<SearchAndLayout
 				handleSearch={searchFunc}

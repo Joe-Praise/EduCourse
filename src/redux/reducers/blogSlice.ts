@@ -1,5 +1,3 @@
-// import { getLocalStorage } from '../../util/helperFunctions/helper';
-import { getLocalStorage } from '../../util/helperFunctions/helper';
 import { blogCommentResponseType, blogType } from '../api/blogApi';
 import { SingleCourseType } from '../api/courseAPI';
 import * as types from '../constants/blogConstants';
@@ -65,11 +63,19 @@ const blogSlice = (state = initialState, action: any) => {
 			return {
 				...state,
 				singleBlog: payload,
+				blogError: '',
 			};
 		case types.GET_SINGLE_BLOG_FAIL:
 			return {
 				...state,
 				singleBlog: [],
+				blogError: payload || 'Could not load article',
+			};
+		case types.RESET_SINGLE_BLOG:
+			return {
+				...state,
+				singleBlog: [],
+				blogError: '',
 			};
 		// case types.GET_SINGLE_COURSE_REVIEWS_SUCCESS:
 		// 	return {
@@ -111,7 +117,7 @@ const blogSlice = (state = initialState, action: any) => {
 						totalDocuments: state.comments.metaData.totalDocuments + 1,
 						count: state.comments.metaData.count + 1,
 					},
-					data: [addImageToUser(payload), ...state.comments.data],
+					data: [addImageToUser(payload.comment, payload.user), ...state.comments.data],
 				},
 				blogError: '',
 			};
@@ -179,9 +185,9 @@ const deleteHandler = (state: any, payload: any) => {
 	return filteredArr;
 };
 
-const addImageToUser = (payload: any) => {
-	const payloadCopy = payload;
-	payloadCopy.userId = getLocalStorage('profile')?.user;
+const addImageToUser = (comment: any, user: any) => {
+	const payloadCopy = { ...comment };
+	payloadCopy.userId = user;
 	return payloadCopy;
 };
 export default blogSlice;

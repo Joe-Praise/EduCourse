@@ -1,498 +1,270 @@
-import { FC, Fragment } from 'react';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
-import angleIcon from '../../assets/icon/chevron-down.svg';
-import avi from '../../assets/image/Ellipse 1.jpg';
-import { linkType } from './navigationType';
-import useHandleModal from '../../hooks/UseHandleModal';
-import HamburgerBtn from '../../components/shared/HamburgerBtn';
-import Logo from '../../components/shared/Logo';
-import { getLocalStorage } from '../../util/helperFunctions/helper';
-import config from '../../../config';
-import { useDispatch } from 'react-redux';
-import { AppDispatch } from '../../redux/store';
-import { logoutAction } from '../../redux/actions/authAction';
-// import { useSelector } from 'react-redux';
-// import { RootState } from '../../redux/store';
+import { FC, useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { Bell } from 'lucide-react';
+import useCurrentUser from '../../hooks/useCurrentUser';
+import { imgSrc, TRANSFORMS } from '../../util/helperFunctions/cloudinary';
+import { gsap, prefersReducedMotion } from '../../lib/motion';
+import { Magnetic } from '../../patterns/Magnetic/Magnetic';
+import MenuOverlay from './MenuOverlay';
+import { cn } from '../../lib/cn';
+
+const formatClock = (date: Date): string => {
+	const h = date.getHours().toString().padStart(2, '0');
+	const m = date.getMinutes().toString().padStart(2, '0');
+	return `${h}:${m}`;
+};
+
+const useLiveClock = (): string => {
+	const [time, setTime] = useState(() => formatClock(new Date()));
+	useEffect(() => {
+		const tick = () => setTime(formatClock(new Date()));
+		tick();
+		const id = window.setInterval(tick, 15_000);
+		return () => window.clearInterval(id);
+	}, []);
+	return time;
+};
+
+const HIDE_THRESHOLD = 90; // px scrolled before hide-on-scroll engages
+const MIN_DELTA = 5; // ignore sub-pixel scroll jitter
 
 const LayoutHeader: FC = () => {
-	const userDetails = getLocalStorage('profile')?.user;
-	const navigate = useNavigate();
-	const dispatch: AppDispatch = useDispatch();
-	// const userData = useSelector((state: RootState) => state.auth);
-	// console.log(userData);
+	const { user, isLoggedIn } = useCurrentUser();
+	const [menuOpen, setMenuOpen] = useState(false);
+	const time = useLiveClock();
+	const [scrolled, setScrolled] = useState(false);
 
-	// takes out an element from an array
-	const takeOut = (arr: linkType[], id: number) => {
-		return arr.filter((el) => el.id !== id);
-	};
-
-	const {
-		modal: toggleDropdown,
-		handleModal: handleToggleDropdown,
-		// closeModal: closeDropdown,
-	} = useHandleModal();
-
-	const { modal: HamburgerState, handleModal: handleToggleHamburger } =
-		useHandleModal();
-
-	const leftLinks: linkType[] = [
-		{
-			id: 1,
-			name: 'Home',
-			path: '/',
-		},
-		{
-			id: 2,
-			name: 'Courses',
-			path: '/courses',
-		},
-		{
-			id: 3,
-			name: 'Instructors',
-			path: '/instructors',
-		},
-		{
-			id: 4,
-			name: 'My learning',
-			path: '/my-courses/learning',
-		},
-		{
-			id: 5,
-			name: 'Blog',
-			path: '/blogs',
-		},
-		{
-			id: 6,
-			name: "FAQ's",
-			path: '/faqs',
-		},
-	];
-
-	const rightLinks: linkType[] = [
-		{
-			id: 1,
-			name: 'Login',
-			path: '/signin',
-			// onClick: ''
-		},
-		{
-			id: 2,
-			name: 'Sign Up',
-			path: '/signup',
-		},
-	];
-
-	const dropdown: linkType[] = [
-		{
-			id: 1,
-			name: 'Profile',
-			path: '/profile',
-		},
-		{
-			id: 2,
-			name: 'Public Profile',
-			path: '/publicprofile',
-		},
-		{
-			id: 3,
-			name: 'Contact Us',
-			path: '/contactus',
-		},
-		{
-			id: 4,
-			name: 'Logout',
-			path: '/logout',
-		},
-	];
-
-	const mobileNav: linkType[] = [
-		{
-			id: 1,
-			name: 'Home',
-			path: '/',
-		},
-		{
-			id: 2,
-			name: 'Courses',
-			path: '/courses',
-		},
-		{
-			id: 3,
-			name: 'Instructors',
-			path: '/instructors',
-		},
-		{
-			id: 4,
-			name: 'My learning',
-			path: '/my-courses/learning',
-		},
-		{
-			id: 5,
-			name: 'Blog',
-			path: '/blogs',
-		},
-		{
-			id: 6,
-			name: "FAQ's",
-			path: '/faqs',
-		},
-		{
-			id: 7,
-			name: 'Profile',
-			path: '/profile',
-		},
-		{
-			id: 8,
-			name: 'Public Profile',
-			path: '/publicprofile',
-		},
-		{
-			id: 9,
-			name: 'Contact Us',
-			path: '/contactus',
-		},
-	];
-
-	// takes out the fourth element from the leftLinks array(my learning)
-	const loopFrom = userDetails ? leftLinks : takeOut(leftLinks, 4);
-	const loopFromMobile = userDetails ? leftLinks : takeOut(mobileNav, 4);
-
-	const handleLogoutFunctionality = () => {
-		dispatch(logoutAction(navigate));
-	};
+	const headerRef = useRef<HTMLElement>(null);
+	const revealRef = useRef<HTMLButtonElement>(null);
+	const visibleRef = useRef(true); // is the header currently shown?
+	const lastYRef = useRef(0);
+	const showHeaderRef = useRef<(show: boolean) => void>(() => {});
 
 	/**
-	 *
-	 * @returns UI based on the login status i.e bottom profile btn when user is logged in and login & sign up when not logged in
+	 * jitter.video-style scroll-reveal header:
+	 *  - scrolling DOWN past the threshold slides the header up out of view
+	 *    (GSAP yPercent) and pops in a floating hamburger button;
+	 *  - scrolling UP brings the header straight back and tucks the button away;
+	 *  - clicking the hamburger also reveals the header on demand.
+	 * GSAP owns the `transform`; Tailwind only animates bg/border/blur.
 	 */
-	const handleMobileDisplayProfileBtn = () => {
-		if (!userDetails) {
-			return (
-				<>
-					{rightLinks?.map((el) => (
-						<li
-							key={el.id}
-							className='hover:underline hover:underline-offset-4  uppercase'
-						>
-							<NavLink
-								to={el.path}
-								className={({ isActive }) =>
-									isActive
-										? 'block p-2 underline underline-offset-4 text-[30px] rounded-md'
-										: 'block p-2 rounded-md text-[30px]'
-								}
-								onClick={() => handleToggleHamburger()}
-							>
-								{el.name}
-							</NavLink>
-						</li>
-					))}
-				</>
-			);
-		} else {
-			return (
-				<>
-					<li className='w-auto rounded-md '>
-						<button
-							className={
-								'block w-full text-[30px] text-left p-3 lg:p-2 rounded-md hover:underline hover:underline-offset-4 uppercase font-medium text-secondary-light'
-							}
-							onClick={() => {
-								handleLogoutFunctionality();
-								handleToggleHamburger();
-							}}
-						>
-							{'Logout'}
-						</button>
-					</li>
-					<li
-						className=' absolute top-2 left-2 w-[150px]'
-						onClick={handleToggleDropdown}
-					>
-						<Link
-							to={'/profile'}
-							className='flex items-center gap-1 cursor-pointer'
-						>
-							<figure>
-								<img
-									src={avi}
-									alt='user avi'
-									className='w-[38px] h-[38px] rounded-[48px]'
-								/>
-							</figure>
-							<p className='font-exo font-[600] text-secondary-light hover:text-secondary-dark'>
-								{userDetails ? userDetails?.name : 'Annette Black'}
-							</p>
-						</Link>
-					</li>
-				</>
-			);
+	useEffect(() => {
+		const header = headerRef.current;
+		const revealBtn = revealRef.current;
+		if (!header) return;
+
+		const reduce = prefersReducedMotion();
+		if (revealBtn) gsap.set(revealBtn, { autoAlpha: 0, y: -14, scale: 0.85 });
+
+		showHeaderRef.current = (show: boolean) => {
+			if (reduce) {
+				gsap.set(header, { yPercent: show ? 0 : -140 });
+				if (revealBtn) gsap.set(revealBtn, { autoAlpha: show ? 0 : 1, y: show ? -14 : 0, scale: show ? 0.85 : 1 });
+				return;
+			}
+			gsap.to(header, {
+				yPercent: show ? 0 : -140,
+				duration: 0.6,
+				ease: 'power3.out',
+				overwrite: true,
+			});
+			if (revealBtn) {
+				gsap.to(revealBtn, {
+					autoAlpha: show ? 0 : 1,
+					y: show ? -14 : 0,
+					scale: show ? 0.85 : 1,
+					duration: show ? 0.3 : 0.5,
+					ease: show ? 'power2.in' : 'back.out(1.6)',
+					overwrite: true,
+				});
+			}
+		};
+
+		lastYRef.current = window.scrollY;
+		let ticking = false;
+		const onScroll = () => {
+			if (ticking) return;
+			ticking = true;
+			window.requestAnimationFrame(() => {
+				const y = window.scrollY;
+				setScrolled(y > 50);
+				const goingDown = y > lastYRef.current;
+				const delta = Math.abs(y - lastYRef.current);
+
+				if (goingDown && y > HIDE_THRESHOLD && delta > MIN_DELTA) {
+					if (visibleRef.current) {
+						visibleRef.current = false;
+						showHeaderRef.current(false);
+					}
+				} else if ((!goingDown && delta > MIN_DELTA) || y <= HIDE_THRESHOLD) {
+					if (!visibleRef.current) {
+						visibleRef.current = true;
+						showHeaderRef.current(true);
+					}
+				}
+				lastYRef.current = y;
+				ticking = false;
+			});
+		};
+		onScroll();
+		window.addEventListener('scroll', onScroll, { passive: true });
+		return () => window.removeEventListener('scroll', onScroll);
+	}, []);
+
+	const revealHeader = () => {
+		if (!visibleRef.current) {
+			visibleRef.current = true;
+			showHeaderRef.current(true);
 		}
-	};
-
-	const handleDisplayProfileBtn = () => {
-		if (!userDetails) {
-			return rightLinks?.map((el) => (
-				<li key={el.id}>
-					<NavLink
-						to={el.path}
-						className={({ isActive }) =>
-							isActive
-								? 'block p-2 text-secondary-dark'
-								: 'p-2 block hover:text-secondary-dark'
-						}
-					>
-						{el.name}
-					</NavLink>
-				</li>
-			));
-		} else {
-			return (
-				<li className='relative' onClick={handleToggleDropdown}>
-					<button className='flex items-center gap-1 cursor-pointer'>
-						<figure>
-							<img
-								src={
-									userDetails
-										? `${config.baseUrl}/img/${userDetails?.photo}`
-										: avi
-								}
-								alt='user avi'
-								className='w-[38px] h-[38px] rounded-[48px]'
-							/>
-						</figure>
-						<p className='font-exo font-[600] text-secondary-light hover:text-secondary-dark'>
-							{userDetails ? userDetails?.name : 'Annette Black'}
-						</p>
-
-						<img
-							src={angleIcon}
-							alt='angle arrow depicting a closed menu'
-							className={`${
-								toggleDropdown
-									? 'rotate-180 duration-75'
-									: 'rotate-0 duration-75'
-							}`}
-						/>
-					</button>
-					{toggleDropdown && (
-						<ul className='absolute z-20 border w-[12rem] -right-4 top-[3.5rem] bg-white rounded-lg'>
-							{dropdown.map((el) => (
-								<Fragment key={el.id}>
-									{el.name === 'Logout' ? (
-										<li className='w-auto rounded-md '>
-											<button
-												className={
-													'p-2 px-6 font-semibold bg hover:bg-secondary-dark rounded-md text-secondary-light hover:text-white w-full text-left'
-												}
-												onClick={() => {
-													handleLogoutFunctionality();
-													// handleToggleHamburger();
-												}}
-											>
-												{'Logout'}
-											</button>
-										</li>
-									) : (
-										<li className='px-3 hover:bg-secondary-dark rounded-md'>
-											<Link to={el.path} className='block p-2 hover:text-white'>
-												{el.name}
-											</Link>
-										</li>
-									)}
-								</Fragment>
-							))}
-						</ul>
-					)}
-				</li>
-			);
-		}
-	};
-
-	// TODO: make this slide into view
-	const MobileNav: FC = () => {
-		return (
-			<div
-				className={`${
-					HamburgerState ? 'left-0' : ' left-full'
-				} fixed z-40 w-full h-svh rounded-md p-3 top-0 bg-white block overflow-auto transition-all duration-1000 transform ease-in-out `}
-			>
-				<div className='absolute right-0'>
-					<HamburgerBtn
-						toggleHamburger={handleToggleHamburger}
-						HamburgerState={HamburgerState}
-					/>
-				</div>
-				<div className='flex flex-col w-[60%] h-[90vh] m-auto mt-[50px] justify-between'>
-					<div className='flex flex-col'>
-						<h1 className='w-full text-xs my-3 uppercase border-b-2 border-black pb-1'>
-							Navigation
-						</h1>
-						<ul className='w-full gap-1 sm:flex lg:gap-2'>
-							{loopFromMobile?.map((el) => (
-								<li
-									key={el.id}
-									className='w-full rounded-md hover:underline hover:underline-offset-4  uppercase'
-								>
-									<NavLink
-										to={el.path}
-										className={({ isActive }) =>
-											isActive
-												? 'block p-2 underline underline-offset-4 text-[30px] rounded-md text-black'
-												: 'block p-2 rounded-md text-[30px]'
-										}
-										onClick={() => handleToggleHamburger()}
-									>
-										{el.name}
-									</NavLink>
-								</li>
-							))}
-						</ul>
-						<ul className='items-center sm:flex'>
-							{handleMobileDisplayProfileBtn()}
-						</ul>
-					</div>
-				</div>
-			</div>
-		);
 	};
 
 	return (
-		<header className=' h-[80px]'>
-			<nav className='w-100 max-w-[95rem] mx-auto h-full bg-white px-4 rounded-lg shadow-md'>
-				<div className='flex items-center h-full gap-3 relative'>
-					<div className=''>
-						<Logo />
-					</div>
-
-					<svg
-						xmlns='http://www.w3.org/2000/svg'
-						width='1'
-						height='28'
-						viewBox='0 0 1 48'
-						fill='none'
-					>
-						<path
-							d='M0.5 8V40'
-							stroke='#E7E9F0'
-							strokeLinecap='round'
-							strokeLinejoin='round'
+		<>
+			<header
+				ref={headerRef}
+				className={cn(
+					'sticky top-0 z-50 transition-[background-color,border-color,backdrop-filter] duration-base ease-out-quart will-change-transform',
+					scrolled
+						? 'bg-bg-base/85 backdrop-blur-xl border-b border-line-subtle'
+						: 'bg-transparent border-b border-transparent',
+				)}
+			>
+				<div className='max-w-screen-2xl mx-auto px-5 sm:px-8 lg:px-12 h-[68px] sm:h-[76px] flex items-center justify-between gap-4'>
+					{/* LEFT — Wordmark */}
+					<Link to='/' className='inline-flex items-center gap-2 group shrink-0'>
+						<span
+							className='font-display italic font-medium text-ink-primary tracking-[-0.02em] leading-none transition-colors group-hover:text-clay-400'
+							style={{ fontSize: 'clamp(20px, 1.6vw, 26px)', fontVariationSettings: '"opsz" 36' }}
+						>
+							EduCourse
+						</span>
+						<span
+							aria-hidden
+							className='hidden sm:inline-block h-1.5 w-1.5 rounded-full bg-clay-500 mt-0.5 transition-transform group-hover:scale-150'
 						/>
-					</svg>
+					</Link>
 
-					<div className='hidden sm:flex justify-between items-center basis-full'>
-						<ul className='basis-auto gap-1 sm:flex lg:gap-2'>
-							{loopFrom?.map((el) => (
-								<li key={el.id} className='w-auto'>
-									<NavLink
-										to={el.path}
-										className={({ isActive }) =>
-											isActive
-												? 'block p-1 lg:p-2 text-secondary-dark'
-												: 'p-1 lg:p-2 block hover:text-secondary-dark'
-										}
-									>
-										{el.name}
-									</NavLink>
-								</li>
-							))}
-						</ul>
-
-						<ul className='items-center sm:flex'>
-							{handleDisplayProfileBtn()}
-						</ul>
+					{/* CENTER — Live status (desktop only) */}
+					<div className='hidden lg:flex items-center gap-3 font-mono text-2xs uppercase tracking-[0.22em] text-ink-secondary'>
+						<span className='inline-flex items-center gap-1.5'>
+							<span aria-hidden className='inline-block h-1.5 w-1.5 rounded-full bg-clay-500 animate-pulse' />
+							{time} · LAGOS
+						</span>
+						<span aria-hidden className='h-3 w-px bg-line-base' />
+						<span className='text-ink-tertiary'>Learning in session</span>
 					</div>
-					<ul className='ms-auto sm:hidden'>
-						<li>
-							<HamburgerBtn
-								toggleHamburger={handleToggleHamburger}
-								HamburgerState={HamburgerState}
-							/>
-						</li>
-					</ul>
+
+					{/* RIGHT — Auth + Menu */}
+					<div className='flex items-center gap-2 sm:gap-3 shrink-0'>
+						{isLoggedIn ? (
+							<>
+								<Link
+									to='/notifications'
+									aria-label='Notifications'
+									className='hidden sm:inline-grid place-items-center h-10 w-10 rounded-full border border-line-base text-ink-secondary hover:text-ink-primary hover:border-clay-500 transition-colors'
+								>
+									<Bell size={15} strokeWidth={2} />
+								</Link>
+								<Link
+									to='/profile'
+									className='hidden sm:inline-flex items-center gap-2 h-10 pl-1.5 pr-4 rounded-pill border border-line-base hover:border-clay-500 transition-colors group'
+								>
+									<span className='inline-block h-7 w-7 rounded-full overflow-hidden bg-bg-raised'>
+										{user?.photo ? (
+											<img
+												src={imgSrc(user.photo, '/img/', TRANSFORMS.avatarSm)}
+												alt={user.name}
+												className='h-full w-full object-cover'
+											/>
+										) : (
+											<span className='grid place-items-center h-full w-full font-display italic text-clay-400 text-sm'>
+												{user?.name?.charAt(0)?.toUpperCase() ?? '?'}
+											</span>
+										)}
+									</span>
+									<span className='font-body text-xs text-ink-primary group-hover:text-clay-400 transition-colors max-w-[100px] truncate'>
+										{user?.name?.split(' ')[0]}
+									</span>
+								</Link>
+							</>
+						) : (
+							<Link
+								to='/signin'
+								className='hidden sm:inline-flex items-center h-10 px-4 rounded-pill text-ink-primary hover:text-clay-400 transition-colors font-body text-sm'
+							>
+								Sign in
+							</Link>
+						)}
+
+						{!isLoggedIn && (
+							<Magnetic strength={0.18}>
+								<Link
+									to='/signup'
+									data-cursor='grow'
+									className='hidden sm:inline-flex items-center h-10 px-5 rounded-pill bg-clay-500 hover:bg-clay-600 text-ink-primary font-body font-medium text-sm transition-colors'
+								>
+									Start
+								</Link>
+							</Magnetic>
+						)}
+
+						{/* Menu button */}
+						<Magnetic strength={0.16}>
+							<button
+								type='button'
+								onClick={() => setMenuOpen(true)}
+								aria-label='Open menu'
+								data-cursor='grow'
+								className='group inline-flex items-center gap-3 h-10 pl-4 pr-1.5 rounded-pill bg-bg-raised border border-line-base hover:border-clay-500 transition-colors'
+							>
+								<span className='font-mono text-2xs uppercase tracking-[0.22em] text-ink-primary group-hover:text-clay-400 transition-colors'>
+									Menu
+								</span>
+								<span
+									aria-hidden
+									className='inline-flex flex-col gap-[3px] items-end justify-center h-7 w-7 rounded-full bg-ink-primary group-hover:bg-clay-500 transition-colors'
+								>
+									<span className='h-[1.5px] w-3.5 bg-bg-base rounded-full transition-all duration-base ease-out-quart group-hover:w-4' />
+									<span className='h-[1.5px] w-2.5 bg-bg-base rounded-full transition-all duration-base ease-out-quart group-hover:w-4' />
+								</span>
+							</button>
+						</Magnetic>
+					</div>
 				</div>
-				<MobileNav />
-			</nav>
-		</header>
+			</header>
+
+			{/* Floating reveal control — GSAP pops it in when the header hides on
+				 scroll-down; clicking it animates the full header back into view.
+				 Editorial "Menu" pill matching the header's own menu button.
+				 Visibility/position is driven entirely by GSAP (autoAlpha). */}
+			<button
+				ref={revealRef}
+				type='button'
+				onClick={revealHeader}
+				aria-label='Show navigation'
+				className={cn(
+					'group fixed top-5 right-5 sm:right-8 z-[60] will-change-transform',
+					'inline-flex items-center gap-3 h-11 pl-4 pr-1.5 rounded-pill',
+					'bg-bg-raised/90 backdrop-blur-xl border border-line-base shadow-warm-3',
+					'hover:border-clay-500 transition-colors',
+					'focus-visible:outline-none focus-visible:shadow-focus-ring',
+				)}
+			>
+				<span className='font-mono text-2xs uppercase tracking-[0.22em] text-ink-primary group-hover:text-clay-400 transition-colors'>
+					Menu
+				</span>
+				<span
+					aria-hidden
+					className='inline-flex flex-col gap-[3px] items-end justify-center h-8 w-8 rounded-full bg-ink-primary group-hover:bg-clay-500 transition-colors'
+				>
+					<span className='h-[1.5px] w-4 bg-bg-base rounded-full transition-all duration-base ease-out-quart group-hover:w-[18px]' />
+					<span className='h-[1.5px] w-3 bg-bg-base rounded-full transition-all duration-base ease-out-quart group-hover:w-[18px]' />
+				</span>
+			</button>
+
+			<MenuOverlay open={menuOpen} onClose={() => setMenuOpen(false)} />
+		</>
 	);
 };
 
 export default LayoutHeader;
-
-// const MobileNav: FC = () => {
-// 	return (
-// 		<div
-// 			className={`absolute z-40 w-[250px] h-[88%] rounded-md p-3 top-[80px] sm:hidden bg-white block ${
-// 				HamburgerState ? '-translate-x-[1rem]' : '-translate-x-[20rem]'
-// 			} `}
-// 		>
-// 			<ul className='basis-auto gap-1 sm:flex lg:gap-2'>
-// 				{mobileNav?.map((el) => (
-// 					<li
-// 						key={el.id}
-// 						className='w-auto rounded-md hover:bg-secondary-dark'
-// 					>
-// 						<NavLink
-// 							to={el.path}
-// 							className={({ isActive }) =>
-// 								isActive
-// 									? 'block p-3 lg:p-2 bg-secondary-dark text-white rounded-md'
-// 									: 'p-3 lg:p-2 block hover:text-white rounded-md'
-// 							}
-// 						>
-// 							{el.name}
-// 						</NavLink>
-// 					</li>
-// 				))}
-// 			</ul>
-
-// 			<ul className='items-center sm:flex'>
-// 				{!userDetails ? (
-// 					rightLinks?.map((el) => (
-// 						<li key={el.id}>
-// 							<NavLink
-// 								to={el.path}
-// 								className={({ isActive }) =>
-// 									isActive
-// 										? 'block p-3 lg:p-2 bg-secondary-dark text-white rounded-md'
-// 										: 'p-3 lg:p-2 block hover:text-white rounded-md'
-// 								}
-// 							>
-// 								{el.name}
-// 							</NavLink>
-// 						</li>
-// 					))
-// 				) : (
-// 					<>
-// 						<li className='w-auto rounded-md '>
-// 							<button
-// 								className={
-// 									'block p-3 lg:p-2 rounded-md hover:text-white hover:bg-secondary-dark'
-// 								}
-// 							>
-// 								{'Logout'}
-// 							</button>
-// 						</li>
-// 						<li className='absolute bottom-5' onClick={handleToggleDropdown}>
-// 							<Link
-// 								to={'/profile'}
-// 								className='flex items-center gap-1 cursor-pointer'
-// 							>
-// 								<figure>
-// 									<img
-// 										src={avi}
-// 										alt='user avi'
-// 										className='w-[38px] h-[38px] rounded-[48px]'
-// 									/>
-// 								</figure>
-// 								<p className='font-exo font-[600] text-secondary-light hover:text-secondary-dark'>
-// 									{userDetails ? userDetails?.name : 'Annette Black'}
-// 								</p>
-// 							</Link>
-// 						</li>
-// 					</>
-// 				)}
-// 			</ul>
-// 		</div>
-// 	);
-// };

@@ -3,9 +3,8 @@ import { useState } from 'react';
 import RenderIf from '../shared/RenderIf';
 import { truncateValue } from '../../util/helperFunctions/helper';
 import { OmittedReviewDataType } from '../../redux/api/reviewApi';
-
-import config from '../../../config';
 import PublicProfileLink from '../shared/PublicProfileLink';
+import { imgSrc, TRANSFORMS } from '../../util/helperFunctions/cloudinary';
 
 const CommentCard = (props: OmittedReviewDataType) => {
 	const { userId, review, rating, createdAt } = props;
@@ -18,7 +17,7 @@ const CommentCard = (props: OmittedReviewDataType) => {
 				<PublicProfileLink userId={userId?._id}>
 					<figure className='w-16 h-16 block'>
 						<img
-							src={`${config?.baseUrl}/img/${userId?.photo}`}
+							src={imgSrc(userId?.photo, '/img/', TRANSFORMS.avatarSm)}
 							alt={`${userId?.name}'s display image`}
 							className='rounded-full '
 						/>

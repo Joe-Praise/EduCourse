@@ -1,26 +1,28 @@
-import {
-	getSessionStorage,
-	handleApiError,
-	saveSessionStorage,
-} from '../../util/helperFunctions/helper';
+import { handleApiError } from '../../util/helperFunctions/helper';
 import { ApiResponse, metaData, paginateType } from '../sharedTypes';
 import { axiosInstance as API } from './utils';
-import * as types from '../constants/instructorConstants';
 
 export interface InstructorType {
 	_id: string;
-	userId: UserID;
+	// Optional: YouTube-imported instructors have no linked platform user.
+	userId?: UserID;
+	title: string;
 	expertise: string;
-	__v: number;
 	description: string;
 	links: Link[];
-	id: string;
+	// 'user' (a real platform account) | 'youtube' (AI-imported channel)
+	source?: 'user' | 'youtube';
+	channelName?: string;
+	channelThumbnailUrl?: string;
+	channelUrl?: string;
+	subscriberCount?: number;
 }
 
 export interface Link {
 	_id: string;
 	platform: string;
 	url: string;
+	displayName?: string;
 }
 
 export interface UserID {
@@ -31,7 +33,7 @@ export interface UserID {
 	photo: string;
 }
 
-export type OmittedInstructorDataType = Omit<InstructorType, '__v'>;
+export type OmittedInstructorDataType = InstructorType;
 
 export type instructorDataType = {
 	status: string;
@@ -57,17 +59,14 @@ export const getInstructors = async (
 	details: paginateType
 ): Promise<ApiResponse> => {
 	try {
-		const cachedCourses = getSessionStorage(types.INSTRUCTOR_CONST);
-		if (cachedCourses) {
-			return cachedCourses;
-		}
-
+		// NOTE: intentionally NOT session-cached. The backend now returns only
+		// instructors with a published course, and that set changes as courses
+		// are imported/published. A stale sessionStorage copy would resurrect
+		// course-less instructors in the courses filter — so always fetch fresh.
 		const { page, limit } = details;
 		const { data } = await API.get<ApiResponse>(
 			`/api/v1/instructors?page=${page}&limit=${limit}`
 		);
-
-		saveSessionStorage(types.INSTRUCTOR_CONST, data);
 		return data;
 	} catch (error) {
 		return handleApiError(error);
@@ -132,7 +131,7 @@ export const deleteInstructor = async <T>(
 	instructorId: T
 ): Promise<ApiResponse> => {
 	try {
-		const { data } = await API.delete(`/api/v1/reviews/${instructorId}`);
+		const { data } = await API.delete(`/api/v1/instructors/${instructorId}`);
 		return data;
 	} catch (error) {
 		return handleApiError(error);

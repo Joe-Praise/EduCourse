@@ -1,32 +1,34 @@
 import { FaGraduationCap } from 'react-icons/fa';
 import { FaRegCirclePlay } from 'react-icons/fa6';
 import { Link } from 'react-router-dom';
-import config from '../../../config';
 import { InstructorType } from '../../redux/api/instructorApi';
+import { imgSrc, TRANSFORMS } from '../../util/helperFunctions/cloudinary';
+import { resolveInstructor } from '../../util/helperFunctions/instructorDisplay';
 
 interface Iprop {
 	instructor: InstructorType;
 }
 
 const InstructorCard = (props: Iprop) => {
-	const { photo, name, _id } = props.instructor.userId;
+	const display = resolveInstructor(props.instructor);
+	const { name, photo, profilePath } = display;
 	const { expertise } = props.instructor;
 
 	const noOfStudents = '10';
 	const noOfCourses = '20';
 
 	return (
-		<Link to={`/user/${_id}`}>
+		<Link to={profilePath}>
 			<div
 				// place in the slug or id here
 				className='md:w-52 md:flex flex-col items-center justify-center m-2 p-1 hover:scale-105 duration-150 hover:text-effect-active'
 			>
 				<figure className='block w-44 h-44 rounded-full mx-auto'>
 					<img
-						src={`${config.baseUrl}/img/${photo}`}
+						src={imgSrc(photo, '/img/', TRANSFORMS.avatarSm)}
 						alt={`Instructor ${name}'s cover image`}
 						loading='lazy'
-						className='w-full h-full rounded-full'
+						className='w-full h-full rounded-full bg-bg-raised'
 					/>
 				</figure>
 				<figcaption className='w-full text-center mt-2'>
