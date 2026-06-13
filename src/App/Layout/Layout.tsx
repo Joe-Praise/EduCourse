@@ -1,18 +1,23 @@
 import { FC } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import LayoutHeader from '../../widgets/LayoutHeader/LayoutHeader';
-import LayoutFooter from '../../widgets/LayoutFooter/LayoutFooter';
+import { PageTransition } from '../../patterns/PageTransition/PageTransition';
+import { EditorialFooter } from '../../features/home/EditorialFooter';
 
 const Layout: FC = () => {
+	const location = useLocation();
+	// overflow-x-CLIP (not hidden): still prevents horizontal scroll but does NOT
+	// create a scroll container, so the sticky header stays pinned
+	// (overflow-x-hidden silently breaks position: sticky on descendants).
 	return (
-		<div className='layoutHightWithGrid overflow-x-hidden'>
+		<div className='min-h-svh flex flex-col overflow-x-clip'>
 			<LayoutHeader />
-			<main>
-				<Outlet />
+			<main className='flex-1'>
+				<PageTransition transitionKey={location.pathname}>
+					<Outlet />
+				</PageTransition>
 			</main>
-			<footer className='mt-[3rem]'>
-				<LayoutFooter />
-			</footer>
+			<EditorialFooter />
 		</div>
 	);
 };

@@ -1,10 +1,13 @@
 import { FC, useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { setInitialAuthState } from '../redux/actions/authAction';
+import { useDispatch } from 'react-redux';
+import { logoutAction, setInitialAuthState } from '../redux/actions/authAction';
+import { AppDispatch } from '../redux/store';
 import { isAuthenticated } from '../util/helperFunctions/auth';
 import { user } from '../redux/api/userApi';
-import { RootState } from '../redux/store';
+import LoadingEffect from '../components/shared/LoadingEffect';
+import { useNotificationStream } from '../hooks/useNotificationStream';
+import { useIdleTimer } from '../hooks/useIdleTimer';
 
 type privateRoutetype = {
 	user: user;
@@ -12,21 +15,43 @@ type privateRoutetype = {
 
 const PrivateRoutes: FC<privateRoutetype> = ({ user }) => {
 	const navigate = useNavigate();
-	const dispatch = useDispatch();
+	const dispatch = useDispatch<AppDispatch>();
+
+	// Open the SSE stream once the user is authenticated. The hook no-ops
+	// when there's no user, and tears down cleanly on sign-out.
+	useNotificationStream();
 
 	const isAuthenticatedUser = isAuthenticated();
-	const loading = useSelector((state: RootState) => state.auth.isLoading);
-	// const loading = true;
+
+	// Log out after 30 minutes of no user activity. Enabled only while the
+	// session is valid; pauses automatically when the user is already
+	// signed out. The logoutAction itself calls the server-side revoke.
+	useIdleTimer({
+		enabled: isAuthenticatedUser,
+		onIdle: () => {
+			dispatch(logoutAction(navigate));
+		},
+	});
 
 	useEffect(() => {
 		if (!isAuthenticatedUser) {
-			// if (loading) {
 			dispatch(setInitialAuthState(navigate));
-			// }
 		}
-	}, [dispatch, isAuthenticatedUser, loading, navigate]);
+	}, [dispatch, isAuthenticatedUser, navigate]);
 
-	return isAuthenticatedUser && user && <Outlet />;
+	if (!isAuthenticatedUser) return null;
+
+	// User has a valid token but the userObj is still rehydrating — wait for it
+	// rather than rendering the protected child with an empty user.
+	if (!user?._id) {
+		return (
+			<div className='py-24 grid place-items-center'>
+				<LoadingEffect />
+			</div>
+		);
+	}
+
+	return <Outlet />;
 };
 
 export default PrivateRoutes;

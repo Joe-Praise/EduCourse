@@ -1,24 +1,25 @@
 import { OmittedCourseDataType } from '../../redux/api/courseAPI';
-import { CourseCard } from '../Course';
-import { UserCoursesSectionWrapper } from '../shared';
+import { type CourseCardData } from '../../features/course';
+import MyLearningCourseCard from './MyLearningCourseCard';
 
 interface UserCoursesSectionProps {
-	activeLayout: string;
 	data: OmittedCourseDataType[];
 }
 
 const UserCoursesSection = (props: UserCoursesSectionProps) => {
-	const { activeLayout, data } = props;
+	const { data } = props;
 	return (
-		<UserCoursesSectionWrapper>
-			{data?.map((el: any, idx: number) => {
+		<div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-12'>
+			{data?.map((el, idx: number) => {
+				const card = el as unknown as CourseCardData & {
+					_id: string;
+					courseId?: { _id: string } | string;
+				};
 				return (
-					<div key={idx} className='basis-[24%]'>
-						<CourseCard activeLayout={activeLayout} {...el} />
-					</div>
+					<MyLearningCourseCard key={card._id ?? idx} course={card} priority={idx < 4} />
 				);
 			})}
-		</UserCoursesSectionWrapper>
+		</div>
 	);
 };
 

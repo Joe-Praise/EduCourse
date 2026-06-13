@@ -12,7 +12,7 @@ const initialState: profileState = {
 			name: '',
 			email: '',
 			photo: '',
-			role: '',
+			role: [],
 		},
 		courses: {
 			_id: '',
@@ -59,7 +59,7 @@ const publicProfileSlice = (state = initialState, action: any) => {
 						name: '',
 						email: '',
 						photo: '',
-						role: '',
+						role: [],
 					},
 					courses: {
 						_id: '',

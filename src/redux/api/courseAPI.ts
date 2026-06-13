@@ -9,20 +9,23 @@ export interface SingleCourseType {
 	description: string;
 	imageCover: string;
 	level: string;
-	language: string;
 	instructors: Instructor[];
 	category: Category;
 	duration: string;
+	totalLessons?: number;
 	ratingsAverage: number;
 	ratingsQuantity: number;
 	ratingSummary: ratingSummaryType[];
 	price: number;
+	priceDiscount?: number;
 	priceCategory: string;
 	studentsQuantity: number;
-	createdAt: Date;
+	createdAt: string;
+	updatedAt: string;
 	slug: string;
-	__v: number;
-	averageRatings: { [key: string]: number }[];
+	// AI/YouTube import markers — presence flags an agent-generated course.
+	youtubePlaylistId?: string;
+	channelId?: string;
 }
 
 export interface ratingSummaryType {
@@ -37,17 +40,24 @@ export interface Category {
 }
 
 export interface Instructor {
-	links: Link[];
 	_id: string;
-	userId: UserID;
+	// Optional — YouTube-imported instructors have no linked platform user.
+	userId?: UserID;
+	title: string;
 	description: string;
-	id: string;
+	links: Link[];
+	source?: 'user' | 'youtube';
+	channelName?: string;
+	channelThumbnailUrl?: string;
+	channelUrl?: string;
+	subscriberCount?: number;
 }
 
 export interface Link {
 	_id: string;
 	platform: string;
 	url: string;
+	displayName?: string;
 }
 
 export interface UserID {
@@ -63,16 +73,23 @@ interface courseDataType {
 	_id: string;
 	title: string;
 	description: string;
+	imageCover: string;
 	level: string;
-	language: string;
-	instructor: string;
+	instructors: Instructor[];
+	category: Category;
+	duration: string;
 	slug: string;
-	__v: number;
 	ratingsAverage: number;
 	ratingsQuantity: number;
+	price: number;
+	priceDiscount?: number;
+	priceCategory: string;
+	studentsQuantity: number;
+	createdAt: string;
+	updatedAt: string;
 }
 
-export type OmittedCourseDataType = Omit<courseDataType, '__v'>;
+export type OmittedCourseDataType = courseDataType;
 
 export type courseType = {
 	status: string;
@@ -185,6 +202,26 @@ export const createLectureCourse = async (
 	}
 };
 
+/**
+ * Toggle a lesson in/out of the user's completed list for a course.
+ * `completedCourseId` is the CompletedCourse document _id; obtained from the
+ * lecture-course payload (`course.completedCourseId`).
+ */
+export const markLessonComplete = async (
+	completedCourseId: string,
+	lessonId: string,
+): Promise<ApiResponse> => {
+	try {
+		const { data } = await API.patch<ApiResponse>(
+			`/api/v1/completed-courses/${completedCourseId}`,
+			{ lessonsCompleted: lessonId },
+		);
+		return data;
+	} catch (error) {
+		return handleApiError(error);
+	}
+};
+
 export const getMyLearningCourse = async (
 	details: paginateType,
 	userId: string,
@@ -226,6 +263,29 @@ export const getAutoCompleteAllCourse = async (
 			`/api/v1/courses/autocomplete?q=${queryString}`
 		);
 		return data;
+	} catch (error) {
+		return handleApiError(error);
+	}
+};
+
+/**
+ * Asks the backend to build a course from YouTube for a query that has no
+ * catalog match. Hits GET /api/v1/courses?search=<q> — when there are zero
+ * results, the backend creates an `importing` draft and fires the
+ * youtube-course-discovery agent, responding 202 with { importing, data, discoveryMessage }.
+ * Returns the raw response (includes `importing` + `discoveryMessage` + the draft).
+ */
+export const triggerCourseImport = async (query: string) => {
+	try {
+		const { data } = await API.get(
+			`/api/v1/courses?search=${encodeURIComponent(query)}`,
+		);
+		return data as {
+			status: string;
+			data: Array<{ _id: string; title: string; slug: string; publishedStatus?: string }>;
+			importing?: boolean;
+			discoveryMessage?: string;
+		};
 	} catch (error) {
 		return handleApiError(error);
 	}

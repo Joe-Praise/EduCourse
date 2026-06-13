@@ -38,7 +38,7 @@ export type reviewDatatype = {
 
 export interface createReviewPayloadType {
 	review: string;
-	rating: string;
+	rating: number;
 }
 
 export const getCourseReviews = async <T>(
@@ -73,7 +73,7 @@ export const createCourseReview = async <T>(
 
 export const deleteReview = async <T>(reviewId: T): Promise<ApiResponse> => {
 	try {
-		const { data } = await API.delete(`/api/v1/reviews/${reviewId}/reviews`);
+		const { data } = await API.delete(`/api/v1/reviews/${reviewId}`);
 		return data;
 	} catch (error) {
 		return handleApiError(error);

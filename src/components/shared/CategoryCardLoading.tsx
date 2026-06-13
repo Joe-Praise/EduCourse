@@ -7,7 +7,6 @@ const CategoryCardLoading = () => {
 				<div className='flex items-center justify-center gap-1 h-6 w-full rounded-full bg-gray-300  my-1'></div>
 			</div>
 		</div>
-		// </div>
 	);
 };
 

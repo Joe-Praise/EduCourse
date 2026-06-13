@@ -6,14 +6,15 @@ import { axiosInstance as API } from './utils';
 export interface singleBlogType {
 	_id: string;
 	category: Category;
-	tag: Tag;
+	tag: Tag[];
 	title: string;
 	imageCover?: string;
 	description: string;
 	summary: string;
+	commentsQuantity: number;
 	slug: string;
 	createdAt: string;
-	id: string;
+	updatedAt: string;
 }
 
 export interface Category {
@@ -26,7 +27,7 @@ export interface Tag {
 	_id: string;
 	name: string;
 }
-type OmittedBlogDataType = Omit<singleBlogType, 'id'>;
+type OmittedBlogDataType = singleBlogType;
 // SINGLE BLOG TYPE ENDS HERE
 
 export type blogType = {
@@ -118,7 +119,7 @@ export const createBlog = async (
 ): Promise<ApiResponse> => {
 	try {
 		const { data } = await API.post<ApiResponse>(
-			`/api/v1/completed-courses`,
+			`/api/v1/blogs`,
 			details
 		);
 		return data;

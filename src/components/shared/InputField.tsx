@@ -29,12 +29,12 @@ const InputField = (props: IProps) => {
 
 	return (
 		<div className={`${className || 'my-2'}`}>
-			<div className='flex flex-col gap-1'>
+			<div className='flex flex-col gap-1.5'>
 				<RenderIf condition={!!label}>
-					<label htmlFor={id} className='font-medium text-sm flex'>
+					<label htmlFor={id} className='font-body font-medium text-sm flex items-center gap-0.5 text-ink-secondary'>
 						<>{label}</>
 						<RenderIf condition={restProps.requiredfield === 'true'}>
-							<LuAsterisk className='text-red-600' />
+							<LuAsterisk className='text-signal-danger w-3 h-3' />
 						</RenderIf>
 					</label>
 				</RenderIf>
@@ -48,14 +48,14 @@ const InputField = (props: IProps) => {
 							name,
 						}}
 						className={`${
-							hasError ? 'border border-[#dc3545]' : 'border-gray-300  '
-						} border rounded w-full h-11 p-2 outline-none focus:border-primary-color text-sm`}
+							hasError ? 'border-signal-danger/60' : 'border-line-base'
+						} border rounded-card w-full h-11 px-3.5 py-2 outline-none focus:border-clay-500 focus:ring-1 focus:ring-clay-500/30 font-body text-sm bg-bg-overlay/40 text-ink-primary placeholder-ink-tertiary transition-colors`}
 					/>
 
 					{restProps.type === 'password' && (
 						<span
 							onClick={() => setShow((prev) => !prev)}
-							className='cursor-pointer absolute right-3 top-1/2 bottom-0 m-auto -translate-y-1/2'
+							className='cursor-pointer absolute right-3 top-1/2 m-auto -translate-y-1/2 text-ink-tertiary hover:text-ink-primary transition-colors'
 						>
 							{show ? <Eye /> : <EyeOff />}
 						</span>
@@ -64,7 +64,7 @@ const InputField = (props: IProps) => {
 			</div>
 			<RenderIf condition={hasError}>
 				<div>
-					<p className='text-xs text-[#dc3545]'>{errors[name]}</p>
+					<p className='font-body text-xs text-signal-danger mt-1.5'>{errors[name]}</p>
 				</div>
 			</RenderIf>
 		</div>
@@ -72,11 +72,3 @@ const InputField = (props: IProps) => {
 };
 
 export default InputField;
-
-// style for select
-
-// ${
-//     restProps.type === 'select'
-//         ? 'border border-[rgba(0,0,0,0.2)] rounded font-semibold text-xs text-[#4a4a4a]'
-//         : ''
-// }
