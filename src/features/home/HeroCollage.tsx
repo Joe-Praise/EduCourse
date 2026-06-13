@@ -80,12 +80,12 @@ export const HeroCollage = ({ courses }: HeroCollageProps) => {
 				title: c.title,
 				instructor: c.instructors?.[0]?.userId?.name ?? '',
 				image: c.imageCover,
-		  }))
+		}))
 		: [
 				{ title: 'Type at scale', instructor: 'Jules Tan' },
 				{ title: 'Systems-thinking for designers', instructor: 'Mara Llewellyn' },
 				{ title: 'Building with restraint', instructor: 'Owen Greaves' },
-		  ];
+		];
 
 	return (
 		<div ref={rootRef} className='relative w-full h-full'>

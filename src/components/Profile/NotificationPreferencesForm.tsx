@@ -100,7 +100,7 @@ const NotificationPreferencesForm = () => {
 
 	useEffect(() => {
 		load();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
+
 	}, []);
 
 	const patch = async (next: NotificationPreferences, body: Parameters<typeof updateMyNotificationPreferencesApi>[0]) => {

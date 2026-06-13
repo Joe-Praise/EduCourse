@@ -15,7 +15,7 @@ export function initSentry(): void {
 	const dsn = import.meta.env.VITE_SENTRY_DSN;
 	if (!dsn) {
 		if (import.meta.env.DEV) {
-			// eslint-disable-next-line no-console
+
 			console.debug('[sentry] VITE_SENTRY_DSN not set; skipping init');
 		}
 		return;

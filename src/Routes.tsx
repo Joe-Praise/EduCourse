@@ -1,3 +1,7 @@
+/* eslint-disable react-refresh/only-export-components --
+   Route table: this module intentionally exports route-descriptor arrays
+   alongside lazy() component references. It is not a fast-refresh boundary,
+   so the only-export-components rule does not apply here. */
 import { lazy, type LazyExoticComponent, type ComponentType } from 'react';
 
 type LazyComponent = LazyExoticComponent<ComponentType>;

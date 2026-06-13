@@ -253,7 +253,7 @@ const Blog: FC = () => {
 								<div key={idx} className={colSpanClass[variantForIndex(idx)]}>
 									<BlogCardSkeleton featured={variantForIndex(idx) === 'featured'} />
 								</div>
-						  ))
+						))
 						: data.length === 0
 						? (
 							<div className='sm:col-span-6 py-24 grid place-items-center text-center gap-3'>
@@ -273,7 +273,7 @@ const Blog: FC = () => {
 									</button>
 								)}
 							</div>
-						  )
+						)
 						: data.map((blog, idx) => {
 								const variant = variantForIndex(idx);
 								return (
@@ -281,7 +281,7 @@ const Blog: FC = () => {
 										<BlogCard blog={blog} variant={variant} />
 									</div>
 								);
-						  })}
+						})}
 				</div>
 
 				<div className='mt-16'>
