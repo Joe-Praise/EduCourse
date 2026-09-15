@@ -1,7 +1,8 @@
 import { FC, useEffect } from 'react';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Navigate, Outlet, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { logoutAction, setInitialAuthState } from '../redux/actions/authAction';
+import { logoutAction } from '../redux/actions/authAction';
+import * as types from '../redux/constants/authConstants';
 import { AppDispatch } from '../redux/store';
 import { isAuthenticated } from '../util/helperFunctions/auth';
 import { user } from '../redux/api/userApi';
@@ -33,13 +34,19 @@ const PrivateRoutes: FC<privateRoutetype> = ({ user }) => {
 		},
 	});
 
+	// Clear any stale auth state left in the store. The redirect itself is
+	// declarative (below) — dispatching a navigate() here too would fire a
+	// second redirect and push a spurious history entry.
 	useEffect(() => {
 		if (!isAuthenticatedUser) {
-			dispatch(setInitialAuthState(navigate));
+			dispatch({ type: types.LOGOUT });
 		}
-	}, [dispatch, isAuthenticatedUser, navigate]);
+	}, [dispatch, isAuthenticatedUser]);
 
-	if (!isAuthenticatedUser) return null;
+	// Redirect rather than rendering nothing: on a hard reload of a protected
+	// route there is no in-memory state to fall back on, and returning null
+	// paints a blank page until the redirect lands.
+	if (!isAuthenticatedUser) return <Navigate to='/signin' replace />;
 
 	// User has a valid token but the userObj is still rehydrating — wait for it
 	// rather than rendering the protected child with an empty user.
