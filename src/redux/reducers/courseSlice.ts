@@ -16,6 +16,9 @@ export type courseState = {
 	queryFilter: {};
 	myLearningQueryFilter: {};
 	loading: boolean;
+	/** Dedicated flag for the /courses grid request. `loading` is shared with
+	 *  autocomplete + single-course flows, so it can't speak for the grid. */
+	coursesLoading: boolean;
 };
 
 const initialState: courseState = {
@@ -52,6 +55,7 @@ const initialState: courseState = {
 	notification: [],
 	videoId: '',
 	loading: true,
+	coursesLoading: true,
 };
 
 const courseSlice = (state = initialState, action: any) => {
@@ -62,16 +66,24 @@ const courseSlice = (state = initialState, action: any) => {
 				...state,
 				filterState: !state.filterState,
 			};
+		case types.GET_COURSES_REQUEST:
+			return {
+				...state,
+				coursesLoading: true,
+			};
 		case types.GET_COURSES_SUCCESS:
 			return {
 				...state,
 				loading: false,
+				coursesLoading: false,
 				course: payload,
 			};
 		case types.GET_COURSES_FAIL:
+			// Settle the grid on failure too — otherwise the page sits on skeletons
+			// forever. The thunk raises a toast with the message.
 			return {
 				...state,
-				loading: true,
+				coursesLoading: false,
 				course: {
 					status: '',
 					metaData: {

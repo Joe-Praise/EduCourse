@@ -7,6 +7,8 @@ export interface categoryType {
 	name: string;
 	group: string;
 	__v: number;
+	/** Only set on the landing-page payload — how many published courses use it. */
+	courseCount?: number;
 }
 
 export type OmittedCategoryDataType = Omit<categoryType, '__v'>;
