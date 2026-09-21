@@ -162,6 +162,11 @@ const Course: FC = () => {
 
 	const skipNextUrlSyncRef = useRef(false);
 
+	// Mirrors the store's Category filter so the URL→state effect can read it
+	// without taking it as a dependency (it must run on URL changes only).
+	const staleCategoryRef = useRef<string | undefined>(undefined);
+	staleCategoryRef.current = (queryFilterState as Record<string, string>).Category;
+
 	useEffect(() => {
 		// If WE just wrote the URL (from a chip removal), skip re-reading it.
 		if (skipNextUrlSyncRef.current) {
@@ -170,8 +175,14 @@ const Course: FC = () => {
 		}
 		const params = new URLSearchParams(location.search);
 		const categoryId = params.get('category');
+		// The URL is the source of truth here: it seeds the filter, and a URL
+		// without one clears whatever the store kept from an earlier visit —
+		// otherwise arriving at a bare /courses showed a Category chip over an
+		// unfiltered list.
 		if (categoryId) {
 			dispatch(setQueryFilterAction({ Category: categoryId }));
+		} else if (staleCategoryRef.current) {
+			dispatch(removeQueryFilterAction({ Category: '' }));
 		}
 		const queryStr = categoryId ? `?category=${encodeURIComponent(categoryId)}` : '';
 		dispatch(getCoursesAction({ page: '1', limit }, queryStr));
@@ -179,10 +190,19 @@ const Course: FC = () => {
 		dispatch(getInstructorAction({ page: '1', limit: '10' }));
 	}, [dispatch, location.search]);
 
+	// Skips the mount run: on the first render `queryFilterState` is still empty
+	// while the URL already carries ?category=…, and this effect would strip the
+	// filter straight back out of the URL before the effect above hydrates it.
+	const urlSyncReadyRef = useRef(false);
+
 	// State → URL sync. When the user removes the Category chip (or it changes
 	// via the filter menu), the URL is kept in step so the page is bookmarkable
 	// and a refresh resurrects the right filter — not a stale one.
 	useEffect(() => {
+		if (!urlSyncReadyRef.current) {
+			urlSyncReadyRef.current = true;
+			return;
+		}
 		const currentParams = new URLSearchParams(location.search);
 		const urlCategory = currentParams.get('category');
 		const stateCategory = (queryFilterState as Record<string, string>).Category;
@@ -259,8 +279,12 @@ const Course: FC = () => {
 		return () => clearTimeout(timeout);
 	}, [dispatch, queryFilterState]);
 
-	const handelQuerySearch = (details: paginateType, queryString: string) => {
-		dispatch(getCoursesAction(details, queryString));
+	// Pagination hands back only the page number — the active filters and this
+	// page's limit come from here, so page 2 of a filtered list stays filtered.
+	const handelQuerySearch = (details: paginateType, _queryString: string) => {
+		dispatch(
+			getCoursesAction({ ...details, limit }, formQueryStr(queryFilterState)),
+		);
 	};
 
 	const handleAutocompleteSelect = (course: autocompleteType) => {
@@ -302,7 +326,11 @@ const Course: FC = () => {
 	);
 
 	const skeletons = Array.from({ length: 9 }, (_v, i) => i);
-	const isLoading = !coursesData?.data || coursesData.data.length < 1;
+	// Loading is a request-lifecycle fact, not "the list is empty". Deriving it
+	// from `data.length` meant any zero-result filter (e.g. a category with no
+	// published courses) pinned the page on skeletons forever — the only escape
+	// being to remove the chip.
+	const isLoading = courseState.coursesLoading;
 	const data = (coursesData?.data ?? []) as CourseCardData[];
 	const total = metaData?.totalDocuments ?? data.length;
 
@@ -525,7 +553,7 @@ const Course: FC = () => {
 					<Pagination
 						metaData={metaData}
 						handlePagination={handelQuerySearch}
-						queryString={queryFilterState as unknown as string}
+						queryString={formQueryStr(queryFilterState)}
 					/>
 				</div>
 			</PageLayout>

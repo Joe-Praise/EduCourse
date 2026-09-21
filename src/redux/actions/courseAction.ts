@@ -70,6 +70,7 @@ export interface Lesson {
 export const getCoursesAction =
 	(details: paginateType, queryString: string = ''): CourseThunk =>
 	async (dispatch: AppDispatch) => {
+		dispatch({ type: types.GET_COURSES_REQUEST });
 		try {
 			const response = await api.getCourses(details, queryString);
 			const { error } = response;
@@ -82,10 +83,12 @@ export const getCoursesAction =
 		} catch (error: any) {
 			dispatchErrorHandler(dispatch, error.message);
 
-			// dispatch({
-			// 	type: types.GET_COURSES_FAIL,
-			// 	payload: error.message,
-			// });
+			// Settle the grid's loading flag — a failed fetch must not leave the
+			// page on skeletons forever.
+			dispatch({
+				type: types.GET_COURSES_FAIL,
+				payload: error.message,
+			});
 		}
 	};
 
