@@ -59,6 +59,8 @@ const Course: FC = () => {
 	const category = useSelector((state: RootState) => state.category.categories);
 	const instructor = useSelector((state: RootState) => state.instructor.instructors);
 	const userId = useSelector((state: RootState) => state.user.userObj?._id);
+	// auth.token, not userObj — userObj can be empty for a signed-in user until fetched.
+	const isSignedIn = useSelector((state: RootState) => Boolean(state.auth.token));
 	const wishlistMap = useSelector((state: RootState) => state.wishlist.wishlisted);
 	const wishlistIds = useSelector((state: RootState) => state.wishlist.wishlistIds);
 
@@ -102,6 +104,11 @@ const Course: FC = () => {
 	const handleBuildCourse = async (query: string) => {
 		const q = query.trim();
 		if (q.length < 3) return;
+		// Importing is for signed-in users only (the API refuses anonymous imports).
+		if (!isSignedIn) {
+			navigate('/signin');
+			return;
+		}
 		setImportState({ status: 'building', query: q, message: `Searching YouTube for "${q}"…` });
 
 		const resp = await triggerCourseImport(q);
@@ -110,6 +117,13 @@ const Course: FC = () => {
 			return;
 		}
 		const r = resp as Awaited<ReturnType<typeof triggerCourseImport>>;
+		// No draft and nothing found: the API treated us as anonymous (expired
+		// session) — send the user to sign in rather than poll for nothing.
+		if (!(r as { importing?: boolean }).importing && (r.data ?? []).length === 0) {
+			setImportState({ status: 'idle' });
+			navigate('/signin');
+			return;
+		}
 		setImportState({
 			status: 'building',
 			query: q,
@@ -481,9 +495,11 @@ const Course: FC = () => {
 										</span>
 										<span className='min-w-0'>
 											<span className='block font-body text-sm text-ink-primary'>
-												{autocomplete && autocomplete.length > 0
-													? `Not quite it? Build "${debouncedSearch}" from YouTube`
-													: `No match — build "${debouncedSearch}" from YouTube`}
+												{!isSignedIn
+													? `Sign in to build "${debouncedSearch}" from YouTube`
+													: autocomplete && autocomplete.length > 0
+														? `Not quite it? Build "${debouncedSearch}" from YouTube`
+														: `No match — build "${debouncedSearch}" from YouTube`}
 											</span>
 											<span className='block font-mono text-2xs uppercase tracking-[0.18em] text-ink-tertiary mt-0.5'>
 												AI imports a course in ~30s
