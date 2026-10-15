@@ -1,5 +1,6 @@
 import { FC, MouseEvent, useCallback, useEffect, useRef } from 'react';
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { authPath } from '../../util/helperFunctions/authRedirect';
 import { ArrowUpRight, Plus } from 'lucide-react';
 import { useGSAP } from '@gsap/react';
 import { gsap, prefersReducedMotion } from '../../lib/motion';
@@ -90,6 +91,10 @@ export const MenuOverlay: FC<MenuOverlayProps> = ({ open, onClose }) => {
 	const autoScrollV  = useRef(0);
 
 	const location = useLocation();
+	// Sign in / up from the menu returns the visitor to the page they were on.
+	const here = `${location.pathname}${location.search}`;
+	const signInPath = authPath('signin', here);
+	const signUpPath = authPath('signup', here);
 	const navigate = useNavigate();
 	const dispatch: AppDispatch = useDispatch();
 	const { isLoggedIn, isInstructor } = useCurrentUser();
@@ -553,15 +558,15 @@ export const MenuOverlay: FC<MenuOverlayProps> = ({ open, onClose }) => {
 							) : (
 								<div className='flex items-center gap-3 flex-wrap'>
 									<Link
-										to='/signin'
-										onClick={handleNavClick('/signin')}
+										to={signInPath}
+										onClick={handleNavClick(signInPath)}
 										className='inline-flex items-center h-11 px-5 rounded-pill border border-line-base text-ink-primary hover:border-clay-500 hover:text-clay-400 transition-colors font-body text-sm'
 									>
 										Sign in
 									</Link>
 									<Link
-										to='/signup'
-										onClick={handleNavClick('/signup')}
+										to={signUpPath}
+										onClick={handleNavClick(signUpPath)}
 										className='inline-flex items-center gap-2 h-11 px-6 rounded-pill bg-clay-500 hover:bg-clay-600 text-ink-primary font-body font-medium text-sm transition-colors'
 									>
 										Create account
