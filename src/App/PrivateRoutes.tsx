@@ -1,5 +1,6 @@
 import { FC, useEffect } from 'react';
-import { Navigate, Outlet, useNavigate } from 'react-router-dom';
+import { Navigate, Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { authPath } from '../util/helperFunctions/authRedirect';
 import { useDispatch } from 'react-redux';
 import { logoutAction } from '../redux/actions/authAction';
 import * as types from '../redux/constants/authConstants';
@@ -16,6 +17,7 @@ type privateRoutetype = {
 
 const PrivateRoutes: FC<privateRoutetype> = ({ user }) => {
 	const navigate = useNavigate();
+	const location = useLocation();
 	const dispatch = useDispatch<AppDispatch>();
 
 	// Open the SSE stream once the user is authenticated. The hook no-ops
@@ -30,7 +32,7 @@ const PrivateRoutes: FC<privateRoutetype> = ({ user }) => {
 	useIdleTimer({
 		enabled: isAuthenticatedUser,
 		onIdle: () => {
-			dispatch(logoutAction(navigate));
+			dispatch(logoutAction(navigate, `${location.pathname}${location.search}`));
 		},
 	});
 
@@ -46,7 +48,10 @@ const PrivateRoutes: FC<privateRoutetype> = ({ user }) => {
 	// Redirect rather than rendering nothing: on a hard reload of a protected
 	// route there is no in-memory state to fall back on, and returning null
 	// paints a blank page until the redirect lands.
-	if (!isAuthenticatedUser) return <Navigate to='/signin' replace />;
+	// Carry the requested page so signing in lands the visitor back on it.
+	if (!isAuthenticatedUser) {
+		return <Navigate to={authPath('signin', `${location.pathname}${location.search}`)} replace />;
+	}
 
 	// User has a valid token but the userObj is still rehydrating — wait for it
 	// rather than rendering the protected child with an empty user.
