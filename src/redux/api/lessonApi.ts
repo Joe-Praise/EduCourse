@@ -6,7 +6,8 @@ import { axiosInstance as API } from './utils';
  * Routes mounted at `/api/v1/lessons` (see backend `src/Routes/lessonRoutes.ts`).
  * Required fields per backend `lessonModel.ts`:
  *   moduleId, courseId, url (must validate as http/https/ftp), title, duration, lessonIndex.
- * Optional: description (used to store rich Tiptap HTML from the Lesson Builder).
+ * Optional: description. The Lesson Builder sends Tiptap HTML; the backend stores
+ * its readable plain text, which the builder loads back via `plainTextToDoc`.
  */
 
 export interface LessonPayload {
