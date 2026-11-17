@@ -25,6 +25,7 @@ import {
 	CloudOff,
 } from 'lucide-react';
 import { Callout } from './extensions/Callout';
+import { plainTextToDoc } from './plainTextContent';
 import { TextField, TextAreaField } from '../steps/BuilderField';
 import { getLessonApi, updateLessonApi, type LessonPayload } from '../../../redux/api/lessonApi';
 import { cn } from '../../../lib/cn';
@@ -106,7 +107,7 @@ const LessonBuilder: FC = () => {
 
 	// Hydrate from backend for persisted lessons.
 	useEffect(() => {
-		if (!isPersisted) return;
+		if (!isPersisted || !editor) return;
 		let cancelled = false;
 		(async () => {
 			const res = await getLessonApi(lessonId);
@@ -119,16 +120,17 @@ const LessonBuilder: FC = () => {
 			}
 			const remote = res.data;
 			if (remote) {
-				const next: LessonDraft = {
+				// The stored description is plain text, not HTML: build the document from
+				// it directly, and keep the editor's own HTML as the draft to save.
+				editor.commands.setContent(plainTextToDoc(remote.description ?? ''), { emitUpdate: false });
+				setDraft({
 					title: remote.title ?? '',
 					duration: remote.duration ?? '',
 					videoUrl: remote.url ?? '',
 					freePreview: false,
 					prerequisites: '',
-					html: remote.description ?? '',
-				};
-				setDraft(next);
-				editor?.commands.setContent(next.html, { emitUpdate: false });
+					html: editor.getHTML(),
+				});
 				setStatus('synced');
 			}
 			setHydrating(false);
