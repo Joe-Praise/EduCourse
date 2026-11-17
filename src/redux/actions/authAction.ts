@@ -9,6 +9,7 @@ import {
   welcomeGreeting,
 } from "../../util/helperFunctions/helper";
 import * as api from "../api/authApi";
+import { authPath, safeRedirect } from "../../util/helperFunctions/authRedirect";
 import * as types from "../constants/authConstants";
 import { ThunkAction } from "redux-thunk";
 import { AppDispatch, RootState } from "../store";
@@ -57,7 +58,12 @@ export type AuthThunk<ReturnType = void> = ThunkAction<
 >;
 
 export const signUpAction =
-  (details: api.signUpType, navigate: NavigateFunction): AuthThunk =>
+  (
+    details: api.signUpType,
+    navigate: NavigateFunction,
+    // Page to return to — carried on to sign-in so the visitor still lands there.
+    returnTo: string | null = null,
+  ): AuthThunk =>
   async (dispatch: AppDispatch) => {
     try {
       localStorage.removeItem("profile");
@@ -71,8 +77,8 @@ export const signUpAction =
         payload: types.SIGNUP_SUCCESS_MESSAGE,
       });
 
-      dispatchSuccessHandler(dispatch, "Account Created!");
-      navigate("/signin");
+      dispatchSuccessHandler(dispatch, "Account created — sign in to continue.");
+      navigate(authPath("signin", returnTo));
     } catch (error: any) {
       dispatchErrorHandler(dispatch, error.message);
       // dispatch({
@@ -83,7 +89,12 @@ export const signUpAction =
   };
 
 export const signInAction =
-  (details: api.signInType, navigate: NavigateFunction): AuthThunk =>
+  (
+    details: api.signInType,
+    navigate: NavigateFunction,
+    // Page the visitor came from (`?redirect=`); home when there isn't one.
+    returnTo: string | null = null,
+  ): AuthThunk =>
   async (dispatch: AppDispatch) => {
     try {
       const response = await api.signIn(details);
@@ -108,7 +119,7 @@ export const signInAction =
       // dispatchSuccessHandler(dispatch, `Welcome Back ${user.user.name}!`);
       dispatchSuccessHandler(dispatch, welcomeGreeting(user?.user));
 
-      navigate("/");
+      navigate(safeRedirect(returnTo) ?? "/", { replace: true });
     } catch (error: any) {
       dispatchErrorHandler(dispatch, error.message);
       // await dispatch({
@@ -119,18 +130,20 @@ export const signInAction =
   };
 
 export const isLoggedIn =
-  (navigate: NavigateFunction): AuthThunk =>
+  (): AuthThunk =>
   async (dispatch: AppDispatch) => {
     try {
       const response = await api.checkToken();
       const { error } = response;
       if (error) {
+        // Expired/invalid stored session: just sign the visitor out. Public
+        // pages keep working; protected ones redirect to sign-in (with the page
+        // to return to) via PrivateRoutes — no forced bounce from wherever they are.
         removeLocalStorage("profile");
         dispatch({
           type: types.REFRESH_TOKEN_FAIL,
           payload: error,
         });
-        navigate("/signin");
         return;
       }
       const { data: user, token, status } = response;
@@ -150,7 +163,11 @@ export const isLoggedIn =
     }
   };
 
-export const logoutAction = (navigate: NavigateFunction) => {
+export const logoutAction = (
+  navigate: NavigateFunction,
+  // Set for an automatic (idle) logout so signing back in resumes the page.
+  returnTo: string | null = null,
+) => {
   // Fire-and-forget server revoke. We don't await it before clearing local
   // state — if the network is down the user still needs to be logged out
   // client-side immediately. The httpOnly refresh cookie ships with the
@@ -161,7 +178,7 @@ export const logoutAction = (navigate: NavigateFunction) => {
     removeLocalStorage("profile");
 
     if (getLocalStorage("profile") === null) {
-      navigate("/signin");
+      navigate(authPath("signin", returnTo));
     } else {
       throw new Error("Somthing went wrong!");
     }

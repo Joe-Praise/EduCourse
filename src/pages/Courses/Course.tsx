@@ -36,6 +36,34 @@ import useDebounce from '../../hooks/UseDebounce';
 import { formQueryStr } from '../../util/helperFunctions/helper';
 import { autocompleteType, paginateType } from '../../redux/sharedTypes';
 import { cn } from '../../lib/cn';
+import { useAuthPrompt } from '../../hooks/useAuthPrompt';
+
+// A build requested while signed out, resumed once the visitor signs in and
+// lands back here. Session-scoped (this tab only), single-use, and short-lived
+// so a stale request never starts a build out of the blue.
+const PENDING_IMPORT_KEY = 'educourse:pending-import';
+const PENDING_IMPORT_TTL_MS = 30 * 60 * 1000;
+
+const savePendingImport = (query: string) => {
+	try {
+		sessionStorage.setItem(PENDING_IMPORT_KEY, JSON.stringify({ query, at: Date.now() }));
+	} catch {
+		/* storage unavailable (private mode) — they can click Build again */
+	}
+};
+
+const takePendingImport = (): string | null => {
+	try {
+		const raw = sessionStorage.getItem(PENDING_IMPORT_KEY);
+		sessionStorage.removeItem(PENDING_IMPORT_KEY);
+		if (!raw) return null;
+		const { query, at } = JSON.parse(raw) as { query?: unknown; at?: unknown };
+		const fresh = typeof at === 'number' && Date.now() - at < PENDING_IMPORT_TTL_MS;
+		return fresh && typeof query === 'string' && query.trim().length >= 3 ? query.trim() : null;
+	} catch {
+		return null;
+	}
+};
 
 /** Size rhythm — produces an editorial gallery instead of a uniform grid. */
 const sizeForIndex = (i: number): CourseCardSize => {
@@ -59,6 +87,9 @@ const Course: FC = () => {
 	const category = useSelector((state: RootState) => state.category.categories);
 	const instructor = useSelector((state: RootState) => state.instructor.instructors);
 	const userId = useSelector((state: RootState) => state.user.userObj?._id);
+	// auth.token, not userObj — userObj can be empty for a signed-in user until fetched.
+	const isSignedIn = useSelector((state: RootState) => Boolean(state.auth.token));
+	const { promptSignIn, authPrompt } = useAuthPrompt();
 	const wishlistMap = useSelector((state: RootState) => state.wishlist.wishlisted);
 	const wishlistIds = useSelector((state: RootState) => state.wishlist.wishlistIds);
 
@@ -78,9 +109,10 @@ const Course: FC = () => {
 		| { status: 'idle' }
 		| { status: 'building'; query: string; message: string }
 		| { status: 'ready'; query: string; title: string; slug: string }
-		| { status: 'error'; query: string };
+		| { status: 'error'; query: string; message: string; retryLabel: string };
 	const [importState, setImportState] = useState<ImportState>({ status: 'idle' });
 	const importPollRef = useRef<number | null>(null);
+	const searchInputRef = useRef<HTMLInputElement>(null);
 
 	const handleSearch = (e: ChangeEvent<HTMLInputElement>) => setSearch(e.target.value);
 
@@ -102,14 +134,43 @@ const Course: FC = () => {
 	const handleBuildCourse = async (query: string) => {
 		const q = query.trim();
 		if (q.length < 3) return;
+		// Importing is for signed-in users only (the API refuses anonymous imports).
+		// Explain why and let them choose; the build resumes once they're back.
+		if (!isSignedIn) {
+			promptSignIn({
+				eyebrow: 'Build from YouTube',
+				title: `Sign in to build “${q}”`,
+				message:
+					'Building a course from YouTube is tied to your account. Sign in or create an account and the build starts as soon as you’re back.',
+				onProceed: () => savePendingImport(q),
+			});
+			return;
+		}
 		setImportState({ status: 'building', query: q, message: `Searching YouTube for "${q}"…` });
 
 		const resp = await triggerCourseImport(q);
 		if (resp && 'error' in resp && resp.error) {
-			setImportState({ status: 'error', query: q });
+			setImportState({
+				status: 'error',
+				query: q,
+				message: 'The course builder couldn’t start just now. Give it a minute and try again.',
+				retryLabel: 'Try again',
+			});
 			return;
 		}
 		const r = resp as Awaited<ReturnType<typeof triggerCourseImport>>;
+		// No draft and nothing found: the API treated us as anonymous — the session
+		// expired. Ask them to sign in again; the build picks up afterwards.
+		if (!(r as { importing?: boolean }).importing && (r.data ?? []).length === 0) {
+			setImportState({ status: 'idle' });
+			promptSignIn({
+				eyebrow: 'Session expired',
+				title: 'Sign in again to keep building',
+				message: `Your session ended before we could start “${q}”. Sign in again and the build will start from here.`,
+				onProceed: () => savePendingImport(q),
+			});
+			return;
+		}
 		setImportState({
 			status: 'building',
 			query: q,
@@ -138,7 +199,13 @@ const Course: FC = () => {
 				return;
 			}
 			if (tries >= 26) {
-				setImportState({ status: 'error', query: q });
+				// The import may still finish server-side — say so, and let them re-check.
+				setImportState({
+					status: 'error',
+					query: q,
+					message: 'This one is taking longer than usual. It will appear in the catalog once it’s ready.',
+					retryLabel: 'Check again',
+				});
 				return;
 			}
 			importPollRef.current = window.setTimeout(poll, 7000);
@@ -160,7 +227,24 @@ const Course: FC = () => {
 		dispatch(getAutoCompleteAllCourseAction(debouncedSearch));
 	}, [dispatch, debouncedSearch]);
 
+	// Back from signing in with a build they asked for: restore the search and
+	// start it, so they don't have to retype and click again.
+	useEffect(() => {
+		if (!isSignedIn) return;
+		const pending = takePendingImport();
+		if (!pending) return;
+		setSearch(pending);
+		setSearchOpen(true);
+		void handleBuildCourse(pending);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [isSignedIn]);
+
 	const skipNextUrlSyncRef = useRef(false);
+
+	// Mirrors the store's Category filter so the URL→state effect can read it
+	// without taking it as a dependency (it must run on URL changes only).
+	const staleCategoryRef = useRef<string | undefined>(undefined);
+	staleCategoryRef.current = (queryFilterState as Record<string, string>).Category;
 
 	useEffect(() => {
 		// If WE just wrote the URL (from a chip removal), skip re-reading it.
@@ -170,8 +254,14 @@ const Course: FC = () => {
 		}
 		const params = new URLSearchParams(location.search);
 		const categoryId = params.get('category');
+		// The URL is the source of truth here: it seeds the filter, and a URL
+		// without one clears whatever the store kept from an earlier visit —
+		// otherwise arriving at a bare /courses showed a Category chip over an
+		// unfiltered list.
 		if (categoryId) {
 			dispatch(setQueryFilterAction({ Category: categoryId }));
+		} else if (staleCategoryRef.current) {
+			dispatch(removeQueryFilterAction({ Category: '' }));
 		}
 		const queryStr = categoryId ? `?category=${encodeURIComponent(categoryId)}` : '';
 		dispatch(getCoursesAction({ page: '1', limit }, queryStr));
@@ -179,10 +269,19 @@ const Course: FC = () => {
 		dispatch(getInstructorAction({ page: '1', limit: '10' }));
 	}, [dispatch, location.search]);
 
+	// Skips the mount run: on the first render `queryFilterState` is still empty
+	// while the URL already carries ?category=…, and this effect would strip the
+	// filter straight back out of the URL before the effect above hydrates it.
+	const urlSyncReadyRef = useRef(false);
+
 	// State → URL sync. When the user removes the Category chip (or it changes
 	// via the filter menu), the URL is kept in step so the page is bookmarkable
 	// and a refresh resurrects the right filter — not a stale one.
 	useEffect(() => {
+		if (!urlSyncReadyRef.current) {
+			urlSyncReadyRef.current = true;
+			return;
+		}
 		const currentParams = new URLSearchParams(location.search);
 		const urlCategory = currentParams.get('category');
 		const stateCategory = (queryFilterState as Record<string, string>).Category;
@@ -202,10 +301,16 @@ const Course: FC = () => {
 	}, [dispatch, userId]);
 
 	const handleToggleWishlist = (courseId: string) => {
-		if (!userId) {
-			navigate('/signin');
+		if (!isSignedIn) {
+			promptSignIn({
+				eyebrow: 'Wishlist',
+				title: 'Sign in to save courses',
+				message: 'Your wishlist lives in your account, so the courses you save are waiting whenever you come back.',
+			});
 			return;
 		}
+		if (!userId) return; // signed in, profile still loading
+
 		if (wishlistMap[courseId] && wishlistIds[courseId]) {
 			dispatch(removeFromWishlistAction(wishlistIds[courseId], courseId));
 		} else if (!wishlistMap[courseId]) {
@@ -259,8 +364,12 @@ const Course: FC = () => {
 		return () => clearTimeout(timeout);
 	}, [dispatch, queryFilterState]);
 
-	const handelQuerySearch = (details: paginateType, queryString: string) => {
-		dispatch(getCoursesAction(details, queryString));
+	// Pagination hands back only the page number — the active filters and this
+	// page's limit come from here, so page 2 of a filtered list stays filtered.
+	const handelQuerySearch = (details: paginateType, _queryString: string) => {
+		dispatch(
+			getCoursesAction({ ...details, limit }, formQueryStr(queryFilterState)),
+		);
 	};
 
 	const handleAutocompleteSelect = (course: autocompleteType) => {
@@ -302,7 +411,11 @@ const Course: FC = () => {
 	);
 
 	const skeletons = Array.from({ length: 9 }, (_v, i) => i);
-	const isLoading = !coursesData?.data || coursesData.data.length < 1;
+	// Loading is a request-lifecycle fact, not "the list is empty". Deriving it
+	// from `data.length` meant any zero-result filter (e.g. a category with no
+	// published courses) pinned the page on skeletons forever — the only escape
+	// being to remove the chip.
+	const isLoading = courseState.coursesLoading;
 	const data = (coursesData?.data ?? []) as CourseCardData[];
 	const total = metaData?.totalDocuments ?? data.length;
 
@@ -340,12 +453,20 @@ const Course: FC = () => {
 							<Search size={16} strokeWidth={2} />
 						</button>
 						<input
+							ref={searchInputRef}
 							type='text'
+							aria-label='Search the catalog'
 							placeholder='Search the catalog…'
 							value={search}
 							onChange={handleSearch}
 							onFocus={() => setSearchOpen(true)}
-							onBlur={() => setTimeout(() => setSearchOpen(false), 150)}
+							// Close only if focus really left — e.g. the sign-in dialog takes focus
+							// and hands it back on close; the dropdown should still be there.
+							onBlur={() =>
+								setTimeout(() => {
+									if (document.activeElement !== searchInputRef.current) setSearchOpen(false);
+								}, 150)
+							}
 							className={cn(
 								'flex-1 bg-transparent outline-none text-ink-primary placeholder:text-ink-tertiary font-body text-sm',
 								searchOpen ? 'opacity-100' : 'opacity-90',
@@ -432,14 +553,14 @@ const Course: FC = () => {
 								) : importState.status === 'error' ? (
 									<div className='flex items-center justify-between gap-3'>
 										<p className='font-body text-sm text-ink-tertiary'>
-											Couldn&apos;t build that one. Try a different phrasing.
+											{importState.message}
 										</p>
 										<button
 											type='button'
-											onMouseDown={(e) => { e.preventDefault(); handleBuildCourse(debouncedSearch); }}
+											onMouseDown={(e) => { e.preventDefault(); handleBuildCourse(importState.query); }}
 											className='shrink-0 font-mono text-2xs uppercase tracking-[0.18em] text-clay-400 hover:text-clay-500'
 										>
-											Retry
+											{importState.retryLabel}
 										</button>
 									</div>
 								) : (
@@ -453,9 +574,11 @@ const Course: FC = () => {
 										</span>
 										<span className='min-w-0'>
 											<span className='block font-body text-sm text-ink-primary'>
-												{autocomplete && autocomplete.length > 0
-													? `Not quite it? Build "${debouncedSearch}" from YouTube`
-													: `No match — build "${debouncedSearch}" from YouTube`}
+												{!isSignedIn
+													? `Sign in to build "${debouncedSearch}" from YouTube`
+													: autocomplete && autocomplete.length > 0
+														? `Not quite it? Build "${debouncedSearch}" from YouTube`
+														: `No match — build "${debouncedSearch}" from YouTube`}
 											</span>
 											<span className='block font-mono text-2xs uppercase tracking-[0.18em] text-ink-tertiary mt-0.5'>
 												AI imports a course in ~30s
@@ -525,10 +648,11 @@ const Course: FC = () => {
 					<Pagination
 						metaData={metaData}
 						handlePagination={handelQuerySearch}
-						queryString={queryFilterState as unknown as string}
+						queryString={formQueryStr(queryFilterState)}
 					/>
 				</div>
 			</PageLayout>
+			{authPrompt}
 
 			<RefineSheet
 				open={mobileFilterOpen}

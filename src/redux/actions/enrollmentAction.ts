@@ -8,6 +8,7 @@ import {
   throwErrorHandler,
 } from '../../util/helperFunctions/helper';
 import { NavigateFunction } from 'react-router-dom';
+import { authPath } from '../../util/helperFunctions/authRedirect';
 
 type EnrollmentThunk = ThunkAction<void, RootState, undefined, any>;
 
@@ -31,8 +32,9 @@ export const createEnrollmentAction =
       dispatch({ type: types.CREATE_ENROLLMENT_FAIL });
       dispatchErrorHandler(dispatch, err.message || 'Enrollment failed');
       // Only redirect to sign in for auth errors
+      // (session expired) — and bring them back to this course afterwards.
       if (err.message?.toLowerCase().includes('not logged in') || err.message?.toLowerCase().includes('unauthorized')) {
-        navigate('/signin');
+        navigate(authPath('signin', `/courses/${slug}`));
       }
     }
   };

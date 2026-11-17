@@ -19,6 +19,7 @@ import {
 	RatingDistributionBar,
 } from '../../features/course';
 import { Reveal } from '../../patterns/Reveal/Reveal';
+import { useAuthPrompt } from '../../hooks/useAuthPrompt';
 import { capitalizeFirstLetters } from '../../util/helperFunctions/helper';
 import { resolveInstructor } from '../../util/helperFunctions/instructorDisplay';
 import { imgSrc, TRANSFORMS } from '../../util/helperFunctions/cloudinary';
@@ -28,6 +29,8 @@ const SingleCourse: FC = () => {
 	const singleCourse = useSelector((state: RootState) => state.course?.singleCourse);
 	const courseError = useSelector((state: RootState) => state.course.courseError);
 	const userId = useSelector((state: RootState) => state.user.userObj?._id);
+	const isSignedIn = useSelector((state: RootState) => Boolean(state.auth.token));
+	const { promptSignIn, authPrompt } = useAuthPrompt();
 	const wishlisted = useSelector(
 		(state: RootState) =>
 			singleCourse?.course?._id
@@ -104,7 +107,15 @@ const SingleCourse: FC = () => {
 	const isEnrolled = singleCourse.isEnrolled;
 
 	const handleToggleWishlist = () => {
-		if (!userId) return;
+		if (!isSignedIn) {
+			promptSignIn({
+				eyebrow: 'Wishlist',
+				title: 'Sign in to save this course',
+				message: `Save “${course.title}” to your wishlist — it lives in your account, so it’s waiting whenever you come back.`,
+			});
+			return;
+		}
+		if (!userId) return; // signed in, profile still loading
 		if (wishlisted && wishlistId) {
 			dispatch(removeFromWishlistAction(wishlistId, course._id));
 		} else if (!wishlisted) {
@@ -180,7 +191,7 @@ const SingleCourse: FC = () => {
 					course={course}
 					isEnrolled={isEnrolled}
 					wishlisted={wishlisted}
-					onToggleWishlist={userId ? handleToggleWishlist : undefined}
+					onToggleWishlist={handleToggleWishlist}
 				/>
 			</section>
 
@@ -273,6 +284,7 @@ const SingleCourse: FC = () => {
 					<Reviews course={course} />
 				</section>
 			</PageLayout>
+			{authPrompt}
 		</>
 	);
 };

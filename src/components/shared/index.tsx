@@ -5,6 +5,7 @@ export { default as Button } from './Button';
 export { default as CentralizedHeaderText } from './CentralizedHeaderText';
 export { default as Comment } from './Comment';
 export { ConfirmDialog } from './ConfirmDialog';
+export { AuthPromptDialog } from './AuthPromptDialog';
 export { default as CopyText } from './CopyText';
 export { default as DataBadge } from './DataBadge';
 export { default as DropDown } from './DropDown';

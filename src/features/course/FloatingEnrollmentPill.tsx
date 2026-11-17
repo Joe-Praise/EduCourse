@@ -15,6 +15,8 @@ import {
 import { imgSrc, TRANSFORMS } from '../../util/helperFunctions/cloudinary';
 import { formatAmount } from '../../util/helperFunctions/helper';
 import { cn } from '../../lib/cn';
+import { useAuthPrompt } from '../../hooks/useAuthPrompt';
+import { enrollAuthPrompt } from './enrollAuthPrompt';
 
 interface CoursePanelInput {
 	_id: string;
@@ -49,6 +51,8 @@ export function FloatingEnrollmentPill({
 	const dispatch: AppDispatch = useDispatch();
 	const navigate = useNavigate();
 	const userId = useSelector((state: RootState) => state.user.userObj?._id);
+	const isSignedIn = useSelector((state: RootState) => Boolean(state.auth.token));
+	const { promptSignIn, authPrompt } = useAuthPrompt();
 	const { enrolled, isChecking, isEnrolling } = useSelector(
 		(state: RootState) => state.enrollment,
 	);
@@ -127,10 +131,11 @@ export function FloatingEnrollmentPill({
 			navigate(`/courses/${course.slug}/lecture/${course._id}`);
 			return;
 		}
-		if (!userId) {
-			navigate('/signin');
+		if (!isSignedIn) {
+			promptSignIn(enrollAuthPrompt(course.title, isFree));
 			return;
 		}
+		if (!userId) return; // signed in, profile still loading
 		dispatch(
 			createEnrollmentAction({ userId, courseId: course._id }, navigate, course.slug, course._id),
 		);
@@ -266,6 +271,7 @@ export function FloatingEnrollmentPill({
 					</div>
 				</div>
 				, document.body)}
+			{authPrompt}
 		</>
 	);
 }

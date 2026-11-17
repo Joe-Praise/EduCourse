@@ -1,7 +1,8 @@
 import { FC, useState } from 'react';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { authPath, redirectFromSearch } from '../../util/helperFunctions/authRedirect';
 import { useDispatch } from 'react-redux';
 import { ArrowRight } from 'lucide-react';
 import { AppDispatchType, signInAction } from '../../redux/actions/authAction';
@@ -27,11 +28,14 @@ const validationSchema = Yup.object({
 const SigninForm: FC = () => {
 	const dispatch: AppDispatchType = useDispatch();
 	const navigate = useNavigate();
+	const { search } = useLocation();
+	// Where the visitor came from (set by the sign-in prompt or a protected route).
+	const returnTo = redirectFromSearch(search);
 	const [loading, setLoading] = useState<boolean>(false);
 
 	const onSubmit = async (values: FormValues) => {
 		setLoading(true);
-		await dispatch(signInAction(values, navigate));
+		await dispatch(signInAction(values, navigate, returnTo));
 		setLoading(false);
 	};
 
@@ -132,7 +136,7 @@ const SigninForm: FC = () => {
 						<p className='mt-8 font-body text-sm text-ink-tertiary text-center'>
 							New to EduCourse?{' '}
 							<Link
-								to='/signup'
+								to={authPath('signup', returnTo)}
 								className='text-clay-400 hover:text-clay-500 underline-offset-[6px] hover:underline transition-colors'
 							>
 								Create an account

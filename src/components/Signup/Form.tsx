@@ -1,7 +1,8 @@
 import { FC, useState } from 'react';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { authPath, redirectFromSearch } from '../../util/helperFunctions/authRedirect';
 import { useDispatch } from 'react-redux';
 import { ArrowRight } from 'lucide-react';
 import { AppDispatchType, signUpAction } from '../../redux/actions/authAction';
@@ -40,11 +41,13 @@ const validationSchema = Yup.object({
 const SignUpForm: FC = () => {
 	const dispatch: AppDispatchType = useDispatch();
 	const navigate = useNavigate();
+	const { search } = useLocation();
+	const returnTo = redirectFromSearch(search);
 	const [loading, setLoading] = useState<boolean>(false);
 
 	const onSubmit = async (values: FormValues) => {
 		setLoading(true);
-		await dispatch(signUpAction(values, navigate));
+		await dispatch(signUpAction(values, navigate, returnTo));
 		setLoading(false);
 	};
 
@@ -170,7 +173,7 @@ const SignUpForm: FC = () => {
 						<p className='mt-6 font-body text-sm text-ink-tertiary text-center'>
 							Already have an account?{' '}
 							<Link
-								to='/signin'
+								to={authPath('signin', returnTo)}
 								className='text-clay-400 hover:text-clay-500 underline-offset-[6px] hover:underline transition-colors'
 							>
 								Sign in

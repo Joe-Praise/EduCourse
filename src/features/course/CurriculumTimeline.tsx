@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Lock, Play, ChevronDown } from 'lucide-react';
 import { cn } from '../../lib/cn';
 
@@ -20,7 +20,23 @@ interface CurriculumTimelineProps {
 	modules?: ReadonlyArray<Module>;
 }
 
-export const CurriculumTimeline = ({ modules = [] }: CurriculumTimelineProps) => {
+// Imported titles often carry their own number ("Module 1: Intro"). The badge
+// already numbers by position, so drop it to keep one source of numbering.
+const MODULE_NUMBER_PREFIX = /^\s*(?:module|section|part|chapter|unit|week|lesson)\s*\d+\s*[:.)\-–—]\s*/i;
+
+const moduleDisplayTitle = (title: string): string =>
+	title.replace(MODULE_NUMBER_PREFIX, '').trim() || title;
+
+export const CurriculumTimeline = ({ modules: rawModules = [] }: CurriculumTimelineProps) => {
+	// Stable sort by moduleIndex; modules without one keep their API order at the end.
+	const modules = useMemo(
+		() =>
+			[...rawModules].sort(
+				(a, b) =>
+					(a.moduleIndex ?? Number.MAX_SAFE_INTEGER) - (b.moduleIndex ?? Number.MAX_SAFE_INTEGER),
+			),
+		[rawModules],
+	);
 	const [openModuleId, setOpenModuleId] = useState<string | null>(modules[0]?._id ?? null);
 
 	if (modules.length === 0) {
@@ -40,7 +56,8 @@ export const CurriculumTimeline = ({ modules = [] }: CurriculumTimelineProps) =>
 			<ol className='space-y-12'>
 				{modules.map((module, idx) => {
 					const isOpen = module._id === openModuleId;
-					const indexLabel = String((module.moduleIndex ?? idx) + 1).padStart(2, '0');
+					// Position in the displayed list — always 01..n, whatever moduleIndex holds.
+					const indexLabel = String(idx + 1).padStart(2, '0');
 					const lessonCount = module.lessons?.length ?? 0;
 
 					return (
@@ -74,7 +91,7 @@ export const CurriculumTimeline = ({ modules = [] }: CurriculumTimelineProps) =>
 										className='font-display font-semibold text-2xl sm:text-3xl text-ink-primary leading-[1.15] tracking-[-0.02em]'
 										style={{ fontVariationSettings: '"opsz" 48' }}
 									>
-										{module.title}
+										{moduleDisplayTitle(module.title)}
 									</h3>
 									<p className='mt-1 font-mono text-2xs uppercase tracking-[0.18em] text-ink-tertiary'>
 										{lessonCount} lesson{lessonCount === 1 ? '' : 's'}

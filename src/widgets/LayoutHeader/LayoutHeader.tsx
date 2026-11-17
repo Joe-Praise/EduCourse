@@ -1,5 +1,6 @@
 import { FC, useEffect, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
+import { authPath } from '../../util/helperFunctions/authRedirect';
 import { Bell } from 'lucide-react';
 import useCurrentUser from '../../hooks/useCurrentUser';
 import { imgSrc, TRANSFORMS } from '../../util/helperFunctions/cloudinary';
@@ -30,6 +31,9 @@ const MIN_DELTA = 5; // ignore sub-pixel scroll jitter
 
 const LayoutHeader: FC = () => {
 	const { user, isLoggedIn } = useCurrentUser();
+	const location = useLocation();
+	// Signing in / up from the header returns the visitor to this page.
+	const here = `${location.pathname}${location.search}`;
 	const [menuOpen, setMenuOpen] = useState(false);
 	const time = useLiveClock();
 	const [scrolled, setScrolled] = useState(false);
@@ -189,7 +193,7 @@ const LayoutHeader: FC = () => {
 							</>
 						) : (
 							<Link
-								to='/signin'
+								to={authPath('signin', here)}
 								className='hidden sm:inline-flex items-center h-10 px-4 rounded-pill text-ink-primary hover:text-clay-400 transition-colors font-body text-sm'
 							>
 								Sign in
@@ -199,7 +203,7 @@ const LayoutHeader: FC = () => {
 						{!isLoggedIn && (
 							<Magnetic strength={0.18}>
 								<Link
-									to='/signup'
+									to={authPath('signup', here)}
 									data-cursor='grow'
 									className='hidden sm:inline-flex items-center h-10 px-5 rounded-pill bg-clay-500 hover:bg-clay-600 text-ink-primary font-body font-medium text-sm transition-colors'
 								>

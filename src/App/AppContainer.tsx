@@ -7,11 +7,10 @@ import { isLoggedIn } from '../redux/actions/authAction';
 import { getUserAction } from '../redux/actions/userAction';
 import { AppDispatch } from '../redux/store';
 import * as types from '../redux/constants/authConstants';
-import { useNavigate } from 'react-router-dom';
+import { isAuthenticated } from '../util/helperFunctions/auth';
 
 const AppContainer: FC = () => {
 	const dispatch: AppDispatch = useDispatch();
-	const navigate = useNavigate();
 	const token = useSelector((state: RootState) => state.auth?.token);
 	const [bootstrapping, setBootstrapping] = useState<boolean>(true);
 
@@ -19,8 +18,9 @@ const AppContainer: FC = () => {
 		const validateToken = async () => {
 			try {
 				if (token) {
-					await dispatch(isLoggedIn(navigate));
-					await dispatch(getUserAction());
+					await dispatch(isLoggedIn());
+					// Only fetch the profile if the stored session was still valid.
+					if (isAuthenticated()) await dispatch(getUserAction());
 				} else {
 					dispatch({
 						type: types.REFRESH_TOKEN_FAIL,
