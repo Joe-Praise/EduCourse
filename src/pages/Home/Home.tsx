@@ -16,6 +16,8 @@ import {
 } from '../../features/home';
 import type { CourseCardData } from '../../features/course/CourseCard';
 
+const HERO_COURSE_COUNT = 3;
+
 const Home: FC = () => {
 	const dispatch: AppDispatch = useDispatch();
 	const landingPageData = useSelector(
@@ -29,13 +31,17 @@ const Home: FC = () => {
 	}, [dispatch]);
 
 	const courses = (landingPageData?.courses ?? []) as unknown as ReadonlyArray<CourseCardData>;
+	// The hero collage features the first three; the rail continues after them so
+	// no course appears twice on the page.
+	const heroCourses = courses.slice(0, HERO_COURSE_COUNT);
+	const railCourses = courses.slice(HERO_COURSE_COUNT);
 	const categories = landingPageData?.categories;
 	const instructors = landingPageData?.instructors;
 
 	return (
 		<>
 			<Preloader wordmark='EduCourse' />
-			<Hero courses={courses} />
+			<Hero courses={heroCourses} />
 			<TrustMarquee />
 			<CategoryBento categories={categories} />
 
@@ -63,7 +69,7 @@ const Home: FC = () => {
 				imageSide='left'
 			/>
 
-			<FeaturedCoursesRail courses={courses} />
+			<FeaturedCoursesRail courses={railCourses} />
 			<InstructorSpotlightGrid instructors={instructors} />
 			<StatsBand
 				totalStudents={platformStats?.totalStudents}

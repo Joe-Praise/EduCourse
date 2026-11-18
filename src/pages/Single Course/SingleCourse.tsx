@@ -13,11 +13,7 @@ import {
 } from '../../redux/actions/wishlistAction';
 import type { Instructor as InstructorRecord } from '../../redux/api/courseAPI';
 import { PageLayout } from '../../patterns/PageLayout/PageLayout';
-import {
-	CurriculumTimeline,
-	FloatingEnrollmentPill,
-	RatingDistributionBar,
-} from '../../features/course';
+import { CurriculumTimeline, FloatingEnrollmentPill } from '../../features/course';
 import { Reveal } from '../../patterns/Reveal/Reveal';
 import { useAuthPrompt } from '../../hooks/useAuthPrompt';
 import { capitalizeFirstLetters } from '../../util/helperFunctions/helper';
@@ -146,15 +142,12 @@ const SingleCourse: FC = () => {
 					{/* Title overlay — bottom-left */}
 					<div className='absolute inset-x-0 bottom-0 px-6 sm:px-12 lg:px-16 pb-10 sm:pb-16 lg:pb-20'>
 						<div className='mx-auto max-w-container'>
-							<span className='inline-flex items-center gap-2 font-mono text-2xs uppercase tracking-[0.22em] text-clay-400'>
-								{course.category?.name && (
-									<span>{capitalizeFirstLetters(course.category.name)}</span>
-								)}
-								{course.category?.name && course.level && (
-									<span aria-hidden className='opacity-50'>·</span>
-								)}
-								{course.level && <span className='text-ink-secondary'>{course.level}</span>}
-							</span>
+							{/* Level lives in the meta strip below; the eyebrow names the category only. */}
+							{course.category?.name && (
+								<span className='inline-flex items-center gap-2 font-mono text-2xs uppercase tracking-[0.22em] text-clay-400'>
+									{capitalizeFirstLetters(course.category.name)}
+								</span>
+							)}
 
 							<h1
 								className='mt-5 font-display font-semibold text-ink-primary tracking-[-0.04em] leading-[0.95]'
@@ -276,11 +269,6 @@ const SingleCourse: FC = () => {
 							What people say.
 						</Reveal>
 					</header>
-					<RatingDistributionBar
-						average={course.ratingsAverage ?? 0}
-						totalCount={course.ratingsQuantity ?? 0}
-						className='mb-12'
-					/>
 					<Reviews course={course} />
 				</section>
 			</PageLayout>

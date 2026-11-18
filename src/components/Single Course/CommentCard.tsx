@@ -1,63 +1,65 @@
-import RatingStars from './RatingStars';
 import { useState } from 'react';
 import RenderIf from '../shared/RenderIf';
 import { truncateValue } from '../../util/helperFunctions/helper';
+import { handleDateFormat } from '../../util/helperFunctions/dateFormatter';
 import { OmittedReviewDataType } from '../../redux/api/reviewApi';
 import PublicProfileLink from '../shared/PublicProfileLink';
 import { imgSrc, TRANSFORMS } from '../../util/helperFunctions/cloudinary';
+import { Avatar } from '../../ui';
+import { RatingStars } from '../../features/course';
 
 const CommentCard = (props: OmittedReviewDataType) => {
-	const { userId, review, rating, createdAt } = props;
+	const { userId, review = '', rating, createdAt } = props;
 	const [truncate, setTruncate] = useState(true);
 	const truncateLimit = 250;
+	const isLong = review.length > truncateLimit;
 
 	return (
-		<section className='flex gap-2 border-b py-2 my-1'>
-			<div className='basis-[10%] flex justify-center items-center '>
-				<PublicProfileLink userId={userId?._id}>
-					<figure className='w-16 h-16 block'>
-						<img
-							src={imgSrc(userId?.photo, '/img/', TRANSFORMS.avatarSm)}
-							alt={`${userId?.name}'s display image`}
-							className='rounded-full '
-						/>
-					</figure>
-				</PublicProfileLink>
-			</div>
-			<div className='flex-1'>
-				<PublicProfileLink userId={userId?._id}>
-					<p>{userId?.name}</p>
-				</PublicProfileLink>
-				<div className='flex gap-2 items-center'>
-					<RatingStars rating={rating + ''} />
-					<p>{createdAt}</p>
+		<article className='flex items-start gap-4 pb-6 border-b border-line-subtle'>
+			<PublicProfileLink userId={userId?._id}>
+				<Avatar
+					size='md'
+					src={userId?.photo ? imgSrc(userId.photo, '/img/', TRANSFORMS.avatarSm) : undefined}
+					fallback={userId?.name ?? '?'}
+				/>
+			</PublicProfileLink>
+
+			<div className='flex-1 min-w-0'>
+				<div className='flex items-center justify-between gap-3'>
+					<PublicProfileLink userId={userId?._id}>
+						<span className='font-body text-sm font-medium text-ink-primary hover:text-clay-400 transition-colors'>
+							{userId?.name}
+						</span>
+					</PublicProfileLink>
+					{createdAt && (
+						<time
+							dateTime={createdAt}
+							className='font-body text-xs text-ink-tertiary tabular-nums whitespace-nowrap'
+						>
+							{handleDateFormat(createdAt)}
+						</time>
+					)}
 				</div>
 
-				<div className='relative'>
-					<p className='text-clip overflow-hidden '>
+				<RatingStars rating={rating} size={12} className='mt-1' />
+
+				<RenderIf condition={review.length > 0}>
+					<p className='mt-2 font-body text-sm text-ink-primary/90 leading-[1.6] whitespace-pre-wrap break-words'>
 						{truncateValue(review, truncate, truncateLimit)}
 					</p>
-					<RenderIf condition={truncate}>
-						<button
-							className='absolute rounded-sm p-1  -bottom-1 right-0 text-black'
-							onClick={() => setTruncate((prevState) => !prevState)}
-						>
-							{review.length > truncateLimit ? 'view more...' : ''}
-						</button>
-					</RenderIf>
-					<RenderIf condition={!truncate}>
-						<div className='text-right'>
-							<button
-								className='rounded-sm p-1 text-right ms-auto text-black'
-								onClick={() => setTruncate((prevState) => !prevState)}
-							>
-								hide
-							</button>
-						</div>
-					</RenderIf>
-				</div>
+				</RenderIf>
+
+				<RenderIf condition={isLong}>
+					<button
+						type='button'
+						onClick={() => setTruncate((prev) => !prev)}
+						className='mt-2 font-body text-xs text-clay-400 hover:text-clay-500 transition-colors'
+					>
+						{truncate ? 'View more' : 'Show less'}
+					</button>
+				</RenderIf>
 			</div>
-		</section>
+		</article>
 	);
 };
 
