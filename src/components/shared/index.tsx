@@ -23,7 +23,6 @@ export { default as Logo } from './Logo';
 export { default as Modal } from './Modal';
 export { default as Pagination } from './Pagination';
 export { default as PopUp } from './PopUp';
-export { default as RatingStarsContainer } from './RatingStarsContainer';
 export { default as RenderIf } from './RenderIf';
 export { default as SearchAndLayout } from './SearchAndLayout';
 export { default as Toastify } from './Toastify';
