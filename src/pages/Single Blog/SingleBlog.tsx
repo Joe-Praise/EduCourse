@@ -251,40 +251,6 @@ const SingleBlog: FC = () => {
 				</div>
 			</PageLayout>
 
-			{/* ── AUTHOR CARD — readable column ── */}
-			<PageLayout width='readable' className='pb-14'>
-				<section className='mt-14 rounded-card border border-line-base bg-bg-raised/50 p-7 sm:p-10 flex flex-col sm:flex-row items-start gap-6 sm:gap-8'>
-					<Avatar
-						size='xl'
-						src={authorPhoto ? imgSrc(authorPhoto, '/img/', TRANSFORMS.avatarSm) : undefined}
-						fallback={authorName}
-					/>
-					<div className='flex-1'>
-						<span className='font-mono text-2xs uppercase tracking-[0.22em] text-clay-400 block mb-2'>
-							About the author
-						</span>
-						<h3
-							className='font-display font-semibold text-ink-primary leading-tight'
-							style={{ fontSize: 'clamp(26px, 2.6vw, 36px)', fontVariationSettings: '"opsz" 96' }}
-						>
-							{authorName}
-						</h3>
-						<p className='mt-4 font-body text-[17px] text-ink-primary leading-[1.7] max-w-prose'>
-							Practice over theory. Find more of {authorName.split(' ')[0]}'s writing
-							in the archive — essays, deep-dives, and the occasional pattern study
-							from the team building EduCourse.
-						</p>
-						<Link
-							to='/blogs'
-							className='mt-6 inline-flex items-center gap-2 h-11 px-5 rounded-pill border border-line-base text-ink-primary hover:border-clay-500 hover:text-clay-400 transition-colors font-body text-sm font-medium'
-						>
-							Browse the archive
-							<ArrowUpRight size={14} strokeWidth={2} />
-						</Link>
-					</div>
-				</section>
-			</PageLayout>
-
 			{/* ── TAGS — readable column, full pill row ── */}
 			{tags.length > 0 && (
 				<PageLayout width='readable' className='pb-14'>
