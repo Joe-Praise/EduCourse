@@ -142,8 +142,11 @@ test('the lesson player Reviews tab shows the same single summary', async ({ pag
 	}, student);
 
 	await page.goto('/courses/site-safety/lecture/c1');
-	// The player's view tabs are list items, not buttons.
-	await page.getByRole('listitem').filter({ hasText: /^Reviews$/ }).click({ timeout: 15_000 });
+	// Reached and opened from the keyboard: the view tabs are real tab buttons.
+	const reviewsTab = page.getByRole('tab', { name: 'Reviews' });
+	await reviewsTab.focus({ timeout: 15_000 });
+	await page.keyboard.press('Enter');
+	await expect(reviewsTab).toHaveAttribute('aria-selected', 'true');
 
 	await expect(page.getByText('7 reviews', { exact: true })).toBeVisible();
 	await expect(page.getByRole('progressbar')).toHaveCount(5);

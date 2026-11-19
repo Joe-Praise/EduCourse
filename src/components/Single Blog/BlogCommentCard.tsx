@@ -19,7 +19,7 @@ const BlogCommentCard = (props: Iprop) => {
 	const isLong = review.length > truncateLimit;
 
 	return (
-		<article className='flex gap-4 pb-6 border-b border-line-subtle'>
+		<article className='flex items-start gap-4 pb-6 border-b border-line-subtle'>
 			<PublicProfileLink userId={userId?._id}>
 				<Avatar
 					size='md'
