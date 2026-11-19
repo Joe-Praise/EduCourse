@@ -4,7 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ArrowUpRight, ListChecks, NotebookPen } from 'lucide-react';
 import VideoSection from '../../components/Lecture Course/VideoSection';
 import LectureHeader from '../../components/Lecture Course/LectureHeader';
-import { LoadingEffect, TabContainer } from '../../components/shared';
+import { LoadingEffect } from '../../components/shared';
+import { Tabs, type TabItem } from '../../ui';
 import OverView from '../../components/Single Course/OverView';
 import Instructor from '../../components/Single Course/Instructor';
 import Review from '../../components/Single Course/Reviews';
@@ -25,10 +26,10 @@ import {
 import { cn } from '../../lib/cn';
 
 type ViewKey = 'overview' | 'instructor' | 'reviews';
-const VIEW_ITEMS: Array<{ key: ViewKey; label: string }> = [
-	{ key: 'overview', label: 'Overview' },
-	{ key: 'instructor', label: 'Instructor' },
-	{ key: 'reviews', label: 'Reviews' },
+const VIEW_ITEMS: ReadonlyArray<TabItem<ViewKey>> = [
+	{ value: 'overview', label: 'Overview' },
+	{ value: 'instructor', label: 'Instructor' },
+	{ value: 'reviews', label: 'Reviews' },
 ];
 
 interface FlatLesson {
@@ -229,29 +230,17 @@ const LectureCourse: FC = () => {
 								focused && 'opacity-30 hover:opacity-100 motion-reduce:opacity-100',
 							)}
 						>
-							<TabContainer
-								lecture
-								buttons={
-									<>
-										{VIEW_ITEMS.map((item) => (
-											<li
-												key={item.key}
-												className={cn(
-													'p-2 py-5 cursor-pointer flex justify-center items-center text-sm font-medium font-body transition-colors',
-													activeView === item.key
-														? 'text-clay-400'
-														: 'text-ink-tertiary hover:text-ink-secondary',
-												)}
-												onClick={() => setActiveView(item.key)}
-											>
-												{item.label}
-											</li>
-										))}
-									</>
-								}
-							>
-								{display}
-							</TabContainer>
+							<div className='min-h-[40vh] md:w-3/4 mx-auto'>
+								<Tabs
+									aria-label='Course details'
+									items={VIEW_ITEMS}
+									value={activeView}
+									onChange={setActiveView}
+								/>
+								<div role='tabpanel' className='p-4 sm:p-6'>
+									{display}
+								</div>
+							</div>
 						</div>
 					</div>
 
